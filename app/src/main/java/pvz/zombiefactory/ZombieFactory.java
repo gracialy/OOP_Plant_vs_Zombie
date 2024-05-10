@@ -1,6 +1,6 @@
 package pvz.zombiefactory;
 
-import pvz.zombie.Zombie;
+import pvz.zombie.*;
 
 public abstract class ZombieFactory {
     public abstract Zombie createZombie();
