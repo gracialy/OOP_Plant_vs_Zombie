@@ -5,10 +5,12 @@ package pvz;
 
 import java.util.Scanner;
 
-import pvz.plantfactory.*;
-import pvz.plant.*;
-import pvz.zombiefactory.*;
-import pvz.zombie.*;
+// import pvz.plantfactory.*;
+// import pvz.plant.*;
+// import pvz.zombiefactory.*;
+// import pvz.zombie.*;
+import pvz.menu.*;
+import pvz.pack.Inventory;
 
 public class App {
     public static void banner() {
@@ -20,28 +22,21 @@ public class App {
 
         banner();
 
-        PlantFactory peashooterFactory = new PeashooterFactory();
-        Plant peashooter = peashooterFactory.createPlant();
+        Inventory inventory;
+        inventory = new Inventory();
 
-        PlantFactory wallnutFactory = new WallnutFactory();
-        Plant wallnut = wallnutFactory.createPlant();
+        System.out.println(inventory.getPack().size());
+        inventory.printInfo();
 
-        ZombieFactory normalFactory = new NormalFactory();
-        Zombie normal = normalFactory.createZombie();
+        inventory.swap(1, 2);
+        inventory.printInfo();
 
-        ZombieFactory poleVaultFactory = new PoleVaultFactory();
-        Zombie poleVault = poleVaultFactory.createZombie();
 
-        peashooter.printInfo();
-        System.out.println();
-        wallnut.printInfo(); 
-        System.out.println();   
-        normal.printInfo();
-        System.out.println();
-        poleVault.printInfo();
-        System.out.println();
-
-        // Game game = new Game();
+        try {
+            inventory.swap(1, 3);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
 
         // System.out.println("Choose a command:");
         // System.out.println("1. Start");
@@ -53,16 +48,27 @@ public class App {
         // int command = scanner.nextInt();
 
         // if (command == 1) {
-        //     game.start();
-        // } else if (command == 2) {
-        //     game.help();
-        // } else if (command == 3) {
-        //     game.plants_list();
-        // } else if (command == 4) {
-        //     game.zombies_list();
-        // } else if (command == 5) {
-        //     game.exit();
+        //     Menu start = new Start();
+        //     start.select();
+        // } 
+        // else if (command == 2) {
+        //     Menu help = new Help();
+        //     help.select();
+        // } 
+        // else if (command == 3) {
+        //     Menu plantsList = new PlantsList();
+        //     plantsList.select();
+        // } 
+        // else if (command == 4) {
+        //     Menu zombiesList = new ZombiesList();
+        //     zombiesList.select();
+        // } 
+        // else if (command == 5) {
+        //     Menu exit = new Exit();
+        //     exit.select();
         // }
+
+        
 
         scanner.close();
     }
