@@ -6,7 +6,7 @@ public abstract class Zombie {
     private int attack_damage;
     private int attack_speed;
     private boolean is_aquatic;
-    
+    private long speed = 5000;
     // private boolean is_dead;
 
     public Zombie(String name, int health, int attack_damage, int attack_speed, boolean is_aquatic) {
@@ -33,6 +33,10 @@ public abstract class Zombie {
         return attack_speed;
     }
 
+    public long getSpeed() {
+        return speed;
+    }
+
     public boolean isAquatic() {
         return is_aquatic;
     }
@@ -44,6 +48,14 @@ public abstract class Zombie {
         if (health <= 0) {
             // is_dead = true;
         }
+    }
+
+    public void reduceSpeed(long factor) {
+        this.speed /= factor;
+    }
+
+    public void resetSpeed(long factor) {
+        this.speed = 5000;
     }
 
     public void printInfo() {
