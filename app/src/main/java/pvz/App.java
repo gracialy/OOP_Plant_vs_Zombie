@@ -6,6 +6,7 @@ package pvz;
 import java.util.Scanner;
 
 import pvz.plantfactory.*;
+import pvz.menu.PlantsList;
 import pvz.plant.*;
 import pvz.zombiefactory.*;
 import pvz.zombie.*;
@@ -17,25 +18,44 @@ public class App {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        PlantsList plantsList = new PlantsList();
+        plantsList.select();
 
         banner();
-
+        System.out.println("Implementasi Tanaman Michael ");
         PlantFactory peashooterFactory = new PeashooterFactory();
         Plant peashooter = peashooterFactory.createPlant();
 
         PlantFactory wallnutFactory = new WallnutFactory();
         Plant wallnut = wallnutFactory.createPlant();
 
+        PlantFactory ChomperFactory = new ChomperFactory();
+        Plant chomper = ChomperFactory.createPlant();
+
+        PlantFactory SunflowerFactory = new SunflowerFactory();
+        Plant sunflow = SunflowerFactory.createPlant();
+
+        PlantFactory snowPlantFactory = new SnowpeaFactory();
+        Plant snow = snowPlantFactory.createPlant();
+
+        peashooter.printInfo();
+        System.out.println();
+        wallnut.printInfo();
+        System.out.println();
+        chomper.printInfo();
+        System.out.println();
+        sunflow.printInfo();
+        System.out.println();
+        snow.printInfo();
+        System.out.println();
+
+        System.out.println("Implementasi Zombie");
         ZombieFactory normalFactory = new NormalFactory();
         Zombie normal = normalFactory.createZombie();
 
         ZombieFactory poleVaultFactory = new PoleVaultFactory();
         Zombie poleVault = poleVaultFactory.createZombie();
 
-        peashooter.printInfo();
-        System.out.println();
-        wallnut.printInfo(); 
-        System.out.println();   
         normal.printInfo();
         System.out.println();
         poleVault.printInfo();
@@ -53,15 +73,15 @@ public class App {
         // int command = scanner.nextInt();
 
         // if (command == 1) {
-        //     game.start();
+        // game.start();
         // } else if (command == 2) {
-        //     game.help();
+        // game.help();
         // } else if (command == 3) {
-        //     game.plants_list();
+        // game.plants_list();
         // } else if (command == 4) {
-        //     game.zombies_list();
+        // game.zombies_list();
         // } else if (command == 5) {
-        //     game.exit();
+        // game.exit();
         // }
 
         scanner.close();
