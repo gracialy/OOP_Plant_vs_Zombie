@@ -5,9 +5,11 @@ package pvz;
 
 import java.util.Scanner;
 
-import pvz.plantfactory.*;
+import pvz.menu.Help;
 import pvz.menu.PlantsList;
+import pvz.menu.ZombiesList;
 import pvz.plant.*;
+import pvz.plantfactory.*;
 import pvz.zombiefactory.*;
 import pvz.zombie.*;
 
@@ -19,70 +21,71 @@ public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         PlantsList plantsList = new PlantsList();
-        plantsList.select();
+        Help help = new Help();
+        ZombiesList ZomList = new ZombiesList();
+        boolean exit = false;
 
         banner();
-        System.out.println("Implementasi Tanaman Michael ");
-        PlantFactory peashooterFactory = new PeashooterFactory();
-        Plant peashooter = peashooterFactory.createPlant();
+        System.out.println("Silahkan Tekan Tombol dibawah ini");
+        System.out.println("1. Start");
+        System.out.println("2. Help");
+        System.out.println("3. List Plan");
+        System.out.println("4. List Zombie");
+        System.out.println("5. Exit");
+        while (!exit) {
+            String x = scanner.nextLine();
+            if (x.equals("Start")) {
+                System.out.println("Implementasi Tanaman Michael ");
+                PlantFactory peashooterFactory = new PeashooterFactory();
+                Plant peashooter = peashooterFactory.createPlant();
 
-        PlantFactory wallnutFactory = new WallnutFactory();
-        Plant wallnut = wallnutFactory.createPlant();
+                PlantFactory wallnutFactory = new WallnutFactory();
+                Plant wallnut = wallnutFactory.createPlant();
 
-        PlantFactory ChomperFactory = new ChomperFactory();
-        Plant chomper = ChomperFactory.createPlant();
+                PlantFactory ChomperFactory = new ChomperFactory();
+                Plant chomper = ChomperFactory.createPlant();
 
-        PlantFactory SunflowerFactory = new SunflowerFactory();
-        Plant sunflow = SunflowerFactory.createPlant();
+                PlantFactory SunflowerFactory = new SunflowerFactory();
+                Plant sunflow = SunflowerFactory.createPlant();
 
-        PlantFactory snowPlantFactory = new SnowpeaFactory();
-        Plant snow = snowPlantFactory.createPlant();
+                PlantFactory snowPlantFactory = new SnowpeaFactory();
+                Plant snow = snowPlantFactory.createPlant();
 
-        peashooter.printInfo();
-        System.out.println();
-        wallnut.printInfo();
-        System.out.println();
-        chomper.printInfo();
-        System.out.println();
-        sunflow.printInfo();
-        System.out.println();
-        snow.printInfo();
-        System.out.println();
+                peashooter.printInfo();
+                System.out.println();
+                wallnut.printInfo();
+                System.out.println();
+                chomper.printInfo();
+                System.out.println();
+                sunflow.printInfo();
+                System.out.println();
+                snow.printInfo();
+                System.out.println();
 
-        System.out.println("Implementasi Zombie");
-        ZombieFactory normalFactory = new NormalFactory();
-        Zombie normal = normalFactory.createZombie();
+                System.out.println("Implementasi Zombie");
+                ZombieFactory normalFactory = new NormalFactory();
+                Zombie normal = normalFactory.createZombie();
 
-        ZombieFactory poleVaultFactory = new PoleVaultFactory();
-        Zombie poleVault = poleVaultFactory.createZombie();
+                ZombieFactory poleVaultFactory = new PoleVaultFactory();
+                Zombie poleVault = poleVaultFactory.createZombie();
 
-        normal.printInfo();
-        System.out.println();
-        poleVault.printInfo();
-        System.out.println();
-
-        // Game game = new Game();
-
-        // System.out.println("Choose a command:");
-        // System.out.println("1. Start");
-        // System.out.println("2. Help");
-        // System.out.println("3. Plants List");
-        // System.out.println("4. Zombies List");
-        // System.out.println("5. Exit");
-        // System.out.print("Input [1..5]: ");
-        // int command = scanner.nextInt();
-
-        // if (command == 1) {
-        // game.start();
-        // } else if (command == 2) {
-        // game.help();
-        // } else if (command == 3) {
-        // game.plants_list();
-        // } else if (command == 4) {
-        // game.zombies_list();
-        // } else if (command == 5) {
-        // game.exit();
-        // }
+                normal.printInfo();
+                System.out.println();
+                poleVault.printInfo();
+                System.out.println();
+            } else if (x.equals("Help")) {
+                help.select();
+                System.out.println("Silahkan pilih menu yang diinginkan : ");
+            } else if (x.equals("List Plan")) {
+                plantsList.select();
+            } else if (x.equals("List Zombie")) {
+                ZomList.select();
+            } else if (x.equals("Exit")) {
+                exit = true;
+            } else {
+                System.out.println("Masukkan Tombol yang tepat");
+            }
+        }
 
         scanner.close();
     }
