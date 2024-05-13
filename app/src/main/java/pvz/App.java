@@ -5,7 +5,6 @@ package pvz;
 
 import java.util.Scanner;
 
-<<<<<<< HEAD
 import pvz.menu.Help;
 import pvz.menu.PlantsList;
 import pvz.menu.ZombiesList;
@@ -13,14 +12,10 @@ import pvz.plant.*;
 import pvz.plantfactory.*;
 import pvz.zombiefactory.*;
 import pvz.zombie.*;
-=======
 // import pvz.plantfactory.*;
 // import pvz.plant.*;
 // import pvz.zombiefactory.*;
 // import pvz.zombie.*;
-import pvz.menu.*;
-import pvz.pack.Inventory;
->>>>>>> 7772439195068fb508733f9e768d58dac922d428
 
 public class App {
     public static void banner() {
@@ -47,8 +42,6 @@ public class App {
                 System.out.println("Implementasi Tanaman Michael ");
                 PlantFactory peashooterFactory = new PeashooterFactory();
                 Plant peashooter = peashooterFactory.createPlant();
-
-<<<<<<< HEAD
                 PlantFactory wallnutFactory = new WallnutFactory();
                 Plant wallnut = wallnutFactory.createPlant();
 
@@ -75,28 +68,8 @@ public class App {
                 System.out.println("Implementasi Zombie");
                 ZombieFactory normalFactory = new NormalFactory();
                 Zombie normal = normalFactory.createZombie();
-=======
-        Inventory inventory;
-        inventory = new Inventory();
-
-        System.out.println(inventory.getPack().size());
-        inventory.printInfo();
-
-        inventory.swap(1, 2);
-        inventory.printInfo();
-
-
-        try {
-            inventory.swap(1, 3);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
->>>>>>> 7772439195068fb508733f9e768d58dac922d428
-
                 ZombieFactory poleVaultFactory = new PoleVaultFactory();
                 Zombie poleVault = poleVaultFactory.createZombie();
-
-<<<<<<< HEAD
                 normal.printInfo();
                 System.out.println();
                 poleVault.printInfo();
@@ -114,31 +87,6 @@ public class App {
                 System.out.println("Masukkan Tombol yang tepat");
             }
         }
-=======
-        // if (command == 1) {
-        //     Menu start = new Start();
-        //     start.select();
-        // } 
-        // else if (command == 2) {
-        //     Menu help = new Help();
-        //     help.select();
-        // } 
-        // else if (command == 3) {
-        //     Menu plantsList = new PlantsList();
-        //     plantsList.select();
-        // } 
-        // else if (command == 4) {
-        //     Menu zombiesList = new ZombiesList();
-        //     zombiesList.select();
-        // } 
-        // else if (command == 5) {
-        //     Menu exit = new Exit();
-        //     exit.select();
-        // }
->>>>>>> 7772439195068fb508733f9e768d58dac922d428
-
-        
-
         scanner.close();
     }
 }
