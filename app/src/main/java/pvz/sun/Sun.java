@@ -30,7 +30,6 @@ public class Sun {
             @Override
             public void run() {
                 try {
-                    int interval = 5 + random.nextInt(6);
                     Sun.addSun(25);
                     startMorningSunProduction();
                 } catch (Exception e) {
