@@ -15,13 +15,13 @@ public class Snowpea extends Plant {
 
     @Override
     public void attack() {
-        zombie.reduceSpeed(SLOW_EFFECT); // Mengurangi kecepatan zombie
+        Zombie.reduceSpeed(SLOW_EFFECT); // Mengurangi kecepatan zombie
         // Timer untuk mengembalikan kecepatan zombie setelah 3 detik
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                zombie.resetSpeed();
+                Zombie.resetSpeed();
             }
         }, SLOW_DURATION);
     }
