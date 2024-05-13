@@ -3,5 +3,21 @@ package pvz.plantfactory;
 import pvz.plant.*;
 
 public abstract class PlantFactory {
-    public abstract Plant createPlant();
+    private long lastInvokeTime;
+    private long coolDownTime;
+
+    public PlantFactory(long coolDownTime) {
+        this.coolDownTime = coolDownTime;
+        lastInvokeTime = 0;
+    }
+
+    public boolean canInvoke(long invokeTime) throws IllegalStateException {
+        if (invokeTime - lastInvokeTime >= coolDownTime) {
+            lastInvokeTime = invokeTime;
+            return true;
+        }
+        throw new IllegalStateException("Cannot invoke at this time.");
+    }
+
+    public abstract Plant createPlant(long invokeTime);
 }
