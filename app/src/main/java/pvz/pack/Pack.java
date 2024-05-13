@@ -5,75 +5,81 @@ import java.util.*;
 import pvz.plantfactory.*;
 
 public class Pack {
-    private Set<PlantFactory> pack;
+    private List<Object> pack;
+    private PregameMediator mediator;
 
-    public Pack() {
-        pack = new LinkedHashSet<>();
+    public Pack(PregameMediator mediator) {
+        this.mediator = mediator;
+        pack = new ArrayList<>();
     }
 
-    public Set<PlantFactory> getPack() {
+    public PregameMediator getMediator() {
+        return mediator;
+    }
+
+    public List<Object> getPack() {
         return pack;
     }
 
-    public PlantFactory getFactory(int pos) {
-        // Convert position to index
-        int index = pos - 1;
-
-        // Check if index is valid
-        if (index < 0 || index >= pack.size()) {
-            throw new IllegalArgumentException("Empty slot or invalid position.");
-        }
-
-        PlantFactory[] packArray = pack.toArray(new PlantFactory[0]);
-        return packArray[index];
-    }
-
-    public void printInfo() {
+    public String getInfo() {
         StringBuilder sb = new StringBuilder();
         sb.append("[ ");
         int count = 1;
-        for (PlantFactory plantFactory : pack) {
-            sb.append(count++).append(". ").append(plantFactory.getClass().getSimpleName()).append(" | ");
+        for (Object object : pack) {
+            if (object instanceof PlantFactory) {
+                sb.append(count++).append(". ").append(object.getClass().getSimpleName()).append(" | ");
+            }
+            else {
+                sb.append(count++).append(". Empty | ");
+            }
+
         }
         if (sb.length() > 0) {
             sb.setLength(sb.length() - 3); // Remove the last " | "
         }
-        sb.append(" ]\n");
-        System.out.print(sb.toString());
+        sb.append(" ]");
+        return sb.toString();
     }
 
-    public PlantFactory remove(int pos) {
-        // Convert position to index
-        int index = pos - 1;
+    public void opAdd(PlantFactory plant) {   
+        boolean found = false;
 
-        // Check if index is valid
-        if (index < 0 || index >= pack.size()) {
-            throw new IllegalArgumentException("Empty slot or invalid position.");
+        for (int i=0; i<pack.size(); i++) {
+            if (!(pack.get(i) instanceof PlantFactory)) {
+                    found = true;
+                    pack.set(i, plant);
+                    break;
+            }
         }
 
-        PlantFactory[] packArray = pack.toArray(new PlantFactory[0]);
-        PlantFactory deletedPlant = packArray[index];
-        pack.remove(deletedPlant);
-        return deletedPlant;
+        if (!found) {
+            throw new IllegalStateException("Slot is full.");
+        }
     }
 
-    public void add(PlantFactory plant) {
-        pack.add(plant);
+    public PlantFactory opRemove(int pos) {
+        Object object = pack.get(pos-1);
+
+        if (object instanceof PlantFactory) {
+            pack.remove(object);
+            pack.add(new Object());
+            return (PlantFactory) object;
+        }
+        else {
+            throw new IllegalArgumentException("Invalid position.");
+        }
     }
     
     public void swap(int pos1, int pos2) {
-        // Convert positions to indices
-        int index1 = pos1 - 1;
-        int index2 = pos2 - 1;
-
-        // Check if indices are valid
-        if (index1 < 0 || index1 >= pack.size() || index2 < 0 || index2 >= pack.size()) {
-            throw new IllegalArgumentException("Empty slot or invalid position.");
+        if (pos1 == pos2) {
+            throw new IllegalArgumentException("Cannot swap the same position.");
+        }
+        else if (!(pack.get(pos1-1) instanceof PlantFactory && pack.get(pos2-1) instanceof PlantFactory)) {
+            throw new IllegalArgumentException("Cannot swap empty slot.");
         }
 
-        PlantFactory[] packArray = pack.toArray(new PlantFactory[0]);
-        PlantFactory temp = packArray[index1];
-        packArray[index1] = packArray[index2];
-        packArray[index2] = temp;
+        PlantFactory tmp = (PlantFactory) pack.get(pos1-1);
+        pack.set(pos1-1, pack.get(pos2-1));
+        pack.set(pos2-1, tmp);
     }
 }
