@@ -10,8 +10,9 @@ import pvz.menu.PlantsList;
 import pvz.menu.ZombiesList;
 import pvz.plant.*;
 import pvz.plantfactory.*;
-import pvz.zombiefactory.*;
-import pvz.zombie.*;
+// import pvz.zombiefactory.*;
+// import pvz.zombie.*;
+import pvz.Map.Map;
 // import pvz.plantfactory.*;
 // import pvz.plant.*;
 // import pvz.zombiefactory.*;
@@ -42,38 +43,10 @@ public class App {
                 System.out.println("Implementasi Tanaman Michael ");
                 PlantFactory peashooterFactory = new PeashooterFactory();
                 Plant peashooter = peashooterFactory.createPlant();
-                PlantFactory wallnutFactory = new WallnutFactory();
-                Plant wallnut = wallnutFactory.createPlant();
-
-                PlantFactory ChomperFactory = new ChomperFactory();
-                Plant chomper = ChomperFactory.createPlant();
-
-                PlantFactory SunflowerFactory = new SunflowerFactory();
-                Plant sunflow = SunflowerFactory.createPlant();
-
-                PlantFactory snowPlantFactory = new SnowpeaFactory();
-                Plant snow = snowPlantFactory.createPlant();
-
-                peashooter.printInfo();
-                System.out.println();
-                wallnut.printInfo();
-                System.out.println();
-                chomper.printInfo();
-                System.out.println();
-                sunflow.printInfo();
-                System.out.println();
-                snow.printInfo();
-                System.out.println();
-
-                System.out.println("Implementasi Zombie");
-                ZombieFactory normalFactory = new NormalFactory();
-                Zombie normal = normalFactory.createZombie();
-                ZombieFactory poleVaultFactory = new PoleVaultFactory();
-                Zombie poleVault = poleVaultFactory.createZombie();
-                normal.printInfo();
-                System.out.println();
-                poleVault.printInfo();
-                System.out.println();
+                Map map = new Map();
+                map.displayMap();
+                map.plant(1, 1, peashooter);
+                map.displayMap();
             } else if (x.equals("Help")) {
                 help.select();
                 System.out.println("Silahkan pilih menu yang diinginkan : ");
