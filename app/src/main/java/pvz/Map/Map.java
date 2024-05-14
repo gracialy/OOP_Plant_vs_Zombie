@@ -39,7 +39,7 @@ public class Map {
 
     public void displayMap() {
         String border = "+--+";
-        String rowSeparator = String.join("", Collections.nCopies(COLS, border)); // Membuat separator untuk baris
+        String rowSeparator = String.join("", Collections.nCopies(COLS, border));
 
         System.out.println(rowSeparator);
         for (int i = 0; i < ROWS; i++) {
@@ -88,8 +88,6 @@ public class Map {
             System.out.println("Tidak dapat menanam di petak ini.");
             return;
         }
-
-        // Memeriksa apakah sudah ada tanaman di petak tersebut
         if (tile.getPlant() != null) {
             System.out.println("Sudah ada tanaman di petak ini.");
             return;

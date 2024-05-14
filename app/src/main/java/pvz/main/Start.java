@@ -16,7 +16,7 @@ public class Start implements Option {
         }
 
         pregame = new Pregame();
-        
+
         if (pregame.init() == 1) {
             System.out.println("Failed to load Inventory and Deck!");
             ToolsUtil.delay(2);
