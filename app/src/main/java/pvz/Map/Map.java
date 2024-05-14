@@ -1,4 +1,4 @@
-package pvz.Map;
+package pvz.map;
 
 import java.util.ArrayList;
 import java.util.Collections;

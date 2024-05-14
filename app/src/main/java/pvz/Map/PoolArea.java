@@ -1,4 +1,4 @@
-package pvz.Map;
+package pvz.map;
 
 public class PoolArea extends Tile {
     private boolean lilypadHere = false;

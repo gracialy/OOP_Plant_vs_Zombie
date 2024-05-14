@@ -1,4 +1,4 @@
-package pvz.Map;
+package pvz.map;
 
 class GrassArea extends Tile {
     @Override

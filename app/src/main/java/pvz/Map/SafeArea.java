@@ -1,4 +1,4 @@
-package pvz.Map;
+package pvz.map;
 
 public class SafeArea extends Tile {
     @Override

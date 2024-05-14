@@ -1,8 +1,12 @@
 package pvz.main;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class PlantsList implements Option {
+    private List<String> plantNames;
+
     @Override
     public void select() {
         Scanner scanner = ScannerUtil.getScanner();
@@ -13,7 +17,11 @@ public class PlantsList implements Option {
         System.out.println("Choose Lalapan's number to see the details: ");
         System.out.println("===============================");
         // placeholder
-        System.out.println("1. Plant1");
+        int i = 1;
+        for (String name : plantNames) {
+            System.out.println(i + ". " + name);
+            i++;
+        }
         System.out.println("0. Go Back");
         System.out.println("===============================");
         System.out.println("Enter your choice [0..10]:");
@@ -31,5 +39,22 @@ public class PlantsList implements Option {
                 break;
             // can exception maybe
         }
+    }
+
+    private void PlantsList() {
+        plantNames = new ArrayList<>();
+        initializePlantNames();
+    }
+
+    private void initializePlantNames() {
+        plantNames.add("Sunflower");
+        plantNames.add("Peashooter");
+        plantNames.add("Wallnut");
+        plantNames.add("Snowpea");
+        plantNames.add("Lilypad");
+        plantNames.add("Chomper");
+        plantNames.add("Jalapeno");
+        plantNames.add("Spikeweed");
+        plantNames.add("TwinSunflower");
     }
 }
