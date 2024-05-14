@@ -56,8 +56,7 @@ public class App {
                     System.out.println("Invalid choice. Please try again.");
                     break;
             }
-        } 
-        while (choice != 0);
+        } while (choice != 0);
 
         ScannerUtil.getScanner().close();
     }

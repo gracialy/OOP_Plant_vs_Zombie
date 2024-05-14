@@ -24,13 +24,13 @@ public class Map {
             ArrayList<Tile> row = new ArrayList<>();
             for (int j = 0; j < COLS; j++) {
                 if (j == SAFE_AREA_COL) {
-                    row.add(new SafeArea()); // Area yang harus dilindungi
+                    row.add(new SafeArea());
                 } else if (j == ZOMBIE_SPAWN_COL) {
-                    row.add(new ZombieArea()); // Area muncul zombie
+                    row.add(new ZombieArea());
                 } else if (i >= POOL_START_ROW && i <= POOL_END_ROW) {
-                    row.add(new PoolArea()); // Area pool
+                    row.add(new PoolArea());
                 } else {
-                    row.add(new GrassArea()); // Area umum yang dapat ditanami
+                    row.add(new GrassArea());
                 }
             }
             land.add(row);
@@ -38,10 +38,10 @@ public class Map {
     }
 
     public void displayMap() {
-        String border = "+--+"; // Definisi border untuk setiap tile
+        String border = "+--+";
         String rowSeparator = String.join("", Collections.nCopies(COLS, border)); // Membuat separator untuk baris
 
-        System.out.println(rowSeparator); // Print the top border
+        System.out.println(rowSeparator);
         for (int i = 0; i < ROWS; i++) {
             ArrayList<Tile> row = land.get(i);
             System.out.print("|");
