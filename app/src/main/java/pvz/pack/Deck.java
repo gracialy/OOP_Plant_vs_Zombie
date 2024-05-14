@@ -1,5 +1,7 @@
 package pvz.pack;
 
+import pvz.plantfactory.PlantFactory;
+
 // import pvz.plantfactory.*;
 
 public class Deck extends Pack {
@@ -12,6 +14,21 @@ public class Deck extends Pack {
             getPack().add(new Object());
         }
     }
+
+    public boolean isFull() {
+        for (Object obj : getPack()) {
+            if (!(obj instanceof PlantFactory)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // swap deck
+    public void swapDeck(int pos1, int pos2) {
+        getMediator().swapDeck(pos1, pos2);
+    }
+    
     // // plant to area
     // public void plantToArea(int pos, int areaX, int areaY) {
     //     PlantFactory plantFactory = getFactory(pos);

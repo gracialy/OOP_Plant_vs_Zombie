@@ -41,7 +41,7 @@ public class Pack {
         return sb.toString();
     }
 
-    public void opAdd(PlantFactory plant) {   
+    public void opAdd(PlantFactory plant) throws IllegalStateException {   
         boolean found = false;
 
         for (int i=0; i<pack.size(); i++) {
@@ -57,7 +57,7 @@ public class Pack {
         }
     }
 
-    public PlantFactory opRemove(int pos) {
+    public PlantFactory opRemove(int pos) throws IllegalArgumentException {
         Object object = pack.get(pos-1);
 
         if (object instanceof PlantFactory) {
@@ -70,7 +70,7 @@ public class Pack {
         }
     }
     
-    public void swap(int pos1, int pos2) {
+    public void opSwap(int pos1, int pos2) throws IllegalArgumentException {
         if (pos1 == pos2) {
             throw new IllegalArgumentException("Cannot swap the same position.");
         }

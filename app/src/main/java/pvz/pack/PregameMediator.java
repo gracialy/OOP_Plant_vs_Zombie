@@ -6,4 +6,7 @@ public interface PregameMediator {
     
     public void addToDeck(int pos);
     public void removeFromDeck(int pos);
+
+    public void swapInventory(int pos1, int pos2);
+    public void swapDeck(int pos1, int pos2);
 }

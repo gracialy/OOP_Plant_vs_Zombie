@@ -37,7 +37,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "pvz.App"
+    mainClass = "pvz.main.App"
 }
 
 tasks.named<Test>("test") {

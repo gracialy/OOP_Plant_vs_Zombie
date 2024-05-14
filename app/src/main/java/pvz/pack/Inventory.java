@@ -36,4 +36,9 @@ public class Inventory extends Pack {
     public void removeFromDeck(int pos) {
         getMediator().removeFromDeck(pos);
     }
+
+    // swap inventory
+    public void swapInventory(int pos1, int pos2) {
+        getMediator().swapInventory(pos1, pos2);
+    }
 }
