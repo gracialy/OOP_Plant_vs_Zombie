@@ -6,18 +6,20 @@ import org.reflections.Reflections;
 import pvz.plantfactory.*;
 
 public class Inventory extends Pack {
-    public Inventory() {
-        super();
+    // private static final int MAX_SIZE = 10;
+
+    public Inventory(PregameMediator mediator) {
+        super(mediator);
 
         // Get all the classes that extend PlantFactory
         Reflections reflections = new Reflections("pvz.plantfactory");
         Set<Class<? extends PlantFactory>> subTypes = reflections.getSubTypesOf(PlantFactory.class);
 
-        // Instantiate and add the classes to the inventory
+        // Instantiate and add the classes of PlantFactory type to the inventory
         for (Class<? extends PlantFactory> subType : subTypes) {
             try {
                 PlantFactory plantFactory = subType.getDeclaredConstructor().newInstance();
-                add(plantFactory);
+                getPack().add(plantFactory);
             } catch (Exception e) {
                 // Handle any exceptions that occur during instantiation
                 e.getMessage();
@@ -27,14 +29,16 @@ public class Inventory extends Pack {
 
     // add to deck
     public void addToDeck(int pos) {
-        PlantFactory plantFactory = remove(pos);
-        // add to deck
+        getMediator().addToDeck(pos);
     }
 
     // remove from deck
     public void removeFromDeck(int pos) {
-        // remove from deck
-        // PlantFactory plantFactory = remove(pos);
-        // add(plant);
+        getMediator().removeFromDeck(pos);
+    }
+
+    // swap inventory
+    public void swapInventory(int pos1, int pos2) {
+        getMediator().swapInventory(pos1, pos2);
     }
 }

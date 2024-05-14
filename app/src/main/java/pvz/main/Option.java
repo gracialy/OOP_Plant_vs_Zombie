@@ -1,6 +1,6 @@
-package pvz.menu;
+package pvz.main;
 
-public interface Menu {
+public interface Option {
     public void select();
     // public void back();
 }

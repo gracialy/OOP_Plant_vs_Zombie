@@ -2,16 +2,16 @@ package pvz.plantfactory;
 
 import pvz.plant.*;
 
-public class SunflowerFactory extends PlantFactory {
-    public SunflowerFactory() {
-        super(10000);
+public class TwinSunflowerFactory extends PlantFactory {
+    public TwinSunflowerFactory() {
+        super(20000);
     }
 
     @Override
     public Plant createPlant(long coolDownTime) {
         try {
             if (canInvoke(coolDownTime)) {
-                return new Sunflower();
+                return new TwinSunflower();
             }
         } 
         catch (IllegalStateException e) {

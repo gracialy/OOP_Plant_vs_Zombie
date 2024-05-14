@@ -7,7 +7,7 @@ import pvz.zombie.Zombie;
 
 public class Snowpea extends Plant {
     private static final int SLOW_DURATION = 3000; // 3 seconds in milliseconds
-    private static final double SLOW_EFFECT = 0.5; // Slowing effect by 50%
+    // private static final double SLOW_EFFECT = 0.5; // Slowing effect by 50%
 
     public Snowpea() {
         super("Snow Pea", 175, 100, 25, 4, -1, 10);
@@ -15,13 +15,13 @@ public class Snowpea extends Plant {
 
     @Override
     public void attack() {
-        zombie.reduceSpeed(SLOW_EFFECT); // Mengurangi kecepatan zombie
+        // Zombie.reduceSpeed(SLOW_EFFECT); // Mengurangi kecepatan zombie
         // Timer untuk mengembalikan kecepatan zombie setelah 3 detik
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                zombie.resetSpeed();
+                // Zombie.resetSpeed();
             }
         }, SLOW_DURATION);
     }
