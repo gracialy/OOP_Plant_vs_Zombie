@@ -54,6 +54,7 @@ public class App {
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
+                    ToolsUtil.delay(1);
                     break;
             }
         } while (choice != 0);
