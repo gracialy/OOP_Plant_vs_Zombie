@@ -8,7 +8,7 @@ public abstract class PlantFactory {
 
     public PlantFactory(long coolDownTime) {
         this.coolDownTime = coolDownTime;
-        lastInvokeTime = 0;
+        lastInvokeTime = -50000;
     }
 
     public boolean canInvoke(long invokeTime) throws IllegalStateException {

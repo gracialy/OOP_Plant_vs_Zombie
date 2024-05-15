@@ -117,7 +117,6 @@ public class ZombiesList implements Option {
 
             System.out.println("Enter anything to go back to the list: ");
             scanner.nextLine();
-        }
-        while (choice != 0);
+        } while (choice != 0);
     }
 }

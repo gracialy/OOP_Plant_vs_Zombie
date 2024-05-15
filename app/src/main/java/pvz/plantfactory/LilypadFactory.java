@@ -8,15 +8,14 @@ public class LilypadFactory extends PlantFactory {
     }
 
     @Override
-    public Plant createPlant(long coolDownTime) {
+    public Plant createPlant(long invokeTime) {
         try {
-            if (canInvoke(coolDownTime)) {
+            if (canInvoke(invokeTime)) {
                 return new Lilypad();
             }
-        } 
-        catch (IllegalStateException e) {
+        } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
         }
         return null;
-    }   
+    }
 }
