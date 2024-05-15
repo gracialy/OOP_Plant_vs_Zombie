@@ -3,7 +3,6 @@ package pvz.map;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import pvz.plant.Lilypad;
 import pvz.plant.Plant;
 
 public class Map {
@@ -39,7 +38,7 @@ public class Map {
     }
 
     public void displayMap() {
-        String border = "+------+";
+        String border = "+--+";
         String rowSeparator = String.join("", Collections.nCopies(COLS, border));
 
         System.out.println(rowSeparator);
@@ -51,14 +50,13 @@ public class Map {
                 String display = " ";
 
                 if (j == 0) {
-                    display = "Safe";
+                    display = "S";
                 } else if (j == COLS - 1) {
-                    display = "Zombie";
+                    display = "Z";
                 } else if (i >= POOL_START_ROW && i <= POOL_END_ROW) {
-                    display = tile.getPlant() != null ? tile.getPlant().getName()
-                            : (tile.canPlant() ? "Land" : "Water");
+                    display = tile.getPlant() != null ? "P" : (tile.canPlant() ? "L" : "W");
                 } else {
-                    display = tile.getPlant() != null ? tile.getPlant().getName() : "Grass";
+                    display = tile.getPlant() != null ? tile.getPlant().getName() : "G";
                 }
 
                 System.out.print(" " + display + " |");
@@ -81,9 +79,6 @@ public class Map {
         }
 
         Tile tile = getTile(row, col);
-        if (tile instanceof PoolArea && plant instanceof Lilypad) {
-            ((PoolArea) tile).setLilypadHere(true);
-        }
         if (tile == null) {
             System.out.println("Petak tidak ditemukan.");
             return;
@@ -98,14 +93,8 @@ public class Map {
             return;
         }
 
-        try {
-            tile.setPlant(plant);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println("Tanaman " + plant.getClass().getSimpleName() + " berhasil ditanam di (" + row + ", " + col
-                + ").");
+        tile.setPlant(plant);
+        System.out.println("Tanaman " + plant.getName() + " berhasil ditanam di (" + row + ", " + col + ").");
     }
 
 }
