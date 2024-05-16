@@ -1,8 +1,5 @@
 package pvz.pack;
 
-import java.util.*;
-import org.reflections.Reflections;
-
 import pvz.plantfactory.*;
 
 public class Inventory extends Pack {
@@ -11,20 +8,20 @@ public class Inventory extends Pack {
     public Inventory(PregameMediator mediator) {
         super(mediator);
 
-        // Get all the classes that extend PlantFactory
-        Reflections reflections = new Reflections("pvz.plantfactory");
-        Set<Class<? extends PlantFactory>> subTypes = reflections.getSubTypesOf(PlantFactory.class);
+        fillInventory();
+    }
 
-        // Instantiate and add the classes of PlantFactory type to the inventory
-        for (Class<? extends PlantFactory> subType : subTypes) {
-            try {
-                PlantFactory plantFactory = subType.getDeclaredConstructor().newInstance();
-                getPack().add(plantFactory);
-            } catch (Exception e) {
-                // Handle any exceptions that occur during instantiation
-                e.getMessage();
-            }
-        }
+    void fillInventory() {
+        getPack().add(new ChomperFactory());
+        getPack().add(new JalapenoFactory());
+        getPack().add(new LilypadFactory());
+        getPack().add(new PeashooterFactory());
+        getPack().add(new SnowpeaFactory());
+        getPack().add(new SpikeweedFactory());
+        getPack().add(new SquashFactory());
+        getPack().add(new SunflowerFactory());
+        getPack().add(new TwinSunflowerFactory());
+        getPack().add(new WallnutFactory());
     }
 
     // add to deck

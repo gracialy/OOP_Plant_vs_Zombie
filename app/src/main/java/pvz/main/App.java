@@ -13,7 +13,6 @@ public class App {
 
         Scanner scanner = ScannerUtil.getScanner();
         int choice = -1;
-        // IMPORTANT: HANDLE ILLEGAL INPUT LIKE \n OR OUT OF RANGE
 
         do {
             ToolsUtil.clearScreen();
@@ -25,8 +24,16 @@ public class App {
             System.out.println("4. Lalapan List");
             System.out.println("0. Exit");
             System.out.println("===============================");
-            System.out.print("Enter your choice [0..4]: ");
-            choice = Integer.parseInt(scanner.nextLine());
+            System.out.println("Enter your choice [0..4]: ");
+            
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } 
+            catch (NumberFormatException e) {
+                System.out.println("Invalid choice. Please try again.");
+                ToolsUtil.delay(1);
+                continue;
+            }
 
             ToolsUtil.clearScreen();
             switch (choice) {
@@ -47,7 +54,11 @@ public class App {
                     lalapanList.select();
                     break;
                 case 0:
-                    System.out.print("Exiting Game . . .");
+                    System.out.print("Exiting Game");
+                    for (int i = 0; i < 3; i++) {
+                        System.out.print(" .");
+                        ToolsUtil.delay(1);
+                    }
                     ToolsUtil.delay(2);
                     ToolsUtil.clearScreen();
                     System.out.println("\nThank you for playing Michael vs. Lalapan!");

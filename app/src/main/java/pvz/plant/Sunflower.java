@@ -9,7 +9,7 @@ public class Sunflower extends Plant {
     private static final int PRODUCTION_INTERVAL = 3000;
 
     public Sunflower() {
-        super("Sunflower", 50, 100, 0, 0, 0, 10);
+        super("Sunflower", 50, 100, 0, 0, 0);
         startProduction();
     }
 

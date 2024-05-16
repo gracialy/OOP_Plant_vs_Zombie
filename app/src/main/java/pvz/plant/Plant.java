@@ -11,14 +11,13 @@ public abstract class Plant {
     private long plantTime;
     // private boolean isAlive;
 
-    public Plant(String name, int cost, int health, int attackDamage, int attackSpeed, int range, int cooldown) {
+    public Plant(String name, int cost, int health, int attackDamage, int attackSpeed, int range) {
         this.name = name;
         this.cost = cost;
         this.health = health;
         this.attack_damage = attackDamage;
         this.attack_speed = attackSpeed;
         this.range = range;
-        this.cooldown = cooldown;
         this.plantTime = System.currentTimeMillis();
         // this.isAlive = true;
     }
@@ -71,14 +70,6 @@ public abstract class Plant {
         this.range = range;
     }
 
-    public int getCooldown() {
-        return cooldown;
-    }
-
-    public void setCooldown(int cooldown) {
-        this.cooldown = cooldown;
-    }
-
     // public boolean getIsAlive() {
     // return isAlive;
     // }
@@ -112,6 +103,5 @@ public abstract class Plant {
         System.out.println("Attack Damage: " + attack_damage);
         System.out.println("Attack Speed: " + attack_speed);
         System.out.println("Range: " + range);
-        System.out.println("Cooldown: " + cooldown);
     }
 }

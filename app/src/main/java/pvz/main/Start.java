@@ -5,10 +5,11 @@ import pvz.pack.*;
 public class Start implements Option {
     @Override
     public void select() {
-        final Pregame pregame;
-        final Deck deck;
+        Pregame pregame;
+        Deck deck;
+        Game game;
 
-        // pregame
+        // =============================== PREGAME ===============================
         System.out.printf("Loading Inventory and Deck");
         for (int i = 0; i < 3; i++) {
             System.out.printf(" .");
@@ -29,11 +30,20 @@ public class Start implements Option {
         ToolsUtil.delay(2);
         ToolsUtil.clearScreen();
 
+
+
+        // =============================== GAME ===============================
         System.out.printf("Loading Game");
         for (int i = 0; i < 3; i++) {
             System.out.printf(" .");
             ToolsUtil.delay(1);
         }
         ToolsUtil.clearScreen();
+
+        Thread gameThread = new Thread(new Game(deck));
+        System.out.println("Game loaded successfully!");
+        ToolsUtil.delay(2);
+        ToolsUtil.clearScreen();
+        gameThread.start();
     }
 }

@@ -27,7 +27,6 @@ public class Pregame {
         Scanner scanner = ScannerUtil.getScanner();
 
         int choice = -1, choice1, choice2;
-        // IMPORTANT: HANDLE ILLEGAL INPUT LIKE \n OR OUT OF RANGE
 
         do {
             ToolsUtil.clearScreen();
@@ -44,7 +43,15 @@ public class Pregame {
             System.out.println("0. Go Back");  
             System.out.println("===============================");
             System.out.println("Enter your choice [0.." + (deck.isFull() ? "5" : "4") + "]:");
-            choice = Integer.parseInt(scanner.nextLine());
+
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } 
+            catch (NumberFormatException e) {
+                System.out.println("Invalid choice. Please try again.");
+                ToolsUtil.delay(1);
+                continue;
+            }
 
             switch (choice) {
             case 1:
@@ -54,6 +61,7 @@ public class Pregame {
                 break;
             case 2:
                 System.out.println("Choose card to remove from deck: ");
+                choice = Integer.parseInt(scanner.nextLine());
                 inventory.removeFromDeck(choice);
                 break;
             case 3:
@@ -93,7 +101,10 @@ public class Pregame {
             case 0:
                 // return 1;
                 break;
-            // can handle exception maybe
+            default:
+                System.out.println("Invalid choice. Please try again.");
+                ToolsUtil.delay(1);
+                break;
             }
 
         }
