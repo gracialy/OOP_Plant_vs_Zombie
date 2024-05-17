@@ -4,19 +4,15 @@ import pvz.plant.*;
 
 public class PeashooterFactory extends PlantFactory {
     public PeashooterFactory() {
-        super(10000);
+        super(10000, 100);
     }
 
     @Override
-    public Plant createPlant(long coolDownTime) {
-        try {
-            if (canInvoke(coolDownTime)) {
-                return new Peashooter();
-            }
-        } 
-        catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
+    public Plant createPlant(long invokeTime, int sunValue) throws IllegalStateException {
+        if (canInvoke(invokeTime, sunValue)) {
+            setLastInvokeTime(invokeTime);
+            return new Peashooter();
         }
-        return null;
+        else throw new IllegalStateException("Cannot create Peashooter");
     }
 }

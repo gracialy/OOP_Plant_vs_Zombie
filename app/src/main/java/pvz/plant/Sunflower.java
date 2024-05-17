@@ -9,7 +9,7 @@ public class Sunflower extends Plant {
     private static final int PRODUCTION_INTERVAL = 3000;
 
     public Sunflower() {
-        super("Sunflower", 50, 100, 0, 0, 0);
+        super("Sunflower", 100, 0, 0, 0);
         startProduction();
     }
 
@@ -23,10 +23,10 @@ public class Sunflower extends Plant {
         }, 0, PRODUCTION_INTERVAL);
     }
 
-    // Menghasilkan Sun dan menambahkannya ke saldo Sun pemain
+    // Menghasilkan Sun dan menambahkannya ke value Sun pemain
     private void produceSun() {
         Sun.addSun(SUN_AMOUNT);
-        System.out.println("Sunflower produced 25 sun. Total Sun: " + Sun.getTotalSun());
+        System.out.println("Sunflower produced 25 sun. Total Sun: " + Sun.getSunValue());
     }
 
     @Override

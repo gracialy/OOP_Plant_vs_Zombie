@@ -4,19 +4,15 @@ import pvz.plant.*;
 
 public class SunflowerFactory extends PlantFactory {
     public SunflowerFactory() {
-        super(10000);
+        super(10000, 50);
     }
 
     @Override
-    public Plant createPlant(long coolDownTime) {
-        try {
-            if (canInvoke(coolDownTime)) {
-                return new Sunflower();
-            }
-        } 
-        catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
+    public Plant createPlant(long invokeTime, int sunValue) throws IllegalStateException {
+        if (canInvoke(invokeTime, sunValue)) {
+            setLastInvokeTime(invokeTime);
+            return new Sunflower(); 
         }
-        return null;
+        else throw new IllegalStateException("Cannot create Sunflower"); 
     }
 }

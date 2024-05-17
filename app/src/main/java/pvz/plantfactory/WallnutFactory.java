@@ -4,19 +4,15 @@ import pvz.plant.*;
 
 public class WallnutFactory extends PlantFactory {
     public WallnutFactory() {
-        super(20000);
+        super(20000, 50);
     }
 
     @Override
-    public Plant createPlant(long coolDownTime) {
-        try {
-            if (canInvoke(coolDownTime)) {
-                return new Wallnut();
-            }
-        } 
-        catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
+    public Plant createPlant(long invokeTime, int sunValue) throws IllegalStateException {
+        if (canInvoke(invokeTime, sunValue)) {
+            setLastInvokeTime(invokeTime);
+            return new Wallnut();
         }
-        return null;
+        else throw new IllegalStateException("Cannot create Wallnut");
     }
 }

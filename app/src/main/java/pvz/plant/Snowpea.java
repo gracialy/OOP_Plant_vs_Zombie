@@ -8,7 +8,7 @@ public class Snowpea extends Plant {
     // private static final double SLOW_EFFECT = 0.5; // Slowing effect by 50%
 
     public Snowpea() {
-        super("Snowpea", 175, 100, 25, 4, -1);
+        super("Snowpea", 100, 25, 4000, -1);
     }
 
     @Override

@@ -1,45 +1,55 @@
 package pvz.sun;
 
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Sun {
-    private static int totalSun = 0;
-    private final Random random = new Random();
-    private final Timer timer = new Timer();
+    private static final int SUN_VALUE = 25;
+    private static Sun instance;
+    private int value;
+    private long lastInvoke;
 
-    public Sun(int value) {
-        totalSun = value;
+    private Sun() {
+        value = SUN_VALUE;
+        lastInvoke = 0;
     }
 
-    public static void addSun(int banyak) {
-        totalSun += banyak;
+    public static Sun getInstance() {
+        if (instance == null) {
+            instance = new Sun();
+        }
+        return instance;
     }
 
-    public static int getTotalSun() {
-        return totalSun;
+    public static int getSunValue() {
+        return getInstance().value;
+    }
+
+    public static long getLastInvoke() {
+        return getInstance().lastInvoke;
     }
 
     public static void useSun() {
-        totalSun--;
+        getInstance().value--;
     }
 
-    public void startMorningSunProduction() {
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    Sun.addSun(25);
-                    startMorningSunProduction();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }, 1000 * (5 + random.nextInt(6)));
+    public static void produceSun(long invokeTime) {
+        if (onInvokeTime(invokeTime)){
+            getInstance().value += SUN_VALUE;
+            getInstance().lastInvoke = invokeTime;
+            System.out.println("Sun produced!");
+        }
     }
 
-    public void stopProduction() {
-        timer.cancel();
+    public static void addSun(int amount) {
+        getInstance().value += amount;
+    }
+
+    public static boolean onInvokeTime(long elapsedTime) {
+        if (elapsedTime - getLastInvoke() >= 5000 && elapsedTime - getLastInvoke() <= 9000) {
+            return Math.random() < 0.5 ? true : false;
+        }
+        else if (elapsedTime - getLastInvoke() == 10000) {
+            return true;
+        }
+        else return false;
     }
 }

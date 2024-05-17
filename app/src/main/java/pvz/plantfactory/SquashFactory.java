@@ -4,19 +4,15 @@ import pvz.plant.*;
 
 public class SquashFactory extends PlantFactory {
     public SquashFactory() {
-        super(20000);
+        super(20000, 50);
     }
 
     @Override
-    public Plant createPlant(long coolDownTime) {
-        try {
-            if (canInvoke(coolDownTime)) {
-                return new Squash();
-            }
-        } 
-        catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
+    public Plant createPlant(long invokeTime, int sunValue) throws IllegalStateException {
+        if (canInvoke(invokeTime, sunValue)) {
+            setLastInvokeTime(invokeTime);
+            return new Squash();
         }
-        return null;
+        else throw new IllegalStateException("Cannot create Squash");
     }
 }
