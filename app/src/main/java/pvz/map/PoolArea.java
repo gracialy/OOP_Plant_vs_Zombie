@@ -7,6 +7,10 @@ public class PoolArea extends Tile {
         this.lilypadHere = lilypadHere;
     }
 
+    public boolean isLilypadHere() {
+        return lilypadHere;
+    }
+
     @Override
     public boolean canPlant() {
         return lilypadHere; // Bisa menanam jika ada Lilypad

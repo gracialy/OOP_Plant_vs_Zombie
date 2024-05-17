@@ -1,9 +1,9 @@
 package pvz;
 
-import pvz.pack.Deck;
-import pvz.pack.Inventory;
-import pvz.pack.PregameMaster;
-import pvz.pack.PregameMediator;
+// import pvz.pack.Deck;
+// import pvz.pack.Inventory;
+// import pvz.pack.PregameMaster;
+// import pvz.pack.PregameMediator;
 
 public class PregameTest {
         // PregameMediator mediator = new PregameMaster();

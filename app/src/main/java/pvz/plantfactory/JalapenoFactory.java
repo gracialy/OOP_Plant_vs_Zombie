@@ -4,19 +4,15 @@ import pvz.plant.*;
 
 public class JalapenoFactory extends PlantFactory {
     public JalapenoFactory() {
-        super(20000);
+        super(20000, 125);
     }
 
     @Override
-    public Plant createPlant(long coolDownTime) {
-        try {
-            if (canInvoke(coolDownTime)) {
-                return new Jalapeno();
-            }
-        } 
-        catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
+    public Plant createPlant(long invokeTime, int sunValue) throws IllegalStateException {
+        if (canInvoke(invokeTime, sunValue)) {
+            setLastInvokeTime(invokeTime);
+            return new Jalapeno();
         }
-        return null;
+        else throw new IllegalStateException("Cannot create Jalapeno");
     }
 }

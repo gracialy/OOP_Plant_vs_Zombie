@@ -3,8 +3,7 @@ package pvz.map;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import pvz.plant.Lilypad;
-import pvz.plant.Plant;
+import pvz.plant.*;
 
 public class Map {
     private ArrayList<ArrayList<Tile>> land;
@@ -74,38 +73,64 @@ public class Map {
         return null;
     }
 
-    public void plant(int row, int col, Plant plant) {
+    public int setPlant(int row, int col, Plant plant) {
+        // check valid tile
+        if (row < 0 || row >= ROWS || col < 0 || col >= COLS) {
+            System.out.println("Posisi di luar batas map.");
+            return 1;
+        }
+
+        Tile tile = getTile(row, col);
+
+        // check lilypad
+        if (tile instanceof PoolArea && plant instanceof Lilypad) {
+            if (((PoolArea) tile).isLilypadHere()) {
+                System.out.println("Sudah ada lilypad di petak ini.");
+                return 1;
+            }
+            ((PoolArea) tile).setLilypadHere(true);
+            System.out.println("Tanaman " + plant.getClass().getSimpleName() + " berhasil diletakkan di (" + row + ", " + col
+                + ").");
+            return 0;
+        }
+
+        // check plantability
+        if (!tile.canPlant()) {
+            System.out.println("Tidak dapat menanam di petak ini.");
+            return 1;
+        }
+
+        // check plant existence
+        if (tile.getPlant() != null) {
+            System.out.println("Sudah ada tanaman di petak ini.");
+            return 1;
+        }
+
+        tile.setPlant(plant);
+        System.out.println("Tanaman " + plant.getClass().getSimpleName() + " berhasil ditanam di (" + row + ", " + col
+                + ").");
+        return 0;
+    }
+
+    public void removePlant(int row, int col) {
         if (row < 0 || row >= ROWS || col < 0 || col >= COLS) {
             System.out.println("Posisi di luar batas map.");
             return;
         }
 
         Tile tile = getTile(row, col);
-        if (tile instanceof PoolArea && plant instanceof Lilypad) {
-            ((PoolArea) tile).setLilypadHere(true);
-        }
         if (tile == null) {
             System.out.println("Petak tidak ditemukan.");
             return;
         }
 
-        if (!tile.canPlant()) {
-            System.out.println("Tidak dapat menanam di petak ini.");
-            return;
-        }
-        if (tile.getPlant() != null) {
-            System.out.println("Sudah ada tanaman di petak ini.");
+        if (tile.getPlant() == null) {
+            System.out.println("Tidak ada tanaman di petak ini.");
             return;
         }
 
-        try {
-            tile.setPlant(plant);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println("Tanaman " + plant.getClass().getSimpleName() + " berhasil ditanam di (" + row + ", " + col
-                + ").");
+        tile.removePlant();
+        System.out.println("Tanaman di (" + row + ", " + col + ") berhasil dihapus.");
     }
 
 }

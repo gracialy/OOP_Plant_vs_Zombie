@@ -7,8 +7,7 @@ public class Start implements Option {
     public void select() {
         Pregame pregame;
         Deck deck;
-        Game game;
-
+        
         // =============================== PREGAME ===============================
         System.out.printf("Loading Inventory and Deck");
         for (int i = 0; i < 3; i++) {
@@ -45,5 +44,13 @@ public class Start implements Option {
         ToolsUtil.delay(2);
         ToolsUtil.clearScreen();
         gameThread.start();
+
+        try {
+            gameThread.join();
+        }
+        catch (InterruptedException e) {
+            System.out.println("Game interrupted!");
+        }
+
     }
 }

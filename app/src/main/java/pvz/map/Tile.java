@@ -35,5 +35,9 @@ public abstract class Tile {
         }
     }
 
+    public void removePlant() {
+        this.plant = null;
+    }
+
     public abstract boolean canPlant();
 }

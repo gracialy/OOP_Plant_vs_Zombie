@@ -4,7 +4,7 @@ public class Lilypad extends Plant {
     private Plant storePlant;
 
     public Lilypad() {
-        super("Lilypad", 25, 100, 0, 0, 0);
+        super("Lilypad", 100, 0, 0, 0);
     }
 
     // Menempatkan tanaman di Lilypad

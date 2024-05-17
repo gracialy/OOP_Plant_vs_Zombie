@@ -4,19 +4,15 @@ import pvz.plant.*;
 
 public class SnowpeaFactory extends PlantFactory {
     public SnowpeaFactory() {
-        super(10000);
+        super(10000, 175);
     }
 
     @Override
-    public Plant createPlant(long coolDownTime) {
-        try {
-            if (canInvoke(coolDownTime)) {
-                return new Snowpea();
-            }
-        } 
-        catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
+    public Plant createPlant(long invokeTime, int sunValue) throws IllegalStateException {
+        if (canInvoke(invokeTime, sunValue)) {
+            setLastInvokeTime(invokeTime);
+            return new Snowpea();
         }
-        return null;
+        else throw new IllegalStateException("Cannot create Snowpea");
     }
 }

@@ -4,19 +4,15 @@ import pvz.plant.*;
 
 public class ChomperFactory extends PlantFactory {
     public ChomperFactory() {
-        super(20000);
+        super(2000, 150);
     }
 
     @Override
-    public Plant createPlant(long coolDownTime) {
-        try {
-            if (canInvoke(coolDownTime)) {
-                return new Chomper();
-            }
-        } 
-        catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
+    public Plant createPlant(long invokeTime, int sunValue) throws IllegalStateException {
+        if (canInvoke(invokeTime, sunValue)) {
+            setLastInvokeTime(invokeTime);
+            return new Chomper(); // Changed from Wallnut to Chomper
         }
-        return null;
+        else throw new IllegalStateException("Cannot create Chomper"); // Changed from Wallnut to Chomper
     }
 }

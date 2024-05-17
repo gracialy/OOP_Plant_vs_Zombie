@@ -2,18 +2,15 @@ package pvz.plant;
 
 public abstract class Plant {
     private String name;
-    private int cost;
     private int health;
     private int attack_damage;
     private int attack_speed;
     private int range;
-    private int cooldown;
     private long plantTime;
     // private boolean isAlive;
 
-    public Plant(String name, int cost, int health, int attackDamage, int attackSpeed, int range) {
+    public Plant(String name, int health, int attackDamage, int attackSpeed, int range) {
         this.name = name;
-        this.cost = cost;
         this.health = health;
         this.attack_damage = attackDamage;
         this.attack_speed = attackSpeed;
@@ -30,13 +27,6 @@ public abstract class Plant {
         this.name = name;
     }
 
-    public int getCost() {
-        return cost;
-    }
-
-    public void setCost(int cost) {
-        this.cost = cost;
-    }
 
     public int getHealth() {
         return health;
@@ -98,7 +88,6 @@ public abstract class Plant {
 
     public void printInfo() {
         System.out.println("Name: " + name);
-        System.out.println("Cost: " + cost);
         System.out.println("Health: " + health);
         System.out.println("Attack Damage: " + attack_damage);
         System.out.println("Attack Speed: " + attack_speed);

@@ -4,19 +4,15 @@ import pvz.plant.*;
 
 public class SpikeweedFactory extends PlantFactory {
     public SpikeweedFactory() {
-        super(20000);
+        super(20000, 100);
     }
 
     @Override
-    public Plant createPlant(long coolDownTime) {
-        try {
-            if (canInvoke(coolDownTime)) {
-                return new Spikeweed();
-            }
-        } 
-        catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
+    public Plant createPlant(long invokeTime, int sunValue) throws IllegalStateException {
+        if (canInvoke(invokeTime, sunValue)) {
+            setLastInvokeTime(invokeTime);
+            return new Spikeweed();
         }
-        return null;
+        else throw new IllegalStateException("Cannot create Spikeweed");
     }
 }
