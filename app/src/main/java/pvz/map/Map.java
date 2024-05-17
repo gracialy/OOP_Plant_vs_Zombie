@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import pvz.plant.*;
+import pvz.zombie.Zombie;
 
 public class Map {
     private ArrayList<ArrayList<Tile>> land;
@@ -52,7 +53,8 @@ public class Map {
                 if (j == 0) {
                     display = "Safe";
                 } else if (j == COLS - 1) {
-                    display = "Zombie";
+                    display = tile.getZombies().size() != 0 ? tile.getZombies().get(0).getName()
+                            : "Zombie";
                 } else if (i >= POOL_START_ROW && i <= POOL_END_ROW) {
                     display = tile.getPlant() != null ? tile.getPlant().getName()
                             : (tile.canPlant() ? "Land" : "Water");
@@ -74,7 +76,6 @@ public class Map {
     }
 
     public int setPlant(int row, int col, Plant plant) {
-        // check valid tile
         if (row < 0 || row >= ROWS || col < 0 || col >= COLS) {
             System.out.println("Posisi di luar batas map.");
             return 1;
@@ -82,25 +83,22 @@ public class Map {
 
         Tile tile = getTile(row, col);
 
-        // check lilypad
         if (tile instanceof PoolArea && plant instanceof Lilypad) {
             if (((PoolArea) tile).isLilypadHere()) {
                 System.out.println("Sudah ada lilypad di petak ini.");
                 return 1;
             }
             ((PoolArea) tile).setLilypadHere(true);
-            System.out.println("Tanaman " + plant.getClass().getSimpleName() + " berhasil diletakkan di (" + row + ", " + col
-                + ").");
+            System.out.println(
+                    "Tanaman " + plant.getClass().getSimpleName() + " berhasil diletakkan di (" + row + ", " + col
+                            + ").");
             return 0;
         }
-
-        // check plantability
         if (!tile.canPlant()) {
             System.out.println("Tidak dapat menanam di petak ini.");
             return 1;
         }
 
-        // check plant existence
         if (tile.getPlant() != null) {
             System.out.println("Sudah ada tanaman di petak ini.");
             return 1;
@@ -133,4 +131,20 @@ public class Map {
         System.out.println("Tanaman di (" + row + ", " + col + ") berhasil dihapus.");
     }
 
+    public void zombie(int row, int col, Zombie zomb) {
+        if (row < 0 || row >= ROWS || col < 0 || col >= COLS) {
+            System.out.println("Posisi di luar batas map.");
+            return;
+        }
+
+        Tile tile = getTile(row, col);
+        try {
+            tile.addZombie(zomb);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("Zombie  " + zomb.getName() + " muncul di (" + row + ", " + col
+                + ").");
+    }
 }

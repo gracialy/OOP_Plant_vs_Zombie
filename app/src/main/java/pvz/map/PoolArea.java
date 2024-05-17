@@ -13,6 +13,6 @@ public class PoolArea extends Tile {
 
     @Override
     public boolean canPlant() {
-        return lilypadHere; // Bisa menanam jika ada Lilypad
+        return lilypadHere;
     }
 }

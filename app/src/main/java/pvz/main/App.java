@@ -26,11 +26,10 @@ public class App {
             System.out.println("0. Exit");
             System.out.println("===============================");
             System.out.println("Enter your choice [0..4]: ");
-            
+
             try {
                 choice = Integer.parseInt(scanner.nextLine());
-            } 
-            catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Invalid choice. Please try again.");
                 ToolsUtil.delay(1);
                 continue;
