@@ -65,20 +65,24 @@ public class Game implements Runnable {
             map.displayMap();
             int choice = -1;
             for (int i = 0; i < 6; i++) {
-                double randomValue = getRandomValue(lowerBound, upperBound);
-                if (randomValue <= 0.3) {
-                    Random random = new Random();
-                    if (i == 2 || i == 3) {
-                        int x = random.nextInt(arrayair.length);
-                        Zombie zomb = arrayair[x];
-                        map.zombie(i, 10, zomb);
-                    } else {
-                        int x = random.nextInt(arraydarat.length);
-                        Zombie zomb = arraydarat[x];
-                        map.zombie(i, 10, zomb);
+                if (map.hitungZombie() < 10) {
+                    double randomValue = getRandomValue(lowerBound, upperBound);
+                    if (randomValue <= 0.3) {
+                        Random random = new Random();
+                        if (i == 2 || i == 3) {
+                            int x = random.nextInt(arrayair.length);
+                            Zombie zomb = arrayair[x];
+                            map.zombie(i, 10, zomb);
+                        } else {
+                            int x = random.nextInt(arraydarat.length);
+                            Zombie zomb = arraydarat[x];
+                            map.zombie(i, 10, zomb);
+                        }
                     }
                 }
+
                 map.displayMap();
+                System.out.println(map.hitungZombie());
             }
             System.out.println("===============================");
             System.out.println("1. Place Plant");

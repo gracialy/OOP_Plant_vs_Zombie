@@ -53,8 +53,14 @@ public class Map {
                 if (j == 0) {
                     display = "Safe";
                 } else if (j == COLS - 1) {
-                    display = tile.getZombies().size() != 0 ? tile.getZombies().get(0).getName()
-                            : "Zombie";
+                    if (tile.getZombies().size() != 0) {
+                        for (Zombie zomb : tile.getZombies()) {
+                            display += " " + zomb.getName();
+                        }
+                    } else {
+                        display = "zombie";
+                    }
+
                 } else if (i >= POOL_START_ROW && i <= POOL_END_ROW) {
                     display = tile.getPlant() != null ? tile.getPlant().getName()
                             : (tile.canPlant() ? "Land" : "Water");
@@ -147,4 +153,17 @@ public class Map {
         System.out.println("Zombie  " + zomb.getName() + " muncul di (" + row + ", " + col
                 + ").");
     }
+
+    public int hitungZombie() {
+        int jumlah = 0;
+        for (int i = 0; i < land.size(); i++) {
+            ArrayList<Tile> row = land.get(i);
+            for (int j = 0; j < row.size(); j++) {
+                Tile tile = row.get(j);
+                jumlah += tile.getZombies().size();
+            }
+        }
+        return jumlah;
+    }
+
 }

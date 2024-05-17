@@ -15,7 +15,6 @@ public class App {
         int choice = -1;
 
         do {
-            // TODO: menunya kedisplay ulang setelah pas gameThread.start()
             ToolsUtil.clearScreen();
             System.out.println("Welcome to Michael vs. Lalapan!");
             System.out.println("===============================");
