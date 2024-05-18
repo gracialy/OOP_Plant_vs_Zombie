@@ -11,7 +11,7 @@ public class SunflowerFactory extends PlantFactory {
     public Plant createPlant(long invokeTime, int sunValue) throws IllegalStateException {
         if (canInvoke(invokeTime, sunValue)) {
             setLastInvokeTime(invokeTime);
-            return new Sunflower(); 
+            return new Sunflower(invokeTime); 
         }
         else throw new IllegalStateException("Cannot create Sunflower"); 
     }

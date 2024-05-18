@@ -8,8 +8,8 @@ public class Sunflower extends Plant {
     private int SUN_AMOUNT = 25;
     private static final int PRODUCTION_INTERVAL = 3000;
 
-    public Sunflower() {
-        super("Sunflower", 100, 0, 0, 0);
+    public Sunflower(long invokeTime) {
+        super("Sunflower", 100, 0, 0, 0, invokeTime);
         startProduction();
     }
 

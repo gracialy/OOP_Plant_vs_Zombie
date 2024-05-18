@@ -43,6 +43,8 @@ public class Game implements Runnable {
             PlantFactory plantFactory;
             Plant plant;
             int row, column;
+            long timeCache;
+            
             double lowerBound = 0.0;
             double upperBound = 1.0;
             Zombie[] arraydarat = { new NormalZombie(), new Newspaper(), new Conehead(), new BucketHat(),
@@ -60,6 +62,8 @@ public class Game implements Runnable {
 
             Sun.produceSun(elapsedTime);
 
+            System.out.println("===============================");
+            map.displayMap();
             System.out.println("Deck: " + deck.getInfo());
             System.out.println("Sun:" + Sun.getSunValue());
             map.displayMap();
@@ -103,13 +107,14 @@ public class Game implements Runnable {
                     System.out.println("Enter plant number: ");
 
                     choice = Integer.parseInt(scanner.nextLine());
-                    if (choice < 0 || choice >= deck.getPack().size()) {
+                    if (choice < 1 || choice > deck.getPack().size()) {
                         System.out.println("Invalid choice. Please try again.");
                         break;
                     }
 
                     plantFactory = (PlantFactory) deck.getPack().get(choice - 1);
                     try {
+                        timeCache = plantFactory.getLastInvokeTime();
                         plant = plantFactory.createPlant(elapsedTime, Sun.getSunValue());
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
@@ -121,8 +126,10 @@ public class Game implements Runnable {
                     System.out.println("Enter the column number: ");
                     column = Integer.parseInt(scanner.nextLine());
 
-                    if (map.setPlant(row, column, plant) == 1)
+                    if (map.setPlant(row, column, plant) == 1) {
                         Sun.addSun(plantFactory.getCost());
+                        plantFactory.setLastInvokeTime(timeCache);
+                    } 
 
                     break;
 

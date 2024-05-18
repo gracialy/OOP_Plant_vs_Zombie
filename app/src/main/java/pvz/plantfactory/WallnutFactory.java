@@ -11,7 +11,7 @@ public class WallnutFactory extends PlantFactory {
     public Plant createPlant(long invokeTime, int sunValue) throws IllegalStateException {
         if (canInvoke(invokeTime, sunValue)) {
             setLastInvokeTime(invokeTime);
-            return new Wallnut();
+            return new Wallnut(invokeTime);
         }
         else throw new IllegalStateException("Cannot create Wallnut");
     }
