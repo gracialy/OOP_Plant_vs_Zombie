@@ -11,7 +11,7 @@ public class SpikeweedFactory extends PlantFactory {
     public Plant createPlant(long invokeTime, int sunValue) throws IllegalStateException {
         if (canInvoke(invokeTime, sunValue)) {
             setLastInvokeTime(invokeTime);
-            return new Spikeweed();
+            return new Spikeweed(invokeTime);
         }
         else throw new IllegalStateException("Cannot create Spikeweed");
     }

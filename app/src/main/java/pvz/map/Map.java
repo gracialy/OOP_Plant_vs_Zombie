@@ -83,6 +83,11 @@ public class Map {
         Tile tile = getTile(row, col);
 
         // check lilypad
+        if (plant instanceof Lilypad && !(tile instanceof PoolArea)) {
+            System.out.println("Tanaman lilypad hanya bisa ditanam di petak air.");
+            return 1;
+        }
+
         if (tile instanceof PoolArea && plant instanceof Lilypad) {
             if (((PoolArea) tile).isLilypadHere()) {
                 System.out.println("Sudah ada lilypad di petak ini.");

@@ -7,15 +7,16 @@ public abstract class Plant {
     private int attack_speed;
     private int range;
     private long plantTime;
-    // private boolean isAlive;
+    private long lastActionTime;
 
-    public Plant(String name, int health, int attackDamage, int attackSpeed, int range) {
+    public Plant(String name, int health, int attackDamage, int attackSpeed, int range, long plantTime) {
         this.name = name;
         this.health = health;
         this.attack_damage = attackDamage;
         this.attack_speed = attackSpeed;
         this.range = range;
-        this.plantTime = System.currentTimeMillis();
+        this.plantTime = plantTime;
+        this.lastActionTime = plantTime;
         // this.isAlive = true;
     }
 

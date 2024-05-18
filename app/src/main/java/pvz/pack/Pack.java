@@ -27,7 +27,7 @@ public class Pack {
         int count = 1;
         for (Object object : pack) {
             if (object instanceof PlantFactory) {
-                sb.append(count++).append(". ").append(object.getClass().getSimpleName()).append(" | ");
+                sb.append(count++).append(". ").append(object.getClass().getSimpleName()).append(" (").append(((PlantFactory) object).getCost()).append(")").append(" | ");
             }
             else {
                 sb.append(count++).append(". Empty | ");

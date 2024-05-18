@@ -7,8 +7,8 @@ public class Snowpea extends Plant {
     private static final int SLOW_DURATION = 3000; // 3 seconds in milliseconds
     // private static final double SLOW_EFFECT = 0.5; // Slowing effect by 50%
 
-    public Snowpea() {
-        super("Snowpea", 100, 25, 4000, -1);
+    public Snowpea(long invokeTime) {
+        super("Snowpea", 100, 25, 4000, -1, invokeTime);
     }
 
     @Override

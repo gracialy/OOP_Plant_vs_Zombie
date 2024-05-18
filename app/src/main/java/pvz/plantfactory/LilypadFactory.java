@@ -11,7 +11,7 @@ public class LilypadFactory extends PlantFactory {
     public Plant createPlant(long invokeTime, int sunValue) throws IllegalStateException {
         if (canInvoke(invokeTime, sunValue)) {
             setLastInvokeTime(invokeTime);
-            return new Lilypad(); 
+            return new Lilypad(invokeTime); 
         }
         else throw new IllegalStateException("Cannot create Lilypad"); 
     }

@@ -3,8 +3,8 @@ package pvz.plant;
 public class Lilypad extends Plant {
     private Plant storePlant;
 
-    public Lilypad() {
-        super("Lilypad", 100, 0, 0, 0);
+    public Lilypad(long invokeTime) {
+        super("Lilypad", 100, 0, 0, 0, invokeTime);
     }
 
     // Menempatkan tanaman di Lilypad

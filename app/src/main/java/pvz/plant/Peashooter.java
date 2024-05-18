@@ -1,8 +1,8 @@
 package pvz.plant;
 
 public class Peashooter extends Plant {
-    public Peashooter() {
-        super("Peashooter", 100, 25, 4000, -1);
+    public Peashooter(long invokeTime) {
+        super("Peashooter", 100, 25, 4000, -1, invokeTime);
     }
 
     @Override

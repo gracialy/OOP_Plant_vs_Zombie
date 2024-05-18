@@ -11,7 +11,7 @@ public class ChomperFactory extends PlantFactory {
     public Plant createPlant(long invokeTime, int sunValue) throws IllegalStateException {
         if (canInvoke(invokeTime, sunValue)) {
             setLastInvokeTime(invokeTime);
-            return new Chomper(); // Changed from Wallnut to Chomper
+            return new Chomper(invokeTime); // Changed from Wallnut to Chomper
         }
         else throw new IllegalStateException("Cannot create Chomper"); // Changed from Wallnut to Chomper
     }

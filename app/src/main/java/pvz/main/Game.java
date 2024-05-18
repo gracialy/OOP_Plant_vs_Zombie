@@ -31,6 +31,7 @@ public class Game implements Runnable {
             PlantFactory plantFactory;
             Plant plant;
             int row, column;
+            long timeCache;
             
             // TODO: Sunflower sun production
             // TODO: Zombie spawning
@@ -43,9 +44,10 @@ public class Game implements Runnable {
 
             Sun.produceSun(elapsedTime);
 
+            System.out.println("===============================");
+            map.displayMap();
             System.out.println("Deck: " + deck.getInfo());
             System.out.println("Sun:" + Sun.getSunValue());
-            map.displayMap();
             System.out.println("===============================");
             System.out.println("1. Place Plant");
             System.out.println("2. Remove Plant");
@@ -68,13 +70,14 @@ public class Game implements Runnable {
                     System.out.println("Enter plant number: ");
 
                     choice = Integer.parseInt(scanner.nextLine());
-                    if (choice < 0 || choice >= deck.getPack().size()) {
+                    if (choice < 1 || choice > deck.getPack().size()) {
                         System.out.println("Invalid choice. Please try again.");
                         break;
                     }
 
                     plantFactory = (PlantFactory) deck.getPack().get(choice-1);
                     try {
+                        timeCache = plantFactory.getLastInvokeTime();
                         plant = plantFactory.createPlant(elapsedTime, Sun.getSunValue());
                     }
                     catch (Exception e) {
@@ -87,7 +90,10 @@ public class Game implements Runnable {
                     System.out.println("Enter the column number: ");
                     column = Integer.parseInt(scanner.nextLine());
 
-                    if (map.setPlant(row, column, plant) == 1) Sun.addSun(plantFactory.getCost());
+                    if (map.setPlant(row, column, plant) == 1) {
+                        Sun.addSun(plantFactory.getCost());
+                        plantFactory.setLastInvokeTime(timeCache);
+                    } 
 
                     break;
 
