@@ -8,8 +8,8 @@ import pvz.zombie.Zombie;
 
 public class Map {
     private ArrayList<ArrayList<Tile>> land;
-    private final int ROWS = 6;
-    private final int COLS = 11;
+    public static final int ROWS = 6;
+    public static final int COLS = 11;
     private final int POOL_START_ROW = 2;
     private final int POOL_END_ROW = 3;
     private final int SAFE_AREA_COL = 0;
@@ -171,5 +171,4 @@ public class Map {
         }
         return jumlah;
     }
-
 }

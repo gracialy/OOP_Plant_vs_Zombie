@@ -4,35 +4,27 @@ import pvz.pack.Deck;
 import pvz.plantfactory.*;
 import pvz.plant.*;
 import pvz.sun.*;
-import pvz.zombie.BucketHat;
-import pvz.zombie.Conehead;
-import pvz.zombie.DiggerZombie;
-import pvz.zombie.DolphinRider;
-import pvz.zombie.DuckyTube;
-import pvz.zombie.FlagZombie;
-import pvz.zombie.LadderZombie;
-import pvz.zombie.Newspaper;
-import pvz.zombie.NormalZombie;
-import pvz.zombie.PoleVault;
-import pvz.zombie.Zombie;
+import pvz.zombie.*;
 import pvz.map.*;
+import pvz.bullet.*;
 
 import java.util.Random;
 import java.util.Scanner;
+import java.util.List;
 
 public class Game implements Runnable {
     private boolean running;
     private long elapsedTime;
     private Deck deck;
     private Map map = new Map();
-    private Sun sun;
+    // private Sun sun;
     private Scanner scanner;
 
     public Game(Deck deck) {
         this.running = true;
         this.deck = deck;
         this.map = new Map();
-        this.sun = Sun.getInstance();
+        // this.sun = Sun.getInstance();
         this.scanner = ScannerUtil.getScanner();
     }
 
@@ -44,6 +36,7 @@ public class Game implements Runnable {
             Plant plant;
             int row, column;
             long timeCache;
+            int choice = -1;
             
             double lowerBound = 0.0;
             double upperBound = 1.0;
@@ -60,14 +53,10 @@ public class Game implements Runnable {
             // TODO: Test plant placing
             // TODO: Test sun producing
 
+            // produce sun
             Sun.produceSun(elapsedTime);
 
-            System.out.println("===============================");
-            map.displayMap();
-            System.out.println("Deck: " + deck.getInfo());
-            System.out.println("Sun:" + Sun.getSunValue());
-            map.displayMap();
-            int choice = -1;
+            // produce zombie
             for (int i = 0; i < 6; i++) {
                 if (map.hitungZombie() < 10) {
                     double randomValue = getRandomValue(lowerBound, upperBound);
@@ -84,10 +73,19 @@ public class Game implements Runnable {
                         }
                     }
                 }
+            
 
                 map.displayMap();
                 System.out.println(map.hitungZombie());
             }
+
+            // attack plant
+
+
+            System.out.println("===============================");
+            map.displayMap();
+            System.out.println("Deck: " + deck.getInfo());
+            System.out.println("Sun:" + Sun.getSunValue());
             System.out.println("===============================");
             System.out.println("1. Place Plant");
             System.out.println("2. Remove Plant");
@@ -166,4 +164,50 @@ public class Game implements Runnable {
         return lowerBound + (random.nextDouble() * (upperBound - lowerBound));
     }
 
+    public void plantAttack(int currentTime) {
+        for (int i = 0; i <= Map.ROWS; i++) {
+            for (int j = 0; j <= Map.COLS; j++) {
+                Plant plant = map.getTile(i, j).getPlant();
+
+                if (plant == null) continue;
+                if (plant.getAttackDamage() == 0) continue;
+                if (!plant.isAttackTime(currentTime)) continue;
+
+                plant.setLastAttackTime(currentTime);
+                Bullet bullet = new Bullet(plant, i, j);
+                bulletShot(bullet);
+            }
+        }
+    }
+
+    public void bulletShot(Bullet bullet) {
+        List<Zombie> zombies;
+        int row = bullet.getOriginX();
+        int col = bullet.getOriginY();
+
+        switch(bullet.getRange()) {
+            case 1:
+                zombies = map.getTile(row, col).getZombies();
+
+                for (Zombie zombie : zombies) {
+                    zombie.takeDamage(bullet.getDamage(), bullet.hasSlowEffect());
+                    if (zombie.isDead()) map.getTile(row, col).removeZombie(zombie);         
+                }
+
+                break;
+            case (-1):
+                for (int i = col; i <= Map.COLS; i++) {
+                    zombies = map.getTile(row, i).getZombies();
+
+                    for (Zombie zombie : zombies) {
+                        zombie.takeDamage(bullet.getDamage(), bullet.hasSlowEffect());
+                        if (zombie.isDead()) map.getTile(row, col).removeZombie(zombie);         
+                    }
+
+                    if (zombies.size() > 0) break;
+                }
+            
+                break;
+        }
+    }
 }

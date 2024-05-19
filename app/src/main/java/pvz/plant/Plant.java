@@ -7,7 +7,7 @@ public abstract class Plant {
     private int attack_speed;
     private int range;
     private long plantTime;
-    private long lastActionTime;
+    private long lastAttackTime;
 
     public Plant(String name, int health, int attackDamage, int attackSpeed, int range, long plantTime) {
         this.name = name;
@@ -16,7 +16,7 @@ public abstract class Plant {
         this.attack_speed = attackSpeed;
         this.range = range;
         this.plantTime = plantTime;
-        this.lastActionTime = plantTime;
+        this.lastAttackTime = plantTime;
         // this.isAlive = true;
     }
 
@@ -61,30 +61,32 @@ public abstract class Plant {
         this.range = range;
     }
 
-    // public boolean getIsAlive() {
-    // return isAlive;
-    // }
-
-    // public void setIsAlive(boolean isAlive) {
-    // this.isAlive = isAlive;
-    // }
-
-    public abstract void attack();
-
-    public void takeDamage(int damage) {
-        health -= damage;
-        if (health <= 0) {
-            // isAlive = false;
-            System.out.println(name + " is dead");
-        }
-    }
-
     public long getPlantTime() {
         return plantTime;
     }
 
     public void setPlantTime(long plantTime) {
         this.plantTime = plantTime;
+    }
+
+    public long getLastAttackTime() {
+        return lastAttackTime;
+    }
+
+    public void setLastAttackTime(long lastAttackTime) {
+        this.lastAttackTime = lastAttackTime;
+    }
+
+    public boolean isAlive() {
+        return health != 0;
+    }
+
+    public void takeDamage(int damage) {
+        health -= damage;
+    }
+
+    public boolean isAttackTime(long currentTime) {
+        return (currentTime - lastAttackTime >= attack_speed) || (lastAttackTime == plantTime);
     }
 
     public void printInfo() {
@@ -94,4 +96,6 @@ public abstract class Plant {
         System.out.println("Attack Speed: " + attack_speed);
         System.out.println("Range: " + range);
     }
+
+    public abstract void attack();
 }
