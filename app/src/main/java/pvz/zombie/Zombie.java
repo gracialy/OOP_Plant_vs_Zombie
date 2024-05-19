@@ -7,16 +7,18 @@ public abstract class Zombie {
     private int attack_speed;
     private boolean is_aquatic;
     private long speed = NORMAL_SPEED;
+    private int waktuZomb;
 
     public static final int NORMAL_SPEED = 50000;
     // private boolean is_dead;
 
-    public Zombie(String name, int health, int attack_damage, int attack_speed, boolean is_aquatic) {
+    public Zombie(String name, int health, int attack_damage, int attack_speed, boolean is_aquatic, int waktuZomb) {
         this.name = name;
         this.health = health;
         this.attack_damage = attack_damage;
         this.attack_speed = attack_speed;
         this.is_aquatic = is_aquatic;
+        this.waktuZomb = waktuZomb;
     }
 
     public String getName() {
@@ -45,7 +47,8 @@ public abstract class Zombie {
 
     public void takeDamage(int damage, boolean hasSlowEffect) {
         health -= damage;
-        if (hasSlowEffect) reduceSpeed(2);
+        if (hasSlowEffect)
+            reduceSpeed(2);
     }
 
     public void reduceSpeed(long factor) {
@@ -58,6 +61,15 @@ public abstract class Zombie {
 
     public boolean isDead() {
         return health <= 0;
+    }
+
+    public int getWaktuZomb() {
+        return waktuZomb;
+    }
+
+    // Setter untuk waktuZomb
+    public void setWaktuZomb(int waktuZomb) {
+        this.waktuZomb = waktuZomb;
     }
 
     public void printInfo() {

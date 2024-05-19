@@ -2,7 +2,9 @@ package pvz.map;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
+import java.util.Iterator;
 import pvz.plant.*;
 import pvz.zombie.Zombie;
 
@@ -39,7 +41,7 @@ public class Map {
     }
 
     public void displayMap() {
-        String border = "+------+";
+        String border = "+---+";
         String rowSeparator = String.join("", Collections.nCopies(COLS, border));
 
         System.out.println(rowSeparator);
@@ -48,27 +50,21 @@ public class Map {
             System.out.print("|");
             for (int j = 0; j < COLS; j++) {
                 Tile tile = row.get(j);
-                String display = " ";
+                String display = "";
 
-                if (j == 0) {
-                    display = "Safe";
-                } else if (j == COLS - 1) {
-                    if (tile.getZombies().size() != 0) {
-                        for (Zombie zomb : tile.getZombies()) {
-                            display += " " + zomb.getName();
-                        }
-                    } else {
-                        display = "zombie";
+                if (tile.getZombies().size() != 0) {
+                    display += " [";
+                    for (Zombie zombie : tile.getZombies()) {
+                        display += " " + zombie.getName();
                     }
-
-                } else if (i >= POOL_START_ROW && i <= POOL_END_ROW) {
-                    display = tile.getPlant() != null ? tile.getPlant().getName()
-                            : (tile.canPlant() ? "Land" : "Water");
+                    display += " ]";
+                } else if (tile.getPlant() != null) {
+                    display += " [ " + tile.getPlant().getName() + " ]";
                 } else {
-                    display = tile.getPlant() != null ? tile.getPlant().getName() : "Grass";
+                    display += " [ ]";
                 }
 
-                System.out.print(" " + display + " |");
+                System.out.print(display + "|");
             }
             System.out.println("\n" + rowSeparator);
         }
@@ -171,4 +167,22 @@ public class Map {
         }
         return jumlah;
     }
+
+    public void moveZombies(Tile currentTile, Tile nextTile) {
+        List<Zombie> zombies = currentTile.getZombies();
+        List<Zombie> zombiesToAdd = new ArrayList<>();
+
+        Iterator<Zombie> iterator = zombies.iterator();
+        while (iterator.hasNext()) {
+            Zombie zombie = iterator.next();
+            nextTile.addZombie(zombie);
+            iterator.remove();
+            zombiesToAdd.add(zombie);
+        }
+
+        for (Zombie zombieToAdd : zombiesToAdd) {
+            currentTile.removeZombie(zombieToAdd);
+        }
+    }
+
 }

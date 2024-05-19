@@ -1,8 +1,8 @@
 package pvz.zombie;
 
 public class Newspaper extends Zombie {
-    public Newspaper() {
-        super("Newspaper Zombie", 250, 420, 1, false);
+    public Newspaper(int waktu) {
+        super("Newspaper Zombie", 250, 420, 1, false, waktu);
     }
 
     @Override

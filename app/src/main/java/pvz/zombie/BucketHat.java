@@ -3,8 +3,8 @@ package pvz.zombie;
 public class BucketHat extends Zombie {
     private boolean has_bucket;
 
-    public BucketHat() {
-        super("Normal Zombie", 300, 100, 1, false);
+    public BucketHat(int waktu) {
+        super("Normal Zombie", 300, 100, 1, false, waktu);
     }
 
     public boolean hasBucket() {

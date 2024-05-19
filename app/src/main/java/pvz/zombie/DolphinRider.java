@@ -3,8 +3,8 @@ package pvz.zombie;
 public class DolphinRider extends Zombie {
     private boolean has_jump;
 
-    public DolphinRider() {
-        super("Dolphin Rider Zombie", 175, 100, 1, true);
+    public DolphinRider(int waktu) {
+        super("Dolphin Rider Zombie", 175, 100, 1, true, waktu);
         has_jump = false;
     }
 

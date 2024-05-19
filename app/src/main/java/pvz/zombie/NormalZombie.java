@@ -1,8 +1,8 @@
 package pvz.zombie;
 
 public class NormalZombie extends Zombie {
-    public NormalZombie() {
-        super("Normal Zombie", 125, 100, 1, false);
+    public NormalZombie(int waktu) {
+        super("Normal Zombie", 125, 100, 1, false, waktu);
     }
 
     @Override

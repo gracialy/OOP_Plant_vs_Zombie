@@ -9,7 +9,6 @@ public class PlantsList implements Option {
         int choice = -1;
 
         do {
-            // TODO: Fill with Plant names
             System.out.println("Lalapan List: ");
             System.out.println("Choose Lalapan's number to see the details: ");
             System.out.println("===============================");
@@ -120,7 +119,6 @@ public class PlantsList implements Option {
 
             System.out.println("Enter anything to go back to the list: ");
             scanner.nextLine();
-        }
-        while (choice != 0);
+        } while (choice != 0);
     }
 }

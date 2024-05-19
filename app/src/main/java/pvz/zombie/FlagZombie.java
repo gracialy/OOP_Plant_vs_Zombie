@@ -1,8 +1,8 @@
 package pvz.zombie;
 
 public class FlagZombie extends Zombie {
-    public FlagZombie() {
-        super("Flag Zombie", 250, 200, 1, false);
+    public FlagZombie(int waktu) {
+        super("Flag Zombie", 250, 200, 1, false, waktu);
     }
 
     @Override
