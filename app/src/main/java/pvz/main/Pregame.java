@@ -49,7 +49,7 @@ public class Pregame {
                 choice = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
                 System.out.println("Invalid choice. Please try again.");
-                ToolsUtil.delay(1);
+                // ToolsUtil.delay(1);
                 continue;
             }
 
@@ -87,7 +87,7 @@ public class Pregame {
                             System.out.printf("Finalizing Deck");
                             for (int i = 0; i < 3; i++) {
                                 System.out.printf(" .");
-                                ToolsUtil.delay(1);
+                                // ToolsUtil.delay(1);
                             }
                             ToolsUtil.clearScreen();
                             return 0;
@@ -102,7 +102,7 @@ public class Pregame {
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
-                    ToolsUtil.delay(1);
+                    // ToolsUtil.delay(1);
                     break;
             }
 

@@ -17,8 +17,14 @@ public abstract class Tile {
         zombies.add(zombie);
     }
 
-    public void removeZombie(Zombie zombie) {
-        zombies.remove(zombie);
+    public void removeZombie() {
+        for (Zombie z : zombies) {
+            zombies.removeIf(n -> (n.getHealth() <= 0));
+        }
+    }
+
+    public void removeZombie(Zombie z) {
+        zombies.remove(z);
     }
 
     public List<Zombie> getZombies() {
