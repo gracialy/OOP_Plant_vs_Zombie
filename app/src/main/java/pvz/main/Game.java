@@ -76,30 +76,6 @@ public class Game implements Runnable {
                         }
                     }
                 }
-
-                map.displayMap();
-                System.out.println(map.hitungZombie());
-            }
-            try {
-                for (int i = 0; i < 6; i++) {
-                    for (int j = 0; j < 11; j++) {
-                        Tile tile = map.getTile(i, j);
-                        synchronized (tile) {
-                            if (!(tile.getPlant() == null)) {
-
-                            }
-                            if (!tile.getZombies().isEmpty()) {
-                                if (tile.getPlant() == null) {
-                                    ZombieWalk(i, tile.getZombies());
-                                }
-                            }
-
-                        }
-                    }
-                }
-                Thread.sleep(0);
-            } catch (Exception e) {
-                e.printStackTrace();
             }
 
             // attack plant
@@ -172,6 +148,22 @@ public class Game implements Runnable {
             }
 
             try {
+                for (int i = 0; i < 6; i++) {
+                    for (int j = 0; j < 11; j++) {
+                        Tile tile = map.getTile(i, j);
+                        synchronized (tile) {
+                            if (!(tile.getPlant() == null)) {
+
+                            }
+                            if (!tile.getZombies().isEmpty()) {
+                                if (tile.getPlant() == null) {
+                                    ZombieWalk(i, tile.getZombies());
+                                }
+                            }
+
+                        }
+                    }
+                }
                 Thread.sleep(1000);
                 elapsedTime += 1;
                 ToolsUtil.clearScreen();
@@ -243,7 +235,7 @@ public class Game implements Runnable {
         Iterator<Zombie> iterator = zombies.iterator();
         while (iterator.hasNext()) {
             Zombie zombie = iterator.next();
-            if ((Game.elapsedTime - zombie.getWaktuZomb()) % 5 != 0) {
+            if ((Game.elapsedTime - zombie.getWaktuZomb()) % 5 != 0 || (Game.elapsedTime == zombie.getWaktuZomb())) {
                 continue;
             }
             for (int col = 0; col < 11; col++) {
@@ -259,7 +251,7 @@ public class Game implements Runnable {
                             ;
                         } else {
                             leftTile.addZombie(zombie);
-                            iterator.remove(); // Menghapus zombie dari list
+                            iterator.remove();
                         }
                     }
                     break;

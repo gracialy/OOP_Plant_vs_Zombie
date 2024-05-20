@@ -55,7 +55,7 @@ public class Map {
                 if (tile.getZombies().size() != 0) {
                     display += " [";
                     for (Zombie zombie : tile.getZombies()) {
-                        display += " " + zombie.getName();
+                        display += " " + zombie.getName() + zombie.getHealth();
                     }
                     display += " ]";
                 } else if (tile.getPlant() != null) {
@@ -151,9 +151,6 @@ public class Map {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-        System.out.println("Zombie  " + zomb.getName() + " muncul di (" + row + ", " + col
-                + ").");
     }
 
     public int hitungZombie() {
