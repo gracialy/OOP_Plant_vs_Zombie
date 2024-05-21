@@ -15,38 +15,75 @@ import java.util.Iterator;
 
 import java.util.List;
 
-public class Game implements Runnable {
+public class Game extends Thread {
+    public boolean inputDelay = false;
     private boolean running;
+    private boolean newUpdate = true;
     private static int elapsedTime;
     public Deck deck;
     private Map map = new Map();
     // private Sun sun;
-    private Scanner scanner;
-
+    public Scanner scanner;
+    private int choice = -1;
+    private Time time;
+    
     public Game(Deck deck) {
         this.running = true;
         this.deck = deck;
         this.map = new Map();
+        this.time = new Time();
         // this.sun = Sun.getInstance();
-        this.scanner = ScannerUtil.getScanner();
+        // this.scanner = ScannerUtil.getScanner();
+        this.scanner = new Scanner(System.in);
+    }
+
+    public void setChoice(int choice)
+    {
+        this.choice = choice;
+    }
+
+    public int getChoice()
+    {
+        return choice;
+    }
+
+    public void refreshView()
+    {
+        ToolsUtil.clearScreen();
+        System.out.println("Elapsed time: " + time.getElapsedTime() + "ms");
+        System.out.println("Zombies on map: " + map.hitungZombie());
+        System.out.println("===============================");
+        map.displayMap();
+        System.out.println("Deck: " + deck.getInfo());
+        System.out.println("Sun:" + Sun.getSunValue());
+        if (choice == -1)
+        {
+            System.out.println("===============================");
+            System.out.println("1. Place Plant");
+            System.out.println("2. Remove Plant");
+            System.out.println("0. End Game");
+            System.out.println("===============================");
+            System.out.println("Enter your choice [0..2]: ");
+        }
     }
 
     public void run() {
-        elapsedTime = 0;
         while (running) {
             PlantFactory plantFactory;
             Plant plant;
             int row, column;
             long timeCache;
-            int choice = -1;
-
+            
             double lowerBound = 0.0;
             double upperBound = 1.0;
-            Zombie[] arraydarat = { new NormalZombie(elapsedTime), new Newspaper(elapsedTime),
-                    new Conehead(elapsedTime), new BucketHat(elapsedTime),
-                    new DiggerZombie(elapsedTime), new FlagZombie(elapsedTime), new LadderZombie(elapsedTime) };
-            Zombie[] arrayair = { new PoleVault(elapsedTime), new DolphinRider(elapsedTime),
-                    new DuckyTube(elapsedTime) };
+            Zombie[] arraydarat = { new NormalZombie(elapsedTime), new Newspaper(elapsedTime), new Conehead(elapsedTime), new BucketHat(elapsedTime), new DiggerZombie(elapsedTime), new FlagZombie(elapsedTime), new LadderZombie(elapsedTime) };
+            Zombie[] arrayair = { new PoleVault(elapsedTime), new DolphinRider(elapsedTime), new DuckyTube(elapsedTime) };
+                    
+            if (newUpdate)
+            {
+                refreshView();
+                newUpdate = false;
+            }
 
             // TODO: Sunflower sun production
             // TODO: Zombie spawning
@@ -58,7 +95,7 @@ public class Game implements Runnable {
             // TODO: Test sun producing
 
             // produce sun
-            Sun.produceSun(elapsedTime);
+            Sun.produceSun(time.getElapsedTime());
             // produce zombie
             for (int i = 0; i < 6; i++) {
                 if (map.hitungZombie() < 10) {
@@ -74,11 +111,10 @@ public class Game implements Runnable {
                             Zombie zomb = arraydarat[x];
                             map.zombie(i, 10, zomb);
                         }
+                        newUpdate = true;
                     }
                 }
 
-                map.displayMap();
-                System.out.println(map.hitungZombie());
             }
             try {
                 for (int i = 0; i < 6; i++) {
@@ -103,25 +139,7 @@ public class Game implements Runnable {
             }
 
             // attack plant
-
-            System.out.println("===============================");
-            map.displayMap();
-            System.out.println("Deck: " + deck.getInfo());
-            System.out.println("Sun:" + Sun.getSunValue());
-            System.out.println("===============================");
-            System.out.println("1. Place Plant");
-            System.out.println("2. Remove Plant");
-            System.out.println("0. End Game");
-            System.out.println("===============================");
-            System.out.println("Enter your choice [0..2]: ");
-            try {
-                choice = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid choice. Please try again.");
-                ToolsUtil.delay(1);
-                ToolsUtil.clearScreen();
-            }
-
+            
             switch (choice) {
                 case 1:
                     System.out.println("Enter plant number: ");
@@ -151,6 +169,9 @@ public class Game implements Runnable {
                         plantFactory.setLastInvokeTime(timeCache);
                     }
 
+                    choice = -1;
+                    inputDelay= false;
+
                     break;
 
                 case 2:
@@ -163,18 +184,20 @@ public class Game implements Runnable {
                     break;
 
                 case 0:
-                    running = false;
-                    break;
-
+                running = false;
+                break;
+                
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    choice = -1;
+                    inputDelay = false;
+                    // System.out.println(inputDelay);
+                    // System.out.println("Invalid choice. Please try again.");
                     break;
             }
 
             try {
                 Thread.sleep(1000);
-                elapsedTime += 1;
-                ToolsUtil.clearScreen();
+                elapsedTime = (int) (time.getElapsedSeconds());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -243,7 +266,7 @@ public class Game implements Runnable {
         Iterator<Zombie> iterator = zombies.iterator();
         while (iterator.hasNext()) {
             Zombie zombie = iterator.next();
-            if ((Game.elapsedTime - zombie.getWaktuZomb()) % 5 != 0) {
+            if ((Game.elapsedTime - zombie.getWaktuZomb()) % 5 != 0 || Game.elapsedTime==zombie.getWaktuZomb()) {
                 continue;
             }
             for (int col = 0; col < 11; col++) {
@@ -258,6 +281,7 @@ public class Game implements Runnable {
                                 && (zombie instanceof PoleVault || zombie instanceof DolphinRider)) {
                             ;
                         } else {
+                            newUpdate = true;
                             leftTile.addZombie(zombie);
                             iterator.remove(); // Menghapus zombie dari list
                         }

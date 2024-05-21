@@ -1,6 +1,9 @@
 package pvz.main;
-
+import java.util.Scanner;
 import pvz.pack.*;
+import pvz.plant.Plant;
+import pvz.plantfactory.PlantFactory;
+import pvz.sun.Sun;
 
 public class Start implements Option {
     @Override
@@ -39,18 +42,45 @@ public class Start implements Option {
         }
         ToolsUtil.clearScreen();
 
-        Thread gameThread = new Thread(new Game(deck));
-        System.out.println("Game loaded successfully!");
-        ToolsUtil.delay(2);
-        ToolsUtil.clearScreen();
-        gameThread.start();
+        Game game = new Game(deck);
 
-        try {
-            gameThread.join();
+        game.start();
+        
+        while (true)
+        {
+            try {
+                if (!game.inputDelay)
+                {
+                    int choice = Integer.parseInt(game.scanner.nextLine());
+                    game.setChoice(choice);
+                    game.inputDelay = true;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid choice. Please try again.");
+                ToolsUtil.delay(1);
+                ToolsUtil.clearScreen();
+            }
+
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
-        catch (InterruptedException e) {
-            System.out.println("Game interrupted!");
-        }
+
+        // Thread gameThread = new Thread(new Game(deck));
+        // System.out.println("Game loaded successfully!");
+        // ToolsUtil.delay(2);
+        // ToolsUtil.clearScreen();
+        // gameThread.start();
+
+        // try {
+        //     gameThread.join();
+        // }
+        // catch (InterruptedException e) {
+        //     System.out.println("Game interrupted!");
+        // }
 
     }
 }
