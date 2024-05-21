@@ -307,13 +307,10 @@ public class Game extends Thread {
         while (iterator.hasNext()) {
             Zombie zombie = iterator.next();
 
-            // Periksa apakah sudah waktunya zombie bergerak
             if ((Game.elapsedTime - zombie.getWaktuZomb()) % 5 != 0 || Game.elapsedTime == zombie.getWaktuZomb()) {
-                continue; // Lanjutkan ke zombie berikutnya jika belum waktunya bergerak
+                continue;
             }
-
-            // Zombie hanya boleh bergerak sekali dalam interval waktu
-            zombie.setWaktuZomb(Game.elapsedTime); // Set waktu terakhir zombie bergerak
+            zombie.setWaktuZomb(Game.elapsedTime);
             for (int col = 0; col < 11; col++) {
                 Tile tile = map.getTile(row, col);
                 synchronized (tile) {
@@ -346,7 +343,7 @@ public class Game extends Thread {
         if (!zombie.getJump()) {
             Tile tile = map.getTile(row, col);
             Tile tilePlant = map.getTile(row, col - 1);
-            Tile newTile = map.getTile(row, col - 2); // Tile tujuan setelah loncat
+            Tile newTile = map.getTile(row, col - 2);
 
             tile.removeZombie(zombie);
             tilePlant.removePlant();
@@ -356,4 +353,28 @@ public class Game extends Thread {
         }
     }
 
+    public void attackZomb(int currentTime) {
+        for (int i = 0; i < Map.ROWS; i++) {
+            for (int j = 0; j < Map.COLS; j++) {
+                Tile posisi = map.getTile(i, j);
+                synchronized (posisi) {
+                    Plant plant = posisi.getPlant();
+                    if (plant != null && !posisi.getZombies().isEmpty()) {
+                        Iterator<Zombie> zombieIterator = posisi.getZombies().iterator();
+                        while (zombieIterator.hasNext()) {
+                            Zombie zombie = zombieIterator.next();
+                            if (zombie.isAttackTime(currentTime)) {
+                                plant.takeDamage(zombie.getAttackDamage());
+                                zombie.setLastAttackTime(currentTime);
+                                if (plant.getHealth() <= 0) {
+                                    posisi.removePlant();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

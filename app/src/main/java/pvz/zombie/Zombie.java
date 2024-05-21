@@ -9,6 +9,7 @@ public abstract class Zombie {
     private long speed = NORMAL_SPEED;
     private int waktuZomb;
     private boolean jump = false;
+    private int lastAttackTime;
 
     public static final int NORMAL_SPEED = 50000;
     // private boolean is_dead;
@@ -20,6 +21,7 @@ public abstract class Zombie {
         this.attack_speed = attack_speed;
         this.is_aquatic = is_aquatic;
         this.waktuZomb = waktuZomb;
+        this.lastAttackTime = waktuZomb;
     }
 
     public String getName() {
@@ -81,12 +83,24 @@ public abstract class Zombie {
         this.jump = jump;
     }
 
+    public int getLastAttackTime() {
+        return lastAttackTime;
+    }
+
+    public void setLastAttackTime(int lastAttackTime) {
+        this.lastAttackTime = lastAttackTime;
+    }
+
     public void printInfo() {
         System.out.println("Name: " + name);
         System.out.println("Health: " + health);
         System.out.println("Attack Damage: " + attack_damage);
         System.out.println("Attack Speed: " + attack_speed);
         System.out.println("Is Aquatic: " + is_aquatic);
+    }
+
+    public boolean isAttackTime(long currentTime) {
+        return (currentTime - lastAttackTime >= attack_speed) || (lastAttackTime == waktuZomb);
     }
 
     public abstract void attack();

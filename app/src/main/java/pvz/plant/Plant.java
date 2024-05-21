@@ -28,7 +28,6 @@ public abstract class Plant {
         this.name = name;
     }
 
-
     public int getHealth() {
         return health;
     }
