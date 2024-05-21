@@ -46,14 +46,14 @@ public class Start implements Option {
 
         game.start();
         
-        while (true)
+        while (game.getRunning())
         {
             try {
-                if (!game.inputDelay)
+                if (!game.getInputDelay())
                 {
                     int choice = Integer.parseInt(game.scanner.nextLine());
                     game.setChoice(choice);
-                    game.inputDelay = true;
+                    game.setInputDelay(true);
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid choice. Please try again.");

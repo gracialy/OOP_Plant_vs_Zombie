@@ -16,11 +16,11 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Game extends Thread {
-    public boolean inputDelay = false;
+    private boolean inputDelay = false;
     private boolean running;
     private boolean newUpdate = true;
     private static int elapsedTime;
-    public Deck deck;
+    private Deck deck;
     private Map map = new Map();
     // private Sun sun;
     public Scanner scanner;
@@ -37,14 +37,24 @@ public class Game extends Thread {
         this.scanner = new Scanner(System.in);
     }
 
+    public boolean getRunning()
+    {
+        return running;
+    }
+
+    public boolean getInputDelay()
+    {
+        return inputDelay;
+    }
+
     public void setChoice(int choice)
     {
         this.choice = choice;
     }
 
-    public int getChoice()
+    public void setInputDelay(boolean inputDelay)
     {
-        return choice;
+        this.inputDelay = inputDelay;
     }
 
     public void refreshView()
@@ -170,8 +180,6 @@ public class Game extends Thread {
                     }
 
                     choice = -1;
-                    inputDelay= false;
-
                     break;
 
                 case 2:
@@ -181,6 +189,8 @@ public class Game extends Thread {
                     column = Integer.parseInt(scanner.nextLine());
 
                     map.removePlant(row, column);
+
+                    choice = -1;
                     break;
 
                 case 0:
@@ -190,8 +200,6 @@ public class Game extends Thread {
                 default:
                     choice = -1;
                     inputDelay = false;
-                    // System.out.println(inputDelay);
-                    // System.out.println("Invalid choice. Please try again.");
                     break;
             }
 

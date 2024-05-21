@@ -34,16 +34,4 @@ public class Time {
     {
         this.cycle = cycle;
     }
-
-    // public void run()
-    // {
-    //     while (true) {
-    //         try {
-    //             Thread.sleep(1);
-    //             milliseconds += 1;
-    //         }
-    //         catch (Exception err) {
-    //         }
-    //     }
-    // }
 }
