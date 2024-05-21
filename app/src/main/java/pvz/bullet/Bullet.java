@@ -3,12 +3,12 @@ package pvz.bullet;
 import pvz.plant.*;
 
 public class Bullet {
-    private  int damage;
+    private int damage;
     private int range;
     private boolean slowEffect;
     private int originX;
     private int originY;
-    
+
     public Bullet(Plant plant, int originX, int originY) {
         this.damage = plant.getAttackDamage();
         this.range = plant.getRange();

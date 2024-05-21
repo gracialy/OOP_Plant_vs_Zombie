@@ -196,6 +196,37 @@ public class Game extends Thread {
             }
 
             try {
+                for (int i = 0; i < 6; i++) {
+                    for (int j = 0; j < 11; j++) {
+                        Plant plant1 = map.getTile(i, j).getPlant();
+                        Tile tile = map.getTile(i, j);
+                        synchronized (tile) {
+                            if (!(tile.getPlant() == null)) {
+
+                            }
+                            if (!tile.getZombies().isEmpty()) {
+                                if (tile.getPlant() == null) {
+                                    ZombieWalk(i, tile.getZombies());
+                                }
+                            }
+                            if (plant1 == null)
+                                continue;
+                            if (plant1.getAttackDamage() == 0)
+                                continue;
+                            if (!plant1.isAttackTime(elapsedTime))
+                                continue;
+
+                            System.out.println("============ attacktime" + plant1.isAttackTime(elapsedTime));
+
+                            Bullet bullet = new Bullet(plant1, i, j);
+                            if (bulletShot(bullet))
+                                plant1.setLastAttackTime(elapsedTime);
+
+                            System.out.println("======================last attack time" + plant1.getLastAttackTime());
+
+                        }
+                    }
+                }
                 Thread.sleep(1000);
                 elapsedTime = (int) (time.getElapsedSeconds());
             } catch (InterruptedException e) {
@@ -221,14 +252,15 @@ public class Game extends Thread {
                 if (!plant.isAttackTime(currentTime))
                     continue;
 
-                plant.setLastAttackTime(currentTime);
                 Bullet bullet = new Bullet(plant, i, j);
-                bulletShot(bullet);
+                if (bulletShot(bullet))
+                    plant.setLastAttackTime(currentTime);
             }
         }
     }
 
-    public void bulletShot(Bullet bullet) {
+    public boolean bulletShot(Bullet bullet) {
+        boolean hit = false;
         List<Zombie> zombies;
         int row = bullet.getOriginX();
         int col = bullet.getOriginY();
@@ -239,8 +271,11 @@ public class Game extends Thread {
 
                 for (Zombie zombie : zombies) {
                     zombie.takeDamage(bullet.getDamage(), bullet.hasSlowEffect());
-                    if (zombie.isDead())
-                        map.getTile(row, col).removeZombie(zombie);
+                }
+
+                if (zombies.size() > 0) {
+                    hit = true;
+                    map.getTile(row, col).removeZombie();
                 }
 
                 break;
@@ -250,16 +285,18 @@ public class Game extends Thread {
 
                     for (Zombie zombie : zombies) {
                         zombie.takeDamage(bullet.getDamage(), bullet.hasSlowEffect());
-                        if (zombie.isDead())
-                            map.getTile(row, col).removeZombie(zombie);
                     }
 
-                    if (zombies.size() > 0)
+                    if (zombies.size() > 0) {
+                        hit = true;
+                        map.getTile(row, col).removeZombie();
                         break;
+                    }
                 }
 
                 break;
         }
+        return hit;
     }
 
     public void ZombieWalk(int row, List<Zombie> zombies) {
@@ -283,7 +320,7 @@ public class Game extends Thread {
                         } else {
                             newUpdate = true;
                             leftTile.addZombie(zombie);
-                            iterator.remove(); // Menghapus zombie dari list
+                            iterator.remove();
                         }
                     }
                     break;
