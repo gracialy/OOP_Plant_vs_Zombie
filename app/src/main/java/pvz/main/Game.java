@@ -44,9 +44,9 @@ public class Game implements Runnable {
             double upperBound = 1.0;
             Zombie[] arraydarat = { new NormalZombie(elapsedTime), new Newspaper(elapsedTime),
                     new Conehead(elapsedTime), new BucketHat(elapsedTime),
-                    new DiggerZombie(elapsedTime), new FlagZombie(elapsedTime), new LadderZombie(elapsedTime) };
-            Zombie[] arrayair = { new PoleVault(elapsedTime), new DolphinRider(elapsedTime),
+                    new DiggerZombie(elapsedTime), new FlagZombie(elapsedTime), new LadderZombie(elapsedTime),
                     new DuckyTube(elapsedTime) };
+            Zombie[] arrayair = { new PoleVault(elapsedTime), new DolphinRider(elapsedTime) };
 
             // TODO: Sunflower sun production
             // TODO: Zombie spawning
@@ -268,6 +268,7 @@ public class Game implements Runnable {
                         Tile leftTile = map.getTile(row, col - 1);
                         if (leftTile.getPlant() != null
                                 && (zombie instanceof PoleVault || zombie instanceof DolphinRider)) {
+                            jump(row, col, zombie);
                             ;
                         } else {
                             leftTile.addZombie(zombie);
@@ -282,5 +283,16 @@ public class Game implements Runnable {
 
     public static int getElapsedTime() {
         return elapsedTime;
+    }
+
+    public void jump(int row, int col, Zombie zombie) {
+        if (zombie.getJump() == false) {
+            Tile tile = map.getTile(row, col);
+            Tile tilePlant = map.getTile(row, col - 1);
+            map.zombie(row, col - 2, zombie);
+            tile.removeZombie(zombie);
+            tilePlant.removePlant();
+            zombie.setJump(true);
+        }
     }
 }
