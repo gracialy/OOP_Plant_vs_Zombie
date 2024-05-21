@@ -8,6 +8,7 @@ public abstract class Zombie {
     private boolean is_aquatic;
     private long speed = NORMAL_SPEED;
     private int waktuZomb;
+    private boolean jump = false;
 
     public static final int NORMAL_SPEED = 50000;
     // private boolean is_dead;
@@ -70,6 +71,14 @@ public abstract class Zombie {
     // Setter untuk waktuZomb
     public void setWaktuZomb(int waktuZomb) {
         this.waktuZomb = waktuZomb;
+    }
+
+    public boolean getJump() {
+        return jump;
+    }
+
+    public void setJump(boolean jump) {
+        this.jump = jump;
     }
 
     public void printInfo() {

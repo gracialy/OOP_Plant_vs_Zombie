@@ -26,7 +26,7 @@ public class Game extends Thread {
     public Scanner scanner;
     private int choice = -1;
     private Time time;
-    
+
     public Game(Deck deck) {
         this.running = true;
         this.deck = deck;
@@ -37,28 +37,23 @@ public class Game extends Thread {
         this.scanner = new Scanner(System.in);
     }
 
-    public boolean getRunning()
-    {
+    public boolean getRunning() {
         return running;
     }
 
-    public boolean getInputDelay()
-    {
+    public boolean getInputDelay() {
         return inputDelay;
     }
 
-    public void setChoice(int choice)
-    {
+    public void setChoice(int choice) {
         this.choice = choice;
     }
 
-    public void setInputDelay(boolean inputDelay)
-    {
+    public void setInputDelay(boolean inputDelay) {
         this.inputDelay = inputDelay;
     }
 
-    public void refreshView()
-    {
+    public void refreshView() {
         ToolsUtil.clearScreen();
         System.out.println("Elapsed time: " + time.getElapsedTime() + "ms");
         System.out.println("Zombies on map: " + map.hitungZombie());
@@ -66,8 +61,7 @@ public class Game extends Thread {
         map.displayMap();
         System.out.println("Deck: " + deck.getInfo());
         System.out.println("Sun:" + Sun.getSunValue());
-        if (choice == -1)
-        {
+        if (choice == -1) {
             System.out.println("===============================");
             System.out.println("1. Place Plant");
             System.out.println("2. Remove Plant");
@@ -83,14 +77,15 @@ public class Game extends Thread {
             Plant plant;
             int row, column;
             long timeCache;
-            
+
             double lowerBound = 0.0;
             double upperBound = 1.0;
-            Zombie[] arraydarat = { new NormalZombie(elapsedTime), new Newspaper(elapsedTime), new Conehead(elapsedTime), new BucketHat(elapsedTime), new DiggerZombie(elapsedTime), new FlagZombie(elapsedTime), new LadderZombie(elapsedTime) };
-            Zombie[] arrayair = { new PoleVault(elapsedTime), new DolphinRider(elapsedTime), new DuckyTube(elapsedTime) };
-                    
-            if (newUpdate)
-            {
+            Zombie[] arraydarat = { new NormalZombie(elapsedTime), new Newspaper(elapsedTime),
+                    new Conehead(elapsedTime), new BucketHat(elapsedTime), new DiggerZombie(elapsedTime),
+                    new FlagZombie(elapsedTime), new LadderZombie(elapsedTime), new DuckyTube(elapsedTime) };
+            Zombie[] arrayair = { new PoleVault(elapsedTime), new DolphinRider(elapsedTime) };
+
+            if (newUpdate) {
                 refreshView();
                 newUpdate = false;
             }
@@ -149,7 +144,7 @@ public class Game extends Thread {
             }
 
             // attack plant
-            
+
             switch (choice) {
                 case 1:
                     System.out.println("Enter plant number: ");
@@ -194,9 +189,9 @@ public class Game extends Thread {
                     break;
 
                 case 0:
-                running = false;
-                break;
-                
+                    running = false;
+                    break;
+
                 default:
                     choice = -1;
                     inputDelay = false;
@@ -311,9 +306,14 @@ public class Game extends Thread {
         Iterator<Zombie> iterator = zombies.iterator();
         while (iterator.hasNext()) {
             Zombie zombie = iterator.next();
-            if ((Game.elapsedTime - zombie.getWaktuZomb()) % 5 != 0 || Game.elapsedTime==zombie.getWaktuZomb()) {
-                continue;
+
+            // Periksa apakah sudah waktunya zombie bergerak
+            if ((Game.elapsedTime - zombie.getWaktuZomb()) % 5 != 0 || Game.elapsedTime == zombie.getWaktuZomb()) {
+                continue; // Lanjutkan ke zombie berikutnya jika belum waktunya bergerak
             }
+
+            // Zombie hanya boleh bergerak sekali dalam interval waktu
+            zombie.setWaktuZomb(Game.elapsedTime); // Set waktu terakhir zombie bergerak
             for (int col = 0; col < 11; col++) {
                 Tile tile = map.getTile(row, col);
                 synchronized (tile) {
@@ -324,14 +324,15 @@ public class Game extends Thread {
                         Tile leftTile = map.getTile(row, col - 1);
                         if (leftTile.getPlant() != null
                                 && (zombie instanceof PoleVault || zombie instanceof DolphinRider)) {
-                            ;
+                            jump(row, col, zombie);
                         } else {
                             newUpdate = true;
                             leftTile.addZombie(zombie);
                             iterator.remove();
+                            tile.removeZombie(zombie); // Hapus zombie dari ubin saat ini
                         }
+                        break;
                     }
-                    break;
                 }
             }
         }
@@ -340,4 +341,19 @@ public class Game extends Thread {
     public static int getElapsedTime() {
         return elapsedTime;
     }
+
+    public void jump(int row, int col, Zombie zombie) {
+        if (!zombie.getJump()) {
+            Tile tile = map.getTile(row, col);
+            Tile tilePlant = map.getTile(row, col - 1);
+            Tile newTile = map.getTile(row, col - 2); // Tile tujuan setelah loncat
+
+            tile.removeZombie(zombie);
+            tilePlant.removePlant();
+            newTile.addZombie(zombie);
+
+            zombie.setJump(true);
+        }
+    }
+
 }
