@@ -8,6 +8,7 @@ public class Bullet {
     private boolean slowEffect;
     private int originX;
     private int originY;
+    private boolean isImmortal;
 
     public Bullet(Plant plant, int originX, int originY) {
         this.damage = plant.getAttackDamage();
@@ -15,6 +16,11 @@ public class Bullet {
         this.slowEffect = plant instanceof Snowpea;
         this.originX = originX;
         this.originY = originY;
+        this.isImmortal = plant instanceof Jalapeno;
+    }
+
+    public boolean isImmortal() {
+        return isImmortal;
     }
 
     public int getDamage() {

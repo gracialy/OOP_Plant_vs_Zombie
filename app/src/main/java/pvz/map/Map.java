@@ -15,7 +15,7 @@ public class Map {
     private final int POOL_START_ROW = 2;
     private final int POOL_END_ROW = 3;
     private final int SAFE_AREA_COL = 0;
-    private final int ZOMBIE_SPAWN_COL = COLS-1;
+    private final int ZOMBIE_SPAWN_COL = COLS - 1;
 
     public Map() {
         land = new ArrayList<>();
@@ -72,9 +72,12 @@ public class Map {
                     display += " [ ]";
                 }
 
-                if (tile instanceof PoolArea) System.out.print("\u001B[34m" + display + "\u001B[0m|"); // Blue color
-                else if (tile instanceof SafeArea) System.out.print("\u001B[35m" + display + "\u001B[0m|"); // Pink color
-                else System.out.print("\u001B[32m" + display + "\u001B[0m|"); // Green color
+                if (tile instanceof PoolArea)
+                    System.out.print("\u001B[34m" + display + "\u001B[0m|"); // Blue color
+                else if (tile instanceof SafeArea)
+                    System.out.print("\u001B[35m" + display + "\u001B[0m|"); // Pink color
+                else
+                    System.out.print("\u001B[32m" + display + "\u001B[0m|"); // Green color
             }
             System.out.println("\n" + rowSeparator);
         }
@@ -106,8 +109,7 @@ public class Map {
             if (!(tile.getPlant() instanceof Lilypad)) {
                 System.out.println("Belum ada Lilypad di petak ini.");
                 return 1;
-            }
-            else {
+            } else {
                 plant.setHealth(plant.getHealth() + 100);
                 tile.setPlant(plant);
                 return 0;

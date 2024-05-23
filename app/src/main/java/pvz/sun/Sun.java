@@ -31,6 +31,7 @@ public class Sun {
     }
 
     public static void produceSun(long invokeTime) {
+        System.out.println(invokeTime + " " + getInstance().lastInvoke);
         if (onInvokeTime(invokeTime)) {
             getInstance().value += SUN_VALUE;
             getInstance().lastInvoke = invokeTime;
@@ -43,9 +44,9 @@ public class Sun {
     }
 
     public static boolean onInvokeTime(long elapsedTime) {
-        if (elapsedTime - getLastInvoke() >= 5000 && elapsedTime - getLastInvoke() <= 9000) {
+        if (elapsedTime - getLastInvoke() >= 5 && elapsedTime - getLastInvoke() <= 9) {
             return Math.random() < 0.5 ? true : false;
-        } else if (elapsedTime - getLastInvoke() == 10000) {
+        } else if (elapsedTime - getLastInvoke() > 9) {
             return true;
         } else
             return false;
