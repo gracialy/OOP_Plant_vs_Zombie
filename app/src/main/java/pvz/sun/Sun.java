@@ -1,7 +1,7 @@
 package pvz.sun;
 
 public class Sun {
-    private static final int SUN_VALUE = 500;
+    private static final int SUN_VALUE = 100;
     private static Sun instance;
     private int value;
     private long lastInvoke;

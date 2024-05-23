@@ -183,13 +183,6 @@ public class Game extends Thread {
                         Plant plant1 = map.getTile(i, j).getPlant();
                         Tile tile = map.getTile(i, j);
                         synchronized (tile) {
-                            if (plant1 instanceof Sunflower) {
-                                Sunflower sunflower = (Sunflower) plant1;
-                                if (sunflower.isAttackTime(elapsedTime)) {
-                                    Sun.addSun(25);
-                                    sunflower.setLastAttackTime(elapsedTime);
-                                }
-                            }
                             if (plant1 != null && !tile.getZombies().isEmpty()) {
                                 Iterator<Zombie> zombieIterator = tile.getZombies().iterator();
                                 while (zombieIterator.hasNext()) {
@@ -203,6 +196,13 @@ public class Game extends Thread {
                                             break;
                                         }
                                     }
+                                }
+                            }
+                            if (plant1 instanceof Sunflower) {
+                                Sunflower sunflower = (Sunflower) plant1;
+                                if (sunflower.isAttackTime(elapsedTime)) {
+                                    Sun.addSun(25);
+                                    sunflower.setLastAttackTime(elapsedTime);
                                 }
                             }
                             if (!tile.getZombies().isEmpty()) {
