@@ -15,7 +15,7 @@ public class Map {
     private final int POOL_START_ROW = 2;
     private final int POOL_END_ROW = 3;
     private final int SAFE_AREA_COL = 0;
-    private final int ZOMBIE_SPAWN_COL = COLS + 1;
+    private final int ZOMBIE_SPAWN_COL = COLS-1;
 
     public Map() {
         land = new ArrayList<>();
