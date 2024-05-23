@@ -10,6 +10,7 @@ import pvz.map.Tile;
 // import pvz.main.ZombiesList;
 import pvz.plant.*;
 import pvz.plantfactory.*;
+import pvz.sun.Sun;
 import pvz.zombie.*;
 
 public class AppMap {
@@ -23,9 +24,15 @@ public class AppMap {
         Map map = new Map();
         PlantFactory ChomperFactory = new WallnutFactory();
         Plant peashooter = ChomperFactory.createPlant(-10, 500);
+        PlantFactory SunFlowerFact = new SunflowerFactory();
+        Plant SunFlow = SunFlowerFact.createPlant(-10, 500);
+        PlantFactory SunFlowerFact1 = new SunflowerFactory();
+        Plant SunFlow1 = SunFlowerFact1.createPlant(-10, 500);
         Zombie normalZombie = new NormalZombie(currentTime);
 
         map.setPlant(1, 5, peashooter);
+        map.setPlant(1, 6, SunFlow);
+        map.setPlant(1, 7, SunFlow1);
         map.zombie(1, 5, normalZombie);
         System.out.println("Kondisi awal peta:");
         map.displayMap();
@@ -48,6 +55,14 @@ public class AppMap {
                                         break;
                                     }
                                 }
+                            }
+                        }
+                        if (plant instanceof Sunflower) {
+                            Sunflower sunflower = (Sunflower) plant;
+                            if (sunflower.isAttackTime(currentTime)) {
+                                Sun.addSun(25);
+                                sunflower.setLastAttackTime(currentTime);
+                                System.out.println("Nilai Sun= " + Sun.getSunValue());
                             }
                         }
                     }

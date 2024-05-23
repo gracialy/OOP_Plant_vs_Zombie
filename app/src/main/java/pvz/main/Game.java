@@ -121,27 +121,6 @@ public class Game extends Thread {
                 }
 
             }
-            try {
-                for (int i = 0; i < 6; i++) {
-                    for (int j = 0; j < 11; j++) {
-                        Tile tile = map.getTile(i, j);
-                        synchronized (tile) {
-                            if (!(tile.getPlant() == null)) {
-
-                            }
-                            if (!tile.getZombies().isEmpty()) {
-                                if (tile.getPlant() == null) {
-                                    ZombieWalk(i, tile.getZombies());
-                                }
-                            }
-
-                        }
-                    }
-                }
-                Thread.sleep(0);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
             // attack plant
 
@@ -204,8 +183,27 @@ public class Game extends Thread {
                         Plant plant1 = map.getTile(i, j).getPlant();
                         Tile tile = map.getTile(i, j);
                         synchronized (tile) {
-                            if (!(tile.getPlant() == null)) {
-
+                            if (plant1 instanceof Sunflower) {
+                                Sunflower sunflower = (Sunflower) plant1;
+                                if (sunflower.isAttackTime(elapsedTime)) {
+                                    Sun.addSun(25);
+                                    sunflower.setLastAttackTime(elapsedTime);
+                                }
+                            }
+                            if (plant1 != null && !tile.getZombies().isEmpty()) {
+                                Iterator<Zombie> zombieIterator = tile.getZombies().iterator();
+                                while (zombieIterator.hasNext()) {
+                                    Zombie zombie = zombieIterator.next();
+                                    if (zombie.isAttackTime(elapsedTime)) {
+                                        plant1.takeDamage(zombie.getAttackDamage());
+                                        zombie.setLastAttackTime(elapsedTime);
+                                        System.out.println(plant1.getHealth());
+                                        if (plant1.getHealth() <= 0) {
+                                            tile.removePlant();
+                                            break;
+                                        }
+                                    }
+                                }
                             }
                             if (!tile.getZombies().isEmpty()) {
                                 if (tile.getPlant() == null) {
@@ -371,6 +369,24 @@ public class Game extends Thread {
                                     break;
                                 }
                             }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void SunSunFlower(int currentTime) {
+        for (int i = 0; i < Map.ROWS; i++) {
+            for (int j = 0; j < Map.COLS; j++) {
+                Tile posisi = map.getTile(i, j);
+                synchronized (posisi) {
+                    Plant plant = posisi.getPlant();
+                    if (plant instanceof Sunflower) {
+                        Sunflower sunflower = (Sunflower) plant;
+                        if (sunflower.isAttackTime(currentTime)) {
+                            Sun.addSun(25);
+                            sunflower.setLastAttackTime(currentTime);
                         }
                     }
                 }

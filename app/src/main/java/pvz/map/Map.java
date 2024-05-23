@@ -52,7 +52,13 @@ public class Map {
                 Tile tile = row.get(j);
                 String display = "";
 
-                if (tile.getZombies().size() != 0) {
+                if (tile.getPlant() != null && tile.getZombies().size() != 0) {
+                    display += " [ " + tile.getPlant().getName() + " " + tile.getPlant().getHealth() + " +";
+                    for (Zombie zombie : tile.getZombies()) {
+                        display += " " + zombie.getName() + zombie.getHealth();
+                    }
+                    display += " ]";
+                } else if (tile.getZombies().size() != 0) {
                     display += " [";
                     for (Zombie zombie : tile.getZombies()) {
                         display += " " + zombie.getName() + zombie.getHealth();
