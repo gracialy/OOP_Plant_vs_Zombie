@@ -18,6 +18,5 @@ public class Sunflower extends Plant {
     public void produceSun(long currentTime) {
         Sun.addSun(SUN_AMOUNT);
         setLastAttackTime(currentTime);
-        System.out.println("Sunflower produced 25 sun. Total Sun: " + Sun.getSunValue());
     }
 }

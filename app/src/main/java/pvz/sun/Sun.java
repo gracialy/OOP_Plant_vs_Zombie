@@ -1,7 +1,8 @@
 package pvz.sun;
 
 public class Sun {
-    private static final int SUN_VALUE = 100;
+    private static final int SUN_VALUE = 100; // TODO: harusnya 50
+    private static final int SUN_PRODUCE = 25;
     private static Sun instance;
     private int value;
     private long lastInvoke;
@@ -31,11 +32,9 @@ public class Sun {
     }
 
     public static void produceSun(long invokeTime) {
-        System.out.println(invokeTime + " " + getInstance().lastInvoke);
         if (onInvokeTime(invokeTime)) {
-            getInstance().value += SUN_VALUE;
+            getInstance().value += SUN_PRODUCE;
             getInstance().lastInvoke = invokeTime;
-            System.out.println("Sun produced!");
         }
     }
 

@@ -3,7 +3,7 @@ package pvz.plant;
 import pvz.sun.Sun;
 
 public class TwinSunflower extends Plant {
-    private static final int SUN_AMOUNT = 100;
+    private final int SUN_AMOUNT = 100;
 
     public TwinSunflower(long invokeTime) {
         super("Twin Sunflower", 300, 0, 0, 0, invokeTime);
@@ -18,6 +18,5 @@ public class TwinSunflower extends Plant {
     public void produceSun(long currentTime) {
         Sun.addSun(SUN_AMOUNT);
         setLastAttackTime(currentTime);
-        System.out.println("TwinSunflower produced 25 sun. Total Sun: " + Sun.getSunValue());
     }
 }

@@ -11,6 +11,7 @@ public abstract class Zombie {
     private boolean jump = false;
     private int lastAttackTime;
     private String initial;
+    private int lastSlowed = -5;
 
     public static final int NORMAL_SPEED = 50000;
     // private boolean is_dead;
@@ -23,6 +24,14 @@ public abstract class Zombie {
         this.is_aquatic = is_aquatic;
         this.waktuZomb = waktuZomb;
         this.lastAttackTime = waktuZomb;
+    }
+
+    public int getLastSlowed() {
+        return lastSlowed;
+    }
+
+    public void setLastSlowed(int lastSlowed) {
+        this.lastSlowed = lastSlowed;
     }
 
     public String getInitial() {
@@ -49,7 +58,10 @@ public abstract class Zombie {
         return attack_speed;
     }
 
-    public long getSpeed() {
+    public long getSpeed(int currentTime) {
+        if (currentTime - lastSlowed > 3) {
+            resetSpeed();
+        }
         return speed;
     }
 
@@ -57,17 +69,19 @@ public abstract class Zombie {
         return is_aquatic;
     }
 
-    public void takeDamage(int damage, boolean hasSlowEffect) {
+    public void takeDamage(int damage, boolean hasSlowEffect, int currentTime) {
         health -= damage;
-        if (hasSlowEffect)
+        if (hasSlowEffect) {
             reduceSpeed(2);
+            setLastSlowed(currentTime);
+        }
     }
 
     public void reduceSpeed(long factor) {
         this.speed /= factor;
     }
 
-    public void resetSpeed(long factor) {
+    public void resetSpeed() {
         this.speed = NORMAL_SPEED;
     }
 

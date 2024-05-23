@@ -56,8 +56,8 @@ public class Game extends Thread {
 
     public void refreshView() {
         ToolsUtil.clearScreen();
-        System.out.println("Elapsed time: " + time.getElapsedTime() + "ms");
-        System.out.println("Zombies on map: " + map.hitungZombie());
+        System.out.println("Elapsed time: " + elapsedTime + "s");
+        System.out.println(map.hitungZombie());
         System.out.println("===============================");
         map.displayMap();
         System.out.println("Deck: " + deck.getInfo());
@@ -99,26 +99,31 @@ public class Game extends Thread {
             // TODO: Test sun producing
 
             // produce sun
-            Sun.produceSun(elapsedTime);
-            // produce zombie
-            for (int i = 0; i < 6; i++) {
-                if (map.hitungZombie() < 10) {
-                    double randomValue = getRandomValue(lowerBound, upperBound);
-                    if (randomValue <= 0.3) {
-                        Random random = new Random();
-                        if (i == 2 || i == 3) {
-                            int x = random.nextInt(arrayair.length);
-                            Zombie zomb = arrayair[x].createZombie();
-                            map.zombie(i, 10, zomb);
-                        } else {
-                            int x = random.nextInt(arraydarat.length);
-                            Zombie zomb = arraydarat[x].createZombie();
-                            map.zombie(i, 10, zomb);
-                        }
-                        newUpdate = true;
-                    }
-                }
+            if (elapsedTime % 200 <= 100) {
+                Sun.produceSun(elapsedTime);
+            }
 
+            // produce zombie
+            if ((elapsedTime % 3 == 0 || isFlag())) { // TODO: TAMBAHIN (elapsedTime >= 20 && elapsedTime <= 160) &&
+                for (int i = 0; i < 6; i++) {
+                    if (map.hitungZombie() < 10 || (isFlag() && map.hitungZombie() < 25)) {
+                        double randomValue = getRandomValue(lowerBound, upperBound);
+                        if (randomValue <= 0.3) {
+                            Random random = new Random();
+                            if (i == 2 || i == 3) {
+                                int x = random.nextInt(arrayair.length);
+                                Zombie zomb = arrayair[x].createZombie();
+                                map.zombie(i, 10, zomb);
+                            } else {
+                                int x = random.nextInt(arraydarat.length);
+                                Zombie zomb = arraydarat[x].createZombie();
+                                map.zombie(i, 10, zomb);
+                            }
+                            newUpdate = true;
+                        }
+                    }
+
+                }
             }
 
             switch (choice) {
@@ -137,9 +142,6 @@ public class Game extends Thread {
                         plant = plantFactory.createPlant(elapsedTime, Sun.getSunValue());
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
-                        if (!(plantFactory.canInvoke(elapsedTime, Sun.getSunValue()))) {
-                            break;
-                        }
                         break;
                     }
 
@@ -185,6 +187,31 @@ public class Game extends Thread {
                         Plant plant1 = map.getTile(i, j).getPlant();
                         Tile tile = map.getTile(i, j);
                         synchronized (tile) {
+                            // plant action
+                            if (plant1 instanceof Sunflower) {
+                                Sunflower sunflower = (Sunflower) plant1;
+                                if (sunflower.isAttackTime(elapsedTime)) {
+                                    sunflower.produceSun(elapsedTime);
+                                }
+                            }
+                            else if (plant1 instanceof TwinSunflower) {
+                                TwinSunflower twinSunflower = (TwinSunflower) plant1;
+                                if (twinSunflower.isAttackTime(elapsedTime)) {
+                                    twinSunflower.produceSun(elapsedTime);
+                                }
+                            }
+                            else if (plant1 != null) {
+                                if (plant1.isAttackTime(elapsedTime)) {
+                                    Bullet bullet = new Bullet(plant1, i, j);
+                                    if (bulletShot(bullet)) {
+                                        plant1.setLastAttackTime(elapsedTime);
+                                        if (plant1 instanceof Jalapeno || plant1 instanceof Squash) {
+                                            tile.removePlant();
+                                        }
+                                    }
+                                }
+                            }
+
                             // zombie attack
                             if (plant1 != null && !tile.getZombies().isEmpty()) {
                                 Iterator<Zombie> zombieIterator = tile.getZombies().iterator();
@@ -193,7 +220,6 @@ public class Game extends Thread {
                                     if (zombie.isAttackTime(elapsedTime)) {
                                         plant1.takeDamage(zombie.getAttackDamage());
                                         zombie.setLastAttackTime(elapsedTime);
-                                        System.out.println(plant1.getHealth());
                                         if (plant1.getHealth() <= 0) {
                                             tile.removePlant();
                                             break;
@@ -202,36 +228,10 @@ public class Game extends Thread {
                                 }
                             }
 
-                            // plant action
-                            if (plant1 instanceof Sunflower) {
-                                Sunflower sunflower = (Sunflower) plant1;
-                                if (sunflower.isAttackTime(elapsedTime)) {
-                                    sunflower.produceSun(elapsedTime);
-                                }
-                            }
-                            // else if (plant1 instanceof TwinSunflower) {
-                            // TwinSunflower twinSunflower = (TwinSunflower) plant1;
-                            // if (TwinSunflower.isAttackTime(elapsedTime))
-                            // twinSunflower.produceSun(elapsedTime);
-                            // }
-                            else if (plant1 != null) {
-                                if (plant1.isAttackTime(elapsedTime)) {
-                                    Bullet bullet = new Bullet(plant1, i, j);
-                                    if (bulletShot(bullet)) {
-                                        plant1.setLastAttackTime(elapsedTime);
-                                        if (plant1 instanceof Jalapeno) {
-                                            tile.removePlant();
-                                        }
-                                    }
-
-                                    System.out.println(plant1.getInitial() + " attack " + plant1.getLastAttackTime());
-                                }
-                            }
-
                             // zombie walk
                             if (!tile.getZombies().isEmpty()) {
                                 if (tile.getPlant() == null) {
-                                    ZombieWalk(i, tile.getZombies());
+                                    ZombieWalk(i, tile.getZombies(), elapsedTime);
                                 }
                             }
                         }
@@ -247,7 +247,7 @@ public class Game extends Thread {
                         System.out.println("Enter anything to go back to the main menu.");
                     }
                 }
-                if (map.hitungZombie() == 0 && elapsedTime > 0) {
+                if (map.hitungZombie() == 0 && elapsedTime > 160) {
                     running = false;
                     System.out.println("\u001B[32mYOU WIN\u001B[0m");
                 }
@@ -294,7 +294,7 @@ public class Game extends Thread {
                 zombies = map.getTile(row, col).getZombies();
 
                 for (Zombie zombie : zombies) {
-                    zombie.takeDamage(bullet.getDamage(), bullet.hasSlowEffect());
+                    zombie.takeDamage(bullet.getDamage(), bullet.hasSlowEffect(), elapsedTime);
                 }
 
                 if (zombies.size() > 0) {
@@ -307,7 +307,7 @@ public class Game extends Thread {
                 for (int i = col; i < Map.COLS; i++) {
                     zombies = map.getTile(row, i).getZombies();
                     for (Zombie zombie : zombies) {
-                        zombie.takeDamage(bullet.getDamage(), bullet.hasSlowEffect());
+                        zombie.takeDamage(bullet.getDamage(), bullet.hasSlowEffect(), elapsedTime);
                     }
                     if (zombies.size() > 0) {
                         hit = true;
@@ -322,12 +322,12 @@ public class Game extends Thread {
         return hit;
     }
 
-    public void ZombieWalk(int row, List<Zombie> zombies) {
+    public void ZombieWalk(int row, List<Zombie> zombies, int currentTime) {
         Iterator<Zombie> iterator = zombies.iterator();
         while (iterator.hasNext()) {
             Zombie zombie = iterator.next();
 
-            if ((Game.elapsedTime - zombie.getWaktuZomb()) % 5 != 0 || Game.elapsedTime == zombie.getWaktuZomb()) {
+            if ((Game.elapsedTime - zombie.getWaktuZomb()) % zombie.getSpeed(elapsedTime) != 0 || Game.elapsedTime == zombie.getWaktuZomb()) {
                 continue;
             }
             zombie.setWaktuZomb(Game.elapsedTime);
@@ -342,15 +342,12 @@ public class Game extends Thread {
                         if (leftTile.getPlant() != null
                                 && (zombie instanceof PoleVault || zombie instanceof DolphinRider
                                         || zombie instanceof LadderZombie)) {
-                            System.out.println("Loncat");
                             if (!zombie.getJump()) {
                                 Tile newTile = map.getTile(row, col - 2);
-                                System.out.println("Masuk Fungsi");
                                 iterator.remove();
                                 tile.removeZombie(zombie);
                                 leftTile.removePlant();
                                 newTile.addZombie(zombie);
-                                System.out.println("Loncat Berhasil");
                                 zombie.setJump(true);
                             } else {
                                 newUpdate = true;
@@ -375,13 +372,15 @@ public class Game extends Thread {
         return elapsedTime;
     }
 
+    private boolean isFlag() {
+        return elapsedTime >= 150 && elapsedTime <= 160;
+    } 
+
     public void jump(int row, int col, Zombie zombie) {
-        System.out.println("Masuk Method");
         if (!zombie.getJump()) {
             Tile tile = map.getTile(row, col);
             Tile tilePlant = map.getTile(row, col - 1);
             Tile newTile = map.getTile(row, col - 2);
-            System.out.println("Masuk Fungsi");
 
             tile.removeZombie(zombie);
             tilePlant.removePlant();
