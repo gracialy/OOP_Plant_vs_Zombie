@@ -6,14 +6,14 @@ public abstract class Zombie {
     private int attack_damage;
     private int attack_speed;
     private boolean is_aquatic;
-    private long speed = NORMAL_SPEED;
+    private int speed = NORMAL_SPEED;
     private int waktuZomb;
     private boolean jump = false;
     private int lastAttackTime;
     private String initial;
     private int lastSlowed = -5;
 
-    public static final int NORMAL_SPEED = 50000;
+    public static final int NORMAL_SPEED = 10;
     // private boolean is_dead;
 
     public Zombie(String name, int health, int attack_damage, int attack_speed, boolean is_aquatic, int waktuZomb) {
@@ -58,7 +58,7 @@ public abstract class Zombie {
         return attack_speed;
     }
 
-    public long getSpeed(int currentTime) {
+    public int getSpeed(int currentTime) {
         if (currentTime - lastSlowed > 3) {
             resetSpeed();
         }
@@ -72,13 +72,13 @@ public abstract class Zombie {
     public void takeDamage(int damage, boolean hasSlowEffect, int currentTime) {
         health -= damage;
         if (hasSlowEffect) {
-            reduceSpeed(2);
+            slowSpeed();
             setLastSlowed(currentTime);
         }
     }
 
-    public void reduceSpeed(long factor) {
-        this.speed /= factor;
+    public void slowSpeed() {
+        this.speed = NORMAL_SPEED * 2;
     }
 
     public void resetSpeed() {

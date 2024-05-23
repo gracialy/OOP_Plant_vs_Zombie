@@ -327,7 +327,7 @@ public class Game extends Thread {
         while (iterator.hasNext()) {
             Zombie zombie = iterator.next();
 
-            if ((Game.elapsedTime - zombie.getWaktuZomb()) % zombie.getSpeed(elapsedTime) != 0 || Game.elapsedTime == zombie.getWaktuZomb()) {
+            if ((Game.elapsedTime - zombie.getWaktuZomb()) % zombie.getSpeed(currentTime) != 0 || Game.elapsedTime == zombie.getWaktuZomb()) {
                 continue;
             }
             zombie.setWaktuZomb(Game.elapsedTime);
