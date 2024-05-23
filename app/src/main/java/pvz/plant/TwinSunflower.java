@@ -7,15 +7,17 @@ public class TwinSunflower extends Plant {
 
     public TwinSunflower(long invokeTime) {
         super("Twin Sunflower", 300, 0, 0, 0, invokeTime);
+        setInitial("TSP");
     }
 
-    // Menghasilkan Sun dan menambahkannya ke saldo Sun pemain
-    private void produceSun() {
+    @Override
+    public boolean isAttackTime(long currentTime) {
+        return (currentTime - getLastAttackTime() >= 3) || (currentTime == getPlantTime());
+    }
+
+    public void produceSun(long currentTime) {
         Sun.addSun(SUN_AMOUNT);
-        System.out.println("Sunflower produced 100 sun. Total Sun: " + Sun.getSunValue());
-    }
-
-    public void attack() {
-
+        setLastAttackTime(currentTime);
+        System.out.println("TwinSunflower produced 25 sun. Total Sun: " + Sun.getSunValue());
     }
 }

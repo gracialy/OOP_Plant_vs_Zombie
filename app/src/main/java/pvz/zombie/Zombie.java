@@ -10,6 +10,7 @@ public abstract class Zombie {
     private int waktuZomb;
     private boolean jump = false;
     private int lastAttackTime;
+    private String initial;
 
     public static final int NORMAL_SPEED = 50000;
     // private boolean is_dead;
@@ -22,6 +23,14 @@ public abstract class Zombie {
         this.is_aquatic = is_aquatic;
         this.waktuZomb = waktuZomb;
         this.lastAttackTime = waktuZomb;
+    }
+
+    public String getInitial() {
+        return initial;
+    }
+
+    public void setInitial(String initial) {
+        this.initial = initial;
     }
 
     public String getName() {

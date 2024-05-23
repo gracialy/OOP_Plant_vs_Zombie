@@ -6,6 +6,7 @@ public class DolphinRider extends Zombie {
     public DolphinRider(int waktu) {
         super("Dolphin Rider Zombie", 175, 100, 1, true, waktu);
         has_jump = false;
+        setInitial("DRZ");
     }
 
     public boolean hasJump() {

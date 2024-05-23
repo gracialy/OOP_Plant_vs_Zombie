@@ -7,19 +7,17 @@ public class Sunflower extends Plant {
 
     public Sunflower(long invokeTime) {
         super("Sunflower", 100, 0, 0, 0, invokeTime);
+        setInitial("SFP");
     }
 
     @Override
     public boolean isAttackTime(long currentTime) {
-        return (currentTime - getLastAttackTime() >= 3) || (getLastAttackTime() == getPlantTime());
+        return (currentTime - getLastAttackTime() >= 3) || (currentTime == getPlantTime());
     }
 
-    private void produceSun() {
+    public void produceSun(long currentTime) {
         Sun.addSun(SUN_AMOUNT);
+        setLastAttackTime(currentTime);
         System.out.println("Sunflower produced 25 sun. Total Sun: " + Sun.getSunValue());
-    }
-
-    @Override
-    public void attack() {
     }
 }

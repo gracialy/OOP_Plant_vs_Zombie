@@ -5,6 +5,7 @@ public class Lilypad extends Plant {
 
     public Lilypad(long invokeTime) {
         super("Lilypad", 100, 0, 0, 0, invokeTime);
+        setInitial("LYP");
     }
 
     // Menempatkan tanaman di Lilypad
@@ -26,10 +27,5 @@ public class Lilypad extends Plant {
         if (storePlant != null) {
             storePlant.setHealth(storePlant.getHealth() + healthDiff);
         }
-    }
-
-    @Override
-    public void attack() {
-        // Sunflower tidak menyerang
     }
 }

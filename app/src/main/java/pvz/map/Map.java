@@ -53,24 +53,28 @@ public class Map {
                 String display = "";
 
                 if (tile.getPlant() != null && tile.getZombies().size() != 0) {
-                    display += " [ " + tile.getPlant().getName() + " " + tile.getPlant().getHealth() + " +";
+                    display += " [ " + tile.getPlant().getInitial() + "(" + tile.getPlant().getHealth() + ") +";
                     for (Zombie zombie : tile.getZombies()) {
-                        display += " " + zombie.getName() + zombie.getHealth();
+                        display += " " + zombie.getInitial() + "(" + zombie.getHealth() + "),";
                     }
+                    display = display.substring(0, display.length() - 1);
                     display += " ]";
                 } else if (tile.getZombies().size() != 0) {
                     display += " [";
                     for (Zombie zombie : tile.getZombies()) {
-                        display += " " + zombie.getName() + zombie.getHealth();
+                        display += " " + zombie.getInitial() + "(" + zombie.getHealth() + "),";
                     }
+                    display = display.substring(0, display.length() - 1);
                     display += " ]";
                 } else if (tile.getPlant() != null) {
-                    display += " [ " + tile.getPlant().getName() + " ]";
+                    display += " [ " + tile.getPlant().getInitial() + "(" + tile.getPlant().getHealth() + ") ]";
                 } else {
                     display += " [ ]";
                 }
 
-                System.out.print(display + "|");
+                if (tile instanceof PoolArea) System.out.print("\u001B[34m" + display + "\u001B[0m|"); // Blue color
+                else if (tile instanceof SafeArea) System.out.print("\u001B[35m" + display + "\u001B[0m|"); // Pink color
+                else System.out.print("\u001B[32m" + display + "\u001B[0m|"); // Green color
             }
             System.out.println("\n" + rowSeparator);
         }
@@ -96,18 +100,20 @@ public class Map {
             System.out.println("Tanaman lilypad hanya bisa ditanam di petak air.");
             return 1;
         }
+        // if it's PoolArea then like usual
 
-        if (tile instanceof PoolArea && plant instanceof Lilypad) {
-            if (((PoolArea) tile).isLilypadHere()) {
-                System.out.println("Sudah ada lilypad di petak ini.");
+        if (tile instanceof PoolArea && !(plant instanceof Lilypad)) {
+            if (!(tile.getPlant() instanceof Lilypad)) {
+                System.out.println("Belum ada Lilypad di petak ini.");
                 return 1;
             }
-            ((PoolArea) tile).setLilypadHere(true);
-            System.out.println(
-                    "Tanaman " + plant.getClass().getSimpleName() + " berhasil diletakkan di (" + row + ", " + col
-                            + ").");
-            return 0;
+            else {
+                plant.setHealth(plant.getHealth() + 100);
+                tile.setPlant(plant);
+                return 0;
+            }
         }
+
         if (!tile.canPlant()) {
             System.out.println("Tidak dapat menanam di petak ini.");
             return 1;
