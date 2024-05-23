@@ -4,7 +4,7 @@ import pvz.plant.*;
 
 public class WallnutFactory extends PlantFactory {
     public WallnutFactory() {
-        super(20000, 50);
+        super(20, 50);
     }
 
     @Override
@@ -12,7 +12,7 @@ public class WallnutFactory extends PlantFactory {
         if (canInvoke(invokeTime, sunValue)) {
             setLastInvokeTime(invokeTime);
             return new Wallnut(invokeTime);
-        }
-        else throw new IllegalStateException("Cannot create Wallnut");
+        } else
+            throw new IllegalStateException("Cannot create Wallnut");
     }
 }

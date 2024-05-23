@@ -138,6 +138,9 @@ public class Game extends Thread {
                         plant = plantFactory.createPlant(elapsedTime, Sun.getSunValue());
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
+                        if (!(plantFactory.canInvoke(elapsedTime, Sun.getSunValue()))) {
+                            break;
+                        }
                         break;
                     }
 
@@ -149,6 +152,8 @@ public class Game extends Thread {
                     if (map.setPlant(row, column, plant) == 1) {
                         Sun.addSun(plantFactory.getCost());
                         plantFactory.setLastInvokeTime(timeCache);
+                    } else {
+                        Sun.useSun(plantFactory.getCost());
                     }
 
                     choice = -1;
@@ -206,15 +211,16 @@ public class Game extends Thread {
                                 }
                             }
                             // else if (plant1 instanceof TwinSunflower) {
-                            //     TwinSunflower twinSunflower = (TwinSunflower) plant1;
-                            //     if (TwinSunflower.isAttackTime(elapsedTime)) twinSunflower.produceSun(elapsedTime);
+                            // TwinSunflower twinSunflower = (TwinSunflower) plant1;
+                            // if (TwinSunflower.isAttackTime(elapsedTime))
+                            // twinSunflower.produceSun(elapsedTime);
                             // }
                             else if (plant1 != null) {
                                 if (plant1.isAttackTime(elapsedTime)) {
                                     Bullet bullet = new Bullet(plant1, i, j);
                                     if (bulletShot(bullet))
                                         plant1.setLastAttackTime(elapsedTime);
-                                        System.out.println(plant1.getInitial() + " attack " + plant1.getLastAttackTime());
+                                    System.out.println(plant1.getInitial() + " attack " + plant1.getLastAttackTime());
                                 }
                             }
 
@@ -227,9 +233,9 @@ public class Game extends Thread {
                         }
                     }
                 }
-                
+
                 // check game over
-                for (int i=0; i<5; i++) {
+                for (int i = 0; i < 5; i++) {
                     Tile tile = map.getTile(i, 0);
                     if (tile.getZombies().size() != 0) {
                         running = false;
@@ -237,7 +243,7 @@ public class Game extends Thread {
                         System.out.println("Enter anything to go back to the main menu.");
                     }
                 }
-                if (map.hitungZombie() == 0 && elapsedTime>0) {
+                if (map.hitungZombie() == 0 && elapsedTime > 0) {
                     running = false;
                     System.out.println("\u001B[32mYOU WIN\u001B[0m");
                 }
@@ -292,7 +298,6 @@ public class Game extends Thread {
                     map.getTile(row, col).removeZombie();
                 }
 
-
                 break;
             case (-1):
                 for (int i = col; i < Map.COLS; i++) {
@@ -306,7 +311,8 @@ public class Game extends Thread {
                         hit = true;
                         map.getTile(row, i).removeZombie();
                     }
-                    if (hit == true) break;
+                    if (hit == true)
+                        break;
                 }
 
                 break;

@@ -4,7 +4,7 @@ import pvz.plant.*;
 
 public class SnowpeaFactory extends PlantFactory {
     public SnowpeaFactory() {
-        super(10000, 175);
+        super(10, 175);
     }
 
     @Override
@@ -12,7 +12,7 @@ public class SnowpeaFactory extends PlantFactory {
         if (canInvoke(invokeTime, sunValue)) {
             setLastInvokeTime(invokeTime);
             return new Snowpea(invokeTime);
-        }
-        else throw new IllegalStateException("Cannot create Snowpea");
+        } else
+            throw new IllegalStateException("Cannot create Snowpea");
     }
 }

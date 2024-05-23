@@ -26,8 +26,8 @@ public class Sun {
         return getInstance().lastInvoke;
     }
 
-    public static void useSun() {
-        getInstance().value--;
+    public static void useSun(int nilai) {
+        getInstance().value -= nilai;
     }
 
     public static void produceSun(long invokeTime) {

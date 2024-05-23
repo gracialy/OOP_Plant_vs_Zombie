@@ -4,7 +4,7 @@ import pvz.plant.*;
 
 public class SpikeweedFactory extends PlantFactory {
     public SpikeweedFactory() {
-        super(20000, 100);
+        super(20, 100);
     }
 
     @Override
@@ -12,7 +12,7 @@ public class SpikeweedFactory extends PlantFactory {
         if (canInvoke(invokeTime, sunValue)) {
             setLastInvokeTime(invokeTime);
             return new Spikeweed(invokeTime);
-        }
-        else throw new IllegalStateException("Cannot create Spikeweed");
+        } else
+            throw new IllegalStateException("Cannot create Spikeweed");
     }
 }

@@ -4,7 +4,7 @@ import pvz.plant.*;
 
 public class SquashFactory extends PlantFactory {
     public SquashFactory() {
-        super(20000, 50);
+        super(20, 50);
     }
 
     @Override
@@ -12,7 +12,7 @@ public class SquashFactory extends PlantFactory {
         if (canInvoke(invokeTime, sunValue)) {
             setLastInvokeTime(invokeTime);
             return new Squash(invokeTime);
-        }
-        else throw new IllegalStateException("Cannot create Squash");
+        } else
+            throw new IllegalStateException("Cannot create Squash");
     }
 }
