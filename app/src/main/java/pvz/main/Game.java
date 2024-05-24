@@ -91,12 +91,15 @@ public class Game extends Thread {
         map.displayMap();
         System.out.println("Deck: " + deck.getInfo());
         System.out.println("Sun:" + Sun.getSunValue());
-        System.out.println("===============================");
-        System.out.println("1. Place Plant");
-        System.out.println("2. Remove Plant");
-        System.out.println("0. End Game");
-        System.out.println("===============================");
-        System.out.println("Enter your choice [0..2]: ");
+        if (choice == -1)
+        {
+            System.out.println("===============================");
+            System.out.println("1. Place Plant");
+            System.out.println("2. Remove Plant");
+            System.out.println("0. End Game");
+            System.out.println("===============================");
+            System.out.println("Enter your choice [0..2]: ");
+        }
     }
 
     public void run() {
@@ -158,6 +161,7 @@ public class Game extends Thread {
 
             switch (choice) {
                 case 1:
+                    refreshView();
                     System.out.println("Enter plant number: ");
 
                     choice = Integer.parseInt(scanner.nextLine());
@@ -192,6 +196,7 @@ public class Game extends Thread {
                     break;
 
                 case 2:
+                    refreshView();
                     System.out.println("Enter the row number: ");
                     row = Integer.parseInt(scanner.nextLine());
                     System.out.println("Enter the column number: ");
@@ -204,6 +209,7 @@ public class Game extends Thread {
                     break;
 
                 case 0:
+                    refreshView();
                     System.out.println("Save Game? (Y/N):");
                     String save = scanner.nextLine();
                     if (save.equals("Y") || save.equals("y")) {

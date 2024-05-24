@@ -2,113 +2,87 @@ package pvz.main;
 
 import java.util.Scanner;
 
+import pvz.plant.*;
+
 public class PlantsList implements Option {
+    public void plantView(Plant plant)
+    {
+        System.out.println(plant.getName());
+        System.out.println("===============================");
+        System.out.println("Health: " + plant.getHealth());
+        System.out.println("Attack: " + plant.getAttackDamage());
+        System.out.println("Speed: " + plant.getAttackSpeed());
+        System.out.println("===============================");
+    }
+
     @Override
     public void select() {
         Scanner scanner = ScannerUtil.getScanner();
         int choice = -1;
+        Plant plant;
 
         do {
             System.out.println("Lalapan List: ");
             System.out.println("Choose Lalapan's number to see the details: ");
             System.out.println("===============================");
-            System.out.println("1. ");
-            System.out.println("2. ");
-            System.out.println("3. ");
-            System.out.println("4. ");
-            System.out.println("5. ");
-            System.out.println("6. ");
-            System.out.println("7. ");
-            System.out.println("8. ");
-            System.out.println("9. ");
-            System.out.println("10. ");
+            System.out.println("1. Chomper");
+            System.out.println("2. Jalapeno");
+            System.out.println("3. Lilypad");
+            System.out.println("4. Peashooter");
+            System.out.println("5. Snowpea");
+            System.out.println("6. Spikeweed");
+            System.out.println("7. Squash");
+            System.out.println("8. Sunflower");
+            System.out.println("9. Twin sunflower");
+            System.out.println("10. Wallnut");
             System.out.println("0. Go Back");
             System.out.println("===============================");
             System.out.println("Enter your choice [0..10]:");
             choice = Integer.parseInt(scanner.nextLine());
 
+            
             switch (choice) {
                 // TODO: Change all to the correct plant name and details
                 // TODO: (Titipan) tolong cek detail ZombiesList dong udah sesuai gak nilainya
                 case 1:
-                    System.out.println("Normal Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 125");
-                    System.out.println("Attack: 100");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    plant = new Chomper(0);
+                    plantView(plant);
                     break;
                 case 2:
-                    System.out.println("Conehead Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 250");
-                    System.out.println("Attack: 100");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    plant = new Jalapeno(0);
+                    plantView(plant);
                     break;
                 case 3:
-                    System.out.println("Pole Vauting Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 175");
-                    System.out.println("Attack: 100");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    plant = new Lilypad(0);
+                    plantView(plant);
                     break;
                 case 4:
-                    System.out.println("Buckethead Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 300");
-                    System.out.println("Attack: 100");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    plant = new Peashooter(0);
+                    plantView(plant);
                     break;
                 case 5:
-                    System.out.println("Ducky Tube Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 100");
-                    System.out.println("Attack: 100");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    plant = new Snowpea(0);
+                    plantView(plant);
                     break;
                 case 6:
-                    System.out.println("Dolphin Rider Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 175");
-                    System.out.println("Attack: 100");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    plant = new Spikeweed(0);
+                    plantView(plant);
                     break;
                 case 7:
-                    System.out.println("Digger Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 250");
-                    System.out.println("Attack: 840");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    plant = new Squash(0);
+                    plantView(plant);
                     break;
                 case 8:
-                    System.out.println("Flag Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 250");
-                    System.out.println("Attack: 200");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    plant = new Sunflower(0);
+                    plantView(plant);
                     break;
                 case 9:
-                    System.out.println("Ladder Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 250");
-                    System.out.println("Attack: 840");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    plant = new TwinSunflower(0);
+                    plantView(plant);
                     break;
                 case 10:
-                    System.out.println("Newspaper Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 250");
-                    System.out.println("Attack: 420");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    plant = new Wallnut(0);
+                    plantView(plant);
                     break;
                 case 0:
                     return;

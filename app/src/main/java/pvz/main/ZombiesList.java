@@ -2,7 +2,19 @@ package pvz.main;
 
 import java.util.Scanner;
 
+import pvz.zombie.*;
+
 public class ZombiesList implements Option {
+    public void zombieView(Zombie zombie)
+    {
+        System.out.println(zombie.getName());
+        System.out.println("===============================");
+        System.out.println("Health: " + zombie.getHealth());
+        System.out.println("Attack: " + zombie.getAttackDamage());
+        System.out.println("Speed: " + zombie.getAttackSpeed());
+        System.out.println("===============================");
+    }
+    
     @Override
     public void select() {
         Scanner scanner = ScannerUtil.getScanner();
@@ -27,86 +39,50 @@ public class ZombiesList implements Option {
             System.out.println("Enter your choice [0..10]:");
             choice = Integer.parseInt(scanner.nextLine());
 
+            Zombie zombie;
+
             switch (choice) {
+                // TODO: Change all to the correct zombie name and details
+                // TODO: (Titipan) tolong cek detail ZombiesList dong udah sesuai gak nilainya
                 case 1:
-                    System.out.println("Normal Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 125");
-                    System.out.println("Attack: 100");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    zombie = new NormalZombie(0);
+                    zombieView(zombie);
                     break;
                 case 2:
-                    System.out.println("Conehead Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 250");
-                    System.out.println("Attack: 100");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    zombie = new Conehead(0);
+                    zombieView(zombie);
                     break;
                 case 3:
-                    System.out.println("Pole Vauting Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 175");
-                    System.out.println("Attack: 100");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    zombie = new PoleVault(0);
+                    zombieView(zombie);
                     break;
                 case 4:
-                    System.out.println("Buckethead Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 300");
-                    System.out.println("Attack: 100");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    zombie = new BucketHat(0);
+                    zombieView(zombie);
                     break;
                 case 5:
-                    System.out.println("Ducky Tube Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 100");
-                    System.out.println("Attack: 100");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    zombie = new DuckyTube(0);
+                    zombieView(zombie);
                     break;
                 case 6:
-                    System.out.println("Dolphin Rider Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 175");
-                    System.out.println("Attack: 100");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    zombie = new DolphinRider(0);
+                    zombieView(zombie);
                     break;
                 case 7:
-                    System.out.println("Digger Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 250");
-                    System.out.println("Attack: 840");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    zombie = new DiggerZombie(0);
+                    zombieView(zombie);
                     break;
                 case 8:
-                    System.out.println("Flag Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 250");
-                    System.out.println("Attack: 200");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    zombie = new FlagZombie(0);
+                    zombieView(zombie);
                     break;
                 case 9:
-                    System.out.println("Ladder Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 250");
-                    System.out.println("Attack: 840");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    zombie = new LadderZombie(0);
+                    zombieView(zombie);
                     break;
                 case 10:
-                    System.out.println("Newspaper Zombie");
-                    System.out.println("===============================");
-                    System.out.println("Health: 250");
-                    System.out.println("Attack: 420");
-                    System.out.println("Speed: 1");
-                    System.out.println("===============================");
+                    zombie = new Newspaper(0);
+                    zombieView(zombie);
                     break;
                 case 0:
                     return;
