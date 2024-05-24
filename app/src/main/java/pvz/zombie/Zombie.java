@@ -1,6 +1,6 @@
 package pvz.zombie;
 
-public abstract class Zombie {
+public class Zombie {
     private String name;
     private int health;
     private int attack_damage;
@@ -14,7 +14,6 @@ public abstract class Zombie {
     private int lastSlowed = -5;
 
     public static final int NORMAL_SPEED = 10;
-    // private boolean is_dead;
 
     public Zombie(String name, int health, int attack_damage, int attack_speed, boolean is_aquatic, int waktuZomb) {
         this.name = name;
@@ -50,6 +49,10 @@ public abstract class Zombie {
         return health;
     }
 
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
     public int getAttackDamage() {
         return attack_damage;
     }
@@ -63,6 +66,10 @@ public abstract class Zombie {
             resetSpeed();
         }
         return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
     public boolean isAquatic() {
@@ -125,6 +132,4 @@ public abstract class Zombie {
     public boolean isAttackTime(long currentTime) {
         return (currentTime - lastAttackTime >= attack_speed) || (lastAttackTime == waktuZomb);
     }
-
-    public abstract void attack();
 }

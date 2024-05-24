@@ -10,6 +10,11 @@ public class Time {
         cycle = "day";
     }
 
+    public Time(int elapsedTime) {
+        startTime = System.currentTimeMillis() - elapsedTime * 1000;
+        cycle = "day";
+    }
+
     public long getStartTime()
     {
         return startTime;

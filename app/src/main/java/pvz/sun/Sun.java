@@ -1,7 +1,7 @@
 package pvz.sun;
 
 public class Sun {
-    private static final int SUN_VALUE = 100; // TODO: harusnya 50
+    private static final int SUN_VALUE = 50; 
     private static final int SUN_PRODUCE = 25;
     private static Sun instance;
     private int value;

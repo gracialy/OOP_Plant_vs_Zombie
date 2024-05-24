@@ -5,9 +5,4 @@ public class LadderZombie extends Zombie {
         super("Ladder Zombie", 250, 840, 1, false, waktu);
         setInitial("LDZ");
     }
-
-    @Override
-    public void attack() {
-        // Attack the plant
-    }
 }

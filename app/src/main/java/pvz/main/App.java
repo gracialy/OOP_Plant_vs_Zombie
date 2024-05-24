@@ -28,9 +28,9 @@ public class App {
 
             try {
                 choice = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
+            } catch (Exception e) {
                 System.out.println("Invalid choice. Please try again.");
-                // ToolsUtil.delay(1);
+                ToolsUtil.delay(1);
                 continue;
             }
 
@@ -56,15 +56,15 @@ public class App {
                     System.out.print("Exiting Game");
                     for (int i = 0; i < 3; i++) {
                         System.out.print(" .");
-                        // ToolsUtil.delay(1);
+                        ToolsUtil.delay(1);
                     }
-                    // ToolsUtil.delay(2);
+                    ToolsUtil.delay(2);
                     ToolsUtil.clearScreen();
                     System.out.println("\nThank you for playing Michael vs. Lalapan!");
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
-                    // ToolsUtil.delay(1);
+                    ToolsUtil.delay(1);
                     break;
             }
         } while (choice != 0);

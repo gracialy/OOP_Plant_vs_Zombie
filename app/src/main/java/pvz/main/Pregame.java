@@ -26,7 +26,7 @@ public class Pregame {
     public int init() throws IllegalArgumentException {
         Scanner scanner = ScannerUtil.getScanner();
 
-        int choice = -1, choice1, choice2;
+        int choice = -1, choice1 = -1, choice2 = -1;
 
         do {
             ToolsUtil.clearScreen();
@@ -47,35 +47,54 @@ public class Pregame {
 
             try {
                 choice = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
+            } catch (Exception e) {
                 System.out.println("Invalid choice. Please try again.");
-                // ToolsUtil.delay(1);
+                ToolsUtil.delay(1);
                 continue;
             }
 
             switch (choice) {
                 case 1:
                     System.out.println("Choose card to add to deck: ");
-                    choice = Integer.parseInt(scanner.nextLine());
+                    try {
+                        choice = Integer.parseInt(scanner.nextLine());
+                    }
+                    catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                     inventory.addToDeck(choice);
                     break;
                 case 2:
                     System.out.println("Choose card to remove from deck: ");
-                    choice = Integer.parseInt(scanner.nextLine());
-                    inventory.removeFromDeck(choice);
+                    try {
+                        choice = Integer.parseInt(scanner.nextLine());
+                    }
+                    catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }                    inventory.removeFromDeck(choice);
                     break;
                 case 3:
-                    System.out.println("Choose card to swap in inventory: ");
-                    choice1 = Integer.parseInt(scanner.nextLine());
-                    System.out.println("Choose card to swap with in inventory: ");
-                    choice2 = Integer.parseInt(scanner.nextLine());
+                    try {
+                        System.out.println("Choose card to swap in inventory: ");
+                        choice1 = Integer.parseInt(scanner.nextLine());
+                        System.out.println("Choose card to swap with in inventory: ");
+                        choice2 = Integer.parseInt(scanner.nextLine());
+                    }
+                    catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                     inventory.swapInventory(choice1, choice2);
                     break;
                 case 4:
-                    System.out.println("Choose card to swap in deck: ");
-                    choice1 = Integer.parseInt(scanner.nextLine());
-                    System.out.println("Choose card to swap with in deck: ");
-                    choice2 = Integer.parseInt(scanner.nextLine());
+                    try {
+                        System.out.println("Choose card to swap in deck: ");
+                        choice1 = Integer.parseInt(scanner.nextLine());
+                        System.out.println("Choose card to swap with in deck: ");
+                        choice2 = Integer.parseInt(scanner.nextLine());
+                    }
+                    catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                     deck.swapDeck(choice1, choice2);
                     break;
                 case 5:
@@ -102,7 +121,7 @@ public class Pregame {
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
-                    // ToolsUtil.delay(1);
+                    ToolsUtil.delay(1);
                     break;
             }
 

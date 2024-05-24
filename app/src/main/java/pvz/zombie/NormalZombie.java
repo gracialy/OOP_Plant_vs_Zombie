@@ -5,9 +5,4 @@ public class NormalZombie extends Zombie {
         super("Normal Zombie", 125, 100, 1, false, waktu);
         setInitial("NOZ");
     }
-
-    @Override
-    public void attack() {
-        // Attack the plant
-    }
 }

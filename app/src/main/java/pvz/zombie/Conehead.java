@@ -5,9 +5,4 @@ public class Conehead extends Zombie {
         super("Conehead Zombie", 250, 100, 1, false, waktu);
         setInitial("CNZ");
     }
-
-    @Override
-    public void attack() {
-        // Attack the plant
-    }
 }
