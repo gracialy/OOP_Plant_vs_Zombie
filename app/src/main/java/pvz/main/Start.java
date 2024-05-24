@@ -120,7 +120,10 @@ public class Start implements Option {
                     game.setInputDelay(true);
                 }
             } catch (Exception e) {
-                if (game.getRunning()) System.out.println("Invalid input!");
+                if (game.getRunning()) {
+                    System.out.println("Invalid input!");
+                    game.setNewUpdate(true);
+                }
                 ToolsUtil.delay(1);
                 ToolsUtil.clearScreen();
             }

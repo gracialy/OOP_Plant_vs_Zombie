@@ -85,7 +85,6 @@ public class Game extends Thread {
     public void refreshView() {
         ToolsUtil.clearScreen();
         System.out.println("Elapsed time: " + elapsedTime + "s");
-        System.out.println("Jumlah zombie: " + map.hitungZombie());
         System.out.println("===============================");
         map.displayMap();
         System.out.println("Deck: " + deck.getInfo());
@@ -125,7 +124,7 @@ public class Game extends Thread {
             }
 
             // produce zombie
-            if ((elapsedTime >= 20 && elapsedTime <= 160) && (elapsedTime % 3 == 0 || isFlag())) {
+            if ((elapsedTime >= 150 && elapsedTime <= 160) && (elapsedTime % 3 == 0 || isFlag())) {
                 if (isFlag() && !flagCome) {
                     Zombie flagZombie = new FlagZombie(elapsedTime);
                     Zombie flagZombie2 = new FlagZombie(elapsedTime);
@@ -285,6 +284,7 @@ public class Game extends Thread {
                     if (tile.getZombies().size() != 0) {
                         System.out.println("\u001B[31mYOU LOSE!\u001B[0m");
                         System.out.println("Enter anything to go back to the main menu.");
+                        newUpdate = false;
                         running = false;
                         break;
                     }
@@ -293,6 +293,7 @@ public class Game extends Thread {
                     running = false;
                     System.out.println("\u001B[32mYOU WIN\u001B[0m");
                     System.out.println("Enter anything to go back to the main menu.");
+                    newUpdate = false;
                     running = false;
                     break;
                 }
