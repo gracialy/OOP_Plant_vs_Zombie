@@ -4,8 +4,7 @@ public class Time {
     private long startTime;
     private String cycle;
 
-    public Time()
-    {
+    public Time() {
         startTime = System.currentTimeMillis();
         cycle = "day";
     }
@@ -15,32 +14,28 @@ public class Time {
         cycle = "day";
     }
 
-    public long getStartTime()
-    {
+    public long getStartTime() {
         return startTime;
     }
 
-    public long getElapsedTime()
-    {
+    public long getElapsedTime() {
         return System.currentTimeMillis() - startTime;
     }
 
-    public long getElapsedSeconds()
-    {
+    public long getElapsedSeconds() {
         return getElapsedTime() / 1000;
     }
 
-    public String getCycle()
-    {
-        if (getElapsedSeconds() > 100)
-        {
-            setCycle("night");
+    public String getCycle() {
+        if (getElapsedSeconds() % 200 <= 100) {
+            setCycle("Day");
+        } else {
+            setCycle("Night");
         }
         return cycle;
     }
 
-    public void setCycle(String cycle)
-    {
+    public void setCycle(String cycle) {
         this.cycle = cycle;
     }
 }

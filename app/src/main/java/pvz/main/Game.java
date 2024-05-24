@@ -110,7 +110,8 @@ public class Game extends Thread {
 
             double lowerBound = 0.0;
             double upperBound = 1.0;
-            ZombieFactory[] arraydarat = { new NewspaperFactory(), new NormalFactory(), new BucketFactory(), new ConeheadFactory(), new DiggerFactory(), new LadderFactory(), new PoleVaultFactory()};
+            ZombieFactory[] arraydarat = { new NewspaperFactory(), new NormalFactory(), new BucketFactory(),
+                    new ConeheadFactory(), new DiggerFactory(), new LadderFactory(), new PoleVaultFactory() };
             ZombieFactory[] arrayair = { new DolphinFactory(), new DuckyTubeFactory() };
 
             if (newUpdate) {
@@ -119,7 +120,7 @@ public class Game extends Thread {
             }
 
             // produce sun
-            if (time.getCycle() == "day") {
+            if (time.getCycle() == "Day") {
                 if (Sun.produceSun(elapsedTime)) {
                     newUpdate = true;
                 }
@@ -438,7 +439,7 @@ public class Game extends Thread {
 
     private boolean isFlag() {
         // change appearance of flag zombie to night
-        return time.getCycle() == "night";
+        return time.getElapsedSeconds() >= 130 && time.getElapsedSeconds() <= 160;
     }
 
     public void jump(int row, int col, Zombie zombie) {
