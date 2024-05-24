@@ -37,7 +37,7 @@ public class Game extends Thread {
         this.name = null;
     }
 
-    public Game (String name, Deck deck, Map map, int elapsedTime) {
+    public Game(String name, Deck deck, Map map, int elapsedTime) {
         this.name = name;
         this.running = true;
         this.deck = deck;
@@ -58,7 +58,7 @@ public class Game extends Thread {
         return running;
     }
 
-    public void setRunning (boolean run) {
+    public void setRunning(boolean run) {
         this.running = run;
     }
 
@@ -91,8 +91,7 @@ public class Game extends Thread {
         map.displayMap();
         System.out.println("Deck: " + deck.getInfo());
         System.out.println("Sun:" + Sun.getSunValue());
-        if (choice == -1)
-        {
+        if (choice == -1) {
             System.out.println("===============================");
             System.out.println("1. Place Plant");
             System.out.println("2. Remove Plant");
@@ -111,9 +110,8 @@ public class Game extends Thread {
 
             double lowerBound = 0.0;
             double upperBound = 1.0;
-            ZombieFactory[] arraydarat = { new PoleVaultFactory(), new LadderFactory(), new DiggerFactory(), 
-                                            new BucketFactory(), new ConeheadFactory(), new NewspaperFactory(),
-                                            new NormalFactory()};
+            ZombieFactory[] arraydarat = { new NewspaperFactory(),
+                    new NormalFactory() };
             ZombieFactory[] arrayair = { new DolphinFactory(), new DuckyTubeFactory() };
 
             if (newUpdate) {
@@ -123,8 +121,7 @@ public class Game extends Thread {
 
             // produce sun
             if (time.getCycle() == "day") {
-                if (Sun.produceSun(elapsedTime))
-                {
+                if (Sun.produceSun(elapsedTime)) {
                     newUpdate = true;
                 }
             }
@@ -215,7 +212,8 @@ public class Game extends Thread {
                     if (save.equals("Y") || save.equals("y")) {
                         System.out.println("Enter the name of the save: ");
 
-                        if (name != null) Save.removeSaved(name); // remove old save (if exists
+                        if (name != null)
+                            Save.removeSaved(name); // remove old save (if exists
                         String name = scanner.nextLine();
                         while (Save.isSaved(name)) {
                             System.out.println("Save name already exists. Please enter another name: ");
@@ -245,15 +243,13 @@ public class Game extends Thread {
                                     sunflower.produceSun(elapsedTime);
                                     newUpdate = true;
                                 }
-                            }
-                            else if (plant1 instanceof TwinSunflower) {
+                            } else if (plant1 instanceof TwinSunflower) {
                                 TwinSunflower twinSunflower = (TwinSunflower) plant1;
                                 if (twinSunflower.isAttackTime(elapsedTime)) {
                                     twinSunflower.produceSun(elapsedTime);
                                     newUpdate = true;
                                 }
-                            }
-                            else if (plant1 != null) {
+                            } else if (plant1 != null) {
                                 if (plant1.isAttackTime(elapsedTime)) {
                                     Bullet bullet = new Bullet(plant1, i, j);
                                     if (bulletShot(bullet)) {
@@ -271,12 +267,16 @@ public class Game extends Thread {
                                 Iterator<Zombie> zombieIterator = tile.getZombies().iterator();
                                 while (zombieIterator.hasNext()) {
                                     Zombie zombie = zombieIterator.next();
-                                    if (zombie.isAttackTime(elapsedTime)) {
-                                        plant1.takeDamage(zombie.getAttackDamage());
-                                        zombie.setLastAttackTime(elapsedTime);
-                                        if (plant1.getHealth() <= 0) {
-                                            tile.removePlant();
-                                            break;
+                                    if (plant1 instanceof Spikeweed) {
+                                        continue;
+                                    } else {
+                                        if (zombie.isAttackTime(elapsedTime)) {
+                                            plant1.takeDamage(zombie.getAttackDamage());
+                                            zombie.setLastAttackTime(elapsedTime);
+                                            if (plant1.getHealth() <= 0) {
+                                                tile.removePlant();
+                                                break;
+                                            }
                                         }
                                     }
                                     newUpdate = true;
@@ -285,7 +285,7 @@ public class Game extends Thread {
 
                             // zombie walk
                             if (!tile.getZombies().isEmpty()) {
-                                if (tile.getPlant() == null) {
+                                if (tile.getPlant() == null || tile.getPlant() instanceof Spikeweed) {
                                     ZombieWalk(i, tile.getZombies(), elapsedTime);
                                     newUpdate = true;
                                 }
@@ -389,7 +389,8 @@ public class Game extends Thread {
         while (iterator.hasNext()) {
             Zombie zombie = iterator.next();
 
-            if ((elapsedTime - zombie.getWaktuZomb()) % zombie.getSpeed(currentTime) != 0 || elapsedTime == zombie.getWaktuZomb()) {
+            if ((elapsedTime - zombie.getWaktuZomb()) % zombie.getSpeed(currentTime) != 0
+                    || elapsedTime == zombie.getWaktuZomb()) {
                 continue;
             }
             zombie.setWaktuZomb(elapsedTime);
@@ -408,7 +409,8 @@ public class Game extends Thread {
                                 Tile newTile = map.getTile(row, col - 2);
                                 iterator.remove();
                                 tile.removeZombie(zombie);
-                                if (!(zombie instanceof DiggerZombie)) leftTile.removePlant(); // digger does not destroy left tile
+                                if (!(zombie instanceof DiggerZombie))
+                                    leftTile.removePlant(); // digger does not destroy left tile
                                 newTile.removePlant(); // tile - 2
                                 newTile.addZombie(zombie);
                                 zombie.setJump(true);
@@ -438,7 +440,7 @@ public class Game extends Thread {
     private boolean isFlag() {
         // change appearance of flag zombie to night
         return time.getCycle() == "night";
-    } 
+    }
 
     public void jump(int row, int col, Zombie zombie) {
         if (!zombie.getJump()) {
