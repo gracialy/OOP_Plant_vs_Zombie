@@ -84,19 +84,17 @@ public class Game extends Thread {
 
     public void refreshView() {
         ToolsUtil.clearScreen();
-        System.out.println("Elapsed time: " + elapsedTime + "s");
+        System.out.println("Last update on: " + elapsedTime + "s");
         System.out.println("===============================");
         map.displayMap();
         System.out.println("Deck: " + deck.getInfo());
         System.out.println("Sun:" + Sun.getSunValue());
-        if (choice == -1) {
-            System.out.println("===============================");
-            System.out.println("1. Place Plant");
-            System.out.println("2. Remove Plant");
-            System.out.println("0. End Game");
-            System.out.println("===============================");
-            System.out.println("Enter your choice [0..2]: ");
-        }
+        System.out.println("===============================");
+        System.out.println("1. Place Plant");
+        System.out.println("2. Remove Plant");
+        System.out.println("0. End Game");
+        System.out.println("===============================");
+        System.out.println("Enter your choice [0..2]: ");
     }
 
     public void run() {
@@ -124,7 +122,7 @@ public class Game extends Thread {
             }
 
             // produce zombie
-            if ((elapsedTime >= 150 && elapsedTime <= 160) && (elapsedTime % 3 == 0 || isFlag())) {
+            if ((elapsedTime >= 20 && elapsedTime <= 160) && (elapsedTime % 3 == 0 || isFlag())) {
                 if (isFlag() && !flagCome) {
                     Zombie flagZombie = new FlagZombie(elapsedTime);
                     Zombie flagZombie2 = new FlagZombie(elapsedTime);
@@ -185,6 +183,7 @@ public class Game extends Thread {
                     }
 
                     choice = -1;
+                    newUpdate = true;
                     break;
 
                 case 2:
@@ -196,6 +195,7 @@ public class Game extends Thread {
                     map.removePlant(row, column);
 
                     choice = -1;
+                    newUpdate = true;
                     break;
 
                 case 0:
