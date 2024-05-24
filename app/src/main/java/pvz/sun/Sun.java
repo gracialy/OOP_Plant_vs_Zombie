@@ -1,7 +1,7 @@
 package pvz.sun;
 
 public class Sun {
-    private static final int SUN_VALUE = 50; 
+    private static final int SUN_VALUE = 50;
     private static final int SUN_PRODUCE = 25;
     private static Sun instance;
     private int value;
@@ -51,5 +51,10 @@ public class Sun {
             return true;
         } else
             return false;
+    }
+
+    public static void resetSun() {
+        getInstance().value = 0;
+        getInstance().lastInvoke = 0;
     }
 }

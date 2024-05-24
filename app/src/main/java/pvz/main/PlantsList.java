@@ -5,8 +5,7 @@ import java.util.Scanner;
 import pvz.plant.*;
 
 public class PlantsList implements Option {
-    public void plantView(Plant plant)
-    {
+    public void plantView(Plant plant) {
         System.out.println(plant.getName());
         System.out.println("===============================");
         System.out.println("Health: " + plant.getHealth());
@@ -40,10 +39,7 @@ public class PlantsList implements Option {
             System.out.println("Enter your choice [0..10]:");
             choice = Integer.parseInt(scanner.nextLine());
 
-            
             switch (choice) {
-                // TODO: Change all to the correct plant name and details
-                // TODO: (Titipan) tolong cek detail ZombiesList dong udah sesuai gak nilainya
                 case 1:
                     plant = new Chomper(0);
                     plantView(plant);

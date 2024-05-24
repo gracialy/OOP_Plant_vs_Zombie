@@ -5,8 +5,7 @@ import java.util.Scanner;
 import pvz.zombie.*;
 
 public class ZombiesList implements Option {
-    public void zombieView(Zombie zombie)
-    {
+    public void zombieView(Zombie zombie) {
         System.out.println(zombie.getName());
         System.out.println("===============================");
         System.out.println("Health: " + zombie.getHealth());
@@ -14,7 +13,7 @@ public class ZombiesList implements Option {
         System.out.println("Speed: " + zombie.getAttackSpeed());
         System.out.println("===============================");
     }
-    
+
     @Override
     public void select() {
         Scanner scanner = ScannerUtil.getScanner();
@@ -42,8 +41,6 @@ public class ZombiesList implements Option {
             Zombie zombie;
 
             switch (choice) {
-                // TODO: Change all to the correct zombie name and details
-                // TODO: (Titipan) tolong cek detail ZombiesList dong udah sesuai gak nilainya
                 case 1:
                     zombie = new NormalZombie(0);
                     zombieView(zombie);

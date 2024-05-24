@@ -58,8 +58,7 @@ public class Pregame {
                     System.out.println("Choose card to add to deck: ");
                     try {
                         choice = Integer.parseInt(scanner.nextLine());
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
                     inventory.addToDeck(choice);
@@ -68,10 +67,10 @@ public class Pregame {
                     System.out.println("Choose card to remove from deck: ");
                     try {
                         choice = Integer.parseInt(scanner.nextLine());
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         System.out.println(e.getMessage());
-                    }                    inventory.removeFromDeck(choice);
+                    }
+                    inventory.removeFromDeck(choice);
                     break;
                 case 3:
                     try {
@@ -79,8 +78,7 @@ public class Pregame {
                         choice1 = Integer.parseInt(scanner.nextLine());
                         System.out.println("Choose card to swap with in inventory: ");
                         choice2 = Integer.parseInt(scanner.nextLine());
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
                     inventory.swapInventory(choice1, choice2);
@@ -91,8 +89,7 @@ public class Pregame {
                         choice1 = Integer.parseInt(scanner.nextLine());
                         System.out.println("Choose card to swap with in deck: ");
                         choice2 = Integer.parseInt(scanner.nextLine());
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
                     deck.swapDeck(choice1, choice2);

@@ -37,13 +37,14 @@ public class Game extends Thread {
         this.name = null;
     }
 
-    public Game(String name, Deck deck, Map map, int elapsedTime) {
+    public Game(String name, Deck deck, Map map, int elapsedTime, int sunValue) {
         this.name = name;
         this.running = true;
         this.deck = deck;
         this.map = map;
         this.elapsedTime = elapsedTime;
         this.time = new Time(elapsedTime);
+        Sun.addSun(sunValue);
     }
 
     public Deck getDeck() {
@@ -121,6 +122,7 @@ public class Game extends Thread {
 
             // produce sun
             if (time.getCycle() == "Day") {
+                System.out.println(elapsedTime + " " + Sun.getLastInvoke());
                 if (Sun.produceSun(elapsedTime)) {
                     newUpdate = true;
                 }
@@ -219,7 +221,8 @@ public class Game extends Thread {
                             System.out.println("Save name already exists. Please enter another name: ");
                             name = scanner.nextLine();
                         }
-                        Save.addSaved(name, this);
+                        Integer sunx = (Integer) (Sun.getSunValue());
+                        Save.addSaved(name, sunx, this);
                     }
                     running = false;
                     break;

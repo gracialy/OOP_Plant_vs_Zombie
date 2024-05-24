@@ -1,5 +1,7 @@
 package pvz.main;
+
 import pvz.pack.*;
+import pvz.sun.Sun;
 
 public class Start implements Option {
     Pregame pregame;
@@ -20,7 +22,7 @@ public class Start implements Option {
             ToolsUtil.delay(1);
 
         }
-        
+
         switch (choice) {
             case (1):
                 newGame();
@@ -55,25 +57,24 @@ public class Start implements Option {
         ToolsUtil.delay(2);
         ToolsUtil.clearScreen();
 
-
         // =============================== GAME ===============================
         displayGame();
-
+        Sun.resetSun();
+        Sun.addSun(50);
         Game game = new Game(deck);
 
         game.start();
-        
-        while (game.getRunning())
-        {
+
+        while (game.getRunning()) {
             try {
-                if (!game.getInputDelay())
-                {
+                if (!game.getInputDelay()) {
                     int choice = Integer.parseInt(game.scanner.nextLine());
                     game.setChoice(choice);
                     game.setInputDelay(true);
                 }
             } catch (Exception e) {
-                if (game.getRunning()) System.out.println("Invalid input!");
+                if (game.getRunning())
+                    System.out.println("Invalid input!");
                 ToolsUtil.delay(1);
                 ToolsUtil.clearScreen();
             }
@@ -105,16 +106,17 @@ public class Start implements Option {
 
         // =============================== GAME ===============================
         displayGame();
+        Sun.resetSun();
 
         Game cachedGame = Save.getSaved(name);
-        Game game = new Game(name, cachedGame.getDeck(), cachedGame.getMap(), cachedGame.getElapsedTime());
+        Game game = new Game(name, cachedGame.getDeck(), cachedGame.getMap(), cachedGame.getElapsedTime(),
+                Save.getSunValue(name));
 
         game.start();
 
         while (game.getRunning()) {
             try {
-                if (!game.getInputDelay())
-                {
+                if (!game.getInputDelay()) {
                     int choice = Integer.parseInt(game.scanner.nextLine());
                     game.setChoice(choice);
                     game.setInputDelay(true);
@@ -130,8 +132,7 @@ public class Start implements Option {
 
             try {
                 Thread.sleep(1);
-            } 
-            catch (InterruptedException e) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }

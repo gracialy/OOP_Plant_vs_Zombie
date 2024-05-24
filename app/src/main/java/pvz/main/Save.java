@@ -8,6 +8,8 @@ public class Save {
 
     private Map<String, Game> savedGames = new HashMap<>();
 
+    private Map<String, Integer> savedSun = new HashMap<>();
+
     private Save() {
 
     }
@@ -19,8 +21,9 @@ public class Save {
         return instance;
     }
 
-    public static void addSaved(String name, Game game) {
+    public static void addSaved(String name, Integer sunValue, Game game) {
         getInstance().savedGames.put(name, game);
+        getInstance().savedSun.put(name, sunValue);
     }
 
     public static Game getSaved(String name) {
@@ -44,5 +47,9 @@ public class Save {
 
     public static boolean isSaved(String name) {
         return getInstance().savedGames.containsKey(name);
+    }
+
+    public static Integer getSunValue(String name) {
+        return getInstance().savedSun.get(name);
     }
 }
