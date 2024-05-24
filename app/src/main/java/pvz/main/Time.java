@@ -32,6 +32,10 @@ public class Time {
 
     public String getCycle()
     {
+        if (getElapsedSeconds() > 100)
+        {
+            setCycle("night");
+        }
         return cycle;
     }
 

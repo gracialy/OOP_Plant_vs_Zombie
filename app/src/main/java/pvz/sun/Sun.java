@@ -31,11 +31,13 @@ public class Sun {
         getInstance().value -= nilai;
     }
 
-    public static void produceSun(long invokeTime) {
+    public static boolean produceSun(long invokeTime) {
         if (onInvokeTime(invokeTime)) {
             getInstance().value += SUN_PRODUCE;
             getInstance().lastInvoke = invokeTime;
+            return true;
         }
+        return false;
     }
 
     public static void addSun(int amount) {

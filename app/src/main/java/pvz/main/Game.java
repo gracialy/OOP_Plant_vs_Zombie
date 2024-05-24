@@ -85,6 +85,8 @@ public class Game extends Thread {
     public void refreshView() {
         ToolsUtil.clearScreen();
         System.out.println("Last update on: " + elapsedTime + "s");
+        System.out.println("Jumlah zombie: " + map.hitungZombie());
+        System.out.println("Cycle: " + time.getCycle());
         System.out.println("===============================");
         map.displayMap();
         System.out.println("Deck: " + deck.getInfo());
@@ -117,8 +119,11 @@ public class Game extends Thread {
             }
 
             // produce sun
-            if (elapsedTime % 200 <= 100) {
-                Sun.produceSun(elapsedTime);
+            if (time.getCycle() == "day") {
+                if (Sun.produceSun(elapsedTime))
+                {
+                    newUpdate = true;
+                }
             }
 
             // produce zombie
@@ -232,12 +237,14 @@ public class Game extends Thread {
                                 Sunflower sunflower = (Sunflower) plant1;
                                 if (sunflower.isAttackTime(elapsedTime)) {
                                     sunflower.produceSun(elapsedTime);
+                                    newUpdate = true;
                                 }
                             }
                             else if (plant1 instanceof TwinSunflower) {
                                 TwinSunflower twinSunflower = (TwinSunflower) plant1;
                                 if (twinSunflower.isAttackTime(elapsedTime)) {
                                     twinSunflower.produceSun(elapsedTime);
+                                    newUpdate = true;
                                 }
                             }
                             else if (plant1 != null) {
@@ -249,6 +256,7 @@ public class Game extends Thread {
                                             tile.removePlant();
                                         }
                                     }
+                                    newUpdate = true;
                                 }
                             }
 
@@ -265,6 +273,7 @@ public class Game extends Thread {
                                             break;
                                         }
                                     }
+                                    newUpdate = true;
                                 }
                             }
 
@@ -272,6 +281,7 @@ public class Game extends Thread {
                             if (!tile.getZombies().isEmpty()) {
                                 if (tile.getPlant() == null) {
                                     ZombieWalk(i, tile.getZombies(), elapsedTime);
+                                    newUpdate = true;
                                 }
                             }
                         }
@@ -420,7 +430,8 @@ public class Game extends Thread {
     }
 
     private boolean isFlag() {
-        return elapsedTime >= 20 && elapsedTime <= 30;
+        // change appearance of flag zombie to night
+        return time.getCycle() == "night";
     } 
 
     public void jump(int row, int col, Zombie zombie) {
