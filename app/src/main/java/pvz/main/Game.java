@@ -5,6 +5,7 @@ import pvz.plantfactory.*;
 import pvz.plant.*;
 import pvz.sun.*;
 import pvz.zombie.*;
+import pvz.zombiefactory.*;
 import pvz.map.*;
 import pvz.bullet.*;
 
@@ -15,86 +16,142 @@ import java.util.Iterator;
 
 import java.util.List;
 
-public class Game implements Runnable {
+public class Game extends Thread {
+    private boolean inputDelay = false;
     private boolean running;
-    private static int elapsedTime;
-    public Deck deck;
-    private Map map = new Map();
-    // private Sun sun;
-    private Scanner scanner;
+    private boolean newUpdate = true;
+    private int elapsedTime;
+    private Deck deck;
+    private Map map;
+    public Scanner scanner = ScannerUtil.getScanner();
+    private int choice = -1;
+    private Time time;
+    private boolean flagCome = false;
+    private String name;
 
     public Game(Deck deck) {
         this.running = true;
         this.deck = deck;
         this.map = new Map();
-        // this.sun = Sun.getInstance();
-        this.scanner = ScannerUtil.getScanner();
+        this.time = new Time();
+        this.name = null;
     }
 
-    public void run() {
-        elapsedTime = 0;
-        while (running) {
-            PlantFactory plantFactory;
-            Plant plant;
-            int row, column;
-            long timeCache;
-            int choice = -1;
+    public Game (String name, Deck deck, Map map, int elapsedTime) {
+        this.name = name;
+        this.running = true;
+        this.deck = deck;
+        this.map = map;
+        this.elapsedTime = elapsedTime;
+        this.time = new Time(elapsedTime);
+    }
 
-            double lowerBound = 0.0;
-            double upperBound = 1.0;
-            Zombie[] arraydarat = { new NormalZombie(elapsedTime), new Newspaper(elapsedTime),
-                    new Conehead(elapsedTime), new BucketHat(elapsedTime),
-                    new DiggerZombie(elapsedTime), new FlagZombie(elapsedTime), new LadderZombie(elapsedTime),
-                    new DuckyTube(elapsedTime) };
-            Zombie[] arrayair = { new PoleVault(elapsedTime), new DolphinRider(elapsedTime) };
+    public Deck getDeck() {
+        return deck;
+    }
 
-            // TODO: Sunflower sun production
-            // TODO: Zombie spawning
-            // TODO: Plant attack
-            // TODO: Zombie attack
-            // TODO: Zombie moving
+    public Map getMap() {
+        return map;
+    }
 
-            // TODO: Test plant placing
-            // TODO: Test sun producing
+    public boolean getRunning() {
+        return running;
+    }
 
-            // produce sun
-            Sun.produceSun(elapsedTime);
-            // produce zombie
-            for (int i = 0; i < 6; i++) {
-                if (map.hitungZombie() < 10) {
-                    double randomValue = getRandomValue(lowerBound, upperBound);
-                    if (randomValue <= 0.3) {
-                        Random random = new Random();
-                        if (i == 2 || i == 3) {
-                            int x = random.nextInt(arrayair.length);
-                            Zombie zomb = arrayair[x];
-                            map.zombie(i, 10, zomb);
-                        } else {
-                            int x = random.nextInt(arraydarat.length);
-                            Zombie zomb = arraydarat[x];
-                            map.zombie(i, 10, zomb);
-                        }
-                    }
-                }
-            }
+    public void setRunning (boolean run) {
+        this.running = run;
+    }
 
-            // attack plant
-            System.out.println("===============================");
-            map.displayMap();
-            System.out.println("Deck: " + deck.getInfo());
-            System.out.println("Sun:" + Sun.getSunValue());
+    public Time getTime() {
+        return time;
+    }
+
+    public void setNewUpdate(boolean newUpdate) {
+        this.newUpdate = newUpdate;
+    }
+
+    public boolean getInputDelay() {
+        return inputDelay;
+    }
+
+    public void setChoice(int choice) {
+        this.choice = choice;
+    }
+
+    public void setInputDelay(boolean inputDelay) {
+        this.inputDelay = inputDelay;
+    }
+
+    public void refreshView() {
+        ToolsUtil.clearScreen();
+        System.out.println("Elapsed time: " + elapsedTime + "s");
+        System.out.println("Jumlah zombie: " + map.hitungZombie());
+        System.out.println("===============================");
+        map.displayMap();
+        System.out.println("Deck: " + deck.getInfo());
+        System.out.println("Sun:" + Sun.getSunValue());
+        if (choice == -1) {
             System.out.println("===============================");
             System.out.println("1. Place Plant");
             System.out.println("2. Remove Plant");
             System.out.println("0. End Game");
             System.out.println("===============================");
             System.out.println("Enter your choice [0..2]: ");
-            try {
-                choice = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid choice. Please try again.");
-                ToolsUtil.delay(1);
-                ToolsUtil.clearScreen();
+        }
+    }
+
+    public void run() {
+        while (running) {
+            PlantFactory plantFactory;
+            Plant plant;
+            int row, column;
+            long timeCache;
+
+            double lowerBound = 0.0;
+            double upperBound = 1.0;
+            ZombieFactory[] arraydarat = { new PoleVaultFactory(), new LadderFactory(), new DiggerFactory(), 
+                                            new BucketFactory(), new ConeheadFactory(), new NewspaperFactory(),
+                                            new NormalFactory()};
+            ZombieFactory[] arrayair = { new DolphinFactory(), new DuckyTubeFactory() };
+
+            if (newUpdate) {
+                refreshView();
+                newUpdate = false;
+            }
+
+            // produce sun
+            if (elapsedTime % 200 <= 100) {
+                Sun.produceSun(elapsedTime);
+            }
+
+            // produce zombie
+            if ((elapsedTime >= 20 && elapsedTime <= 160) && (elapsedTime % 3 == 0 || isFlag())) {
+                if (isFlag() && !flagCome) {
+                    Zombie flagZombie = new FlagZombie(elapsedTime);
+                    Zombie flagZombie2 = new FlagZombie(elapsedTime);
+                    map.zombie(1, 10, flagZombie);
+                    map.zombie(4, 10, flagZombie2);
+                    flagCome = true;
+                }
+                for (int i = 0; i < 6; i++) {
+                    if (map.hitungZombie() < 10 || (isFlag() && map.hitungZombie() < 25)) {
+                        double randomValue = getRandomValue(lowerBound, upperBound);
+                        if (randomValue <= 0.3) {
+                            Random random = new Random();
+                            if (i == 2 || i == 3) {
+                                int x = random.nextInt(arrayair.length);
+                                Zombie zomb = arrayair[x].createZombie(elapsedTime);
+                                map.zombie(i, 10, zomb);
+                            } else {
+                                int x = random.nextInt(arraydarat.length);
+                                Zombie zomb = arraydarat[x].createZombie(elapsedTime);
+                                map.zombie(i, 10, zomb);
+                            }
+                            newUpdate = true;
+                        }
+                    }
+
+                }
             }
 
             switch (choice) {
@@ -124,8 +181,11 @@ public class Game implements Runnable {
                     if (map.setPlant(row, column, plant) == 1) {
                         Sun.addSun(plantFactory.getCost());
                         plantFactory.setLastInvokeTime(timeCache);
+                    } else {
+                        Sun.useSun(plantFactory.getCost());
                     }
 
+                    choice = -1;
                     break;
 
                 case 2:
@@ -135,14 +195,30 @@ public class Game implements Runnable {
                     column = Integer.parseInt(scanner.nextLine());
 
                     map.removePlant(row, column);
+
+                    choice = -1;
                     break;
 
                 case 0:
+                    System.out.println("Save Game? (Y/N):");
+                    String save = scanner.nextLine();
+                    if (save.equals("Y") || save.equals("y")) {
+                        System.out.println("Enter the name of the save: ");
+
+                        if (name != null) Save.removeSaved(name); // remove old save (if exists
+                        String name = scanner.nextLine();
+                        while (Save.isSaved(name)) {
+                            System.out.println("Save name already exists. Please enter another name: ");
+                            name = scanner.nextLine();
+                        }
+                        Save.addSaved(name, this);
+                    }
                     running = false;
                     break;
 
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    choice = -1;
+                    inputDelay = false;
                     break;
             }
 
@@ -152,35 +228,76 @@ public class Game implements Runnable {
                         Plant plant1 = map.getTile(i, j).getPlant();
                         Tile tile = map.getTile(i, j);
                         synchronized (tile) {
-                            if (!(tile.getPlant() == null)) {
-
-                            }
-                            if (!tile.getZombies().isEmpty()) {
-                                if (tile.getPlant() == null) {
-                                    ZombieWalk(i, tile.getZombies());
+                            // plant action
+                            if (plant1 instanceof Sunflower) {
+                                Sunflower sunflower = (Sunflower) plant1;
+                                if (sunflower.isAttackTime(elapsedTime)) {
+                                    sunflower.produceSun(elapsedTime);
                                 }
                             }
-                            if (plant1 == null)
-                                continue;
-                            if (plant1.getAttackDamage() == 0)
-                                continue;
-                            if (!plant1.isAttackTime(elapsedTime))
-                                continue;
+                            else if (plant1 instanceof TwinSunflower) {
+                                TwinSunflower twinSunflower = (TwinSunflower) plant1;
+                                if (twinSunflower.isAttackTime(elapsedTime)) {
+                                    twinSunflower.produceSun(elapsedTime);
+                                }
+                            }
+                            else if (plant1 != null) {
+                                if (plant1.isAttackTime(elapsedTime)) {
+                                    Bullet bullet = new Bullet(plant1, i, j);
+                                    if (bulletShot(bullet)) {
+                                        plant1.setLastAttackTime(elapsedTime);
+                                        if (plant1 instanceof Jalapeno || plant1 instanceof Squash) {
+                                            tile.removePlant();
+                                        }
+                                    }
+                                }
+                            }
 
-                            System.out.println("============ attacktime" + plant1.isAttackTime(elapsedTime));
+                            // zombie attack
+                            if (plant1 != null && !tile.getZombies().isEmpty()) {
+                                Iterator<Zombie> zombieIterator = tile.getZombies().iterator();
+                                while (zombieIterator.hasNext()) {
+                                    Zombie zombie = zombieIterator.next();
+                                    if (zombie.isAttackTime(elapsedTime)) {
+                                        plant1.takeDamage(zombie.getAttackDamage());
+                                        zombie.setLastAttackTime(elapsedTime);
+                                        if (plant1.getHealth() <= 0) {
+                                            tile.removePlant();
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
 
-                            Bullet bullet = new Bullet(plant1, i, j);
-                            if (bulletShot(bullet))
-                                plant1.setLastAttackTime(elapsedTime);
-
-                            System.out.println("======================last attack time" + plant1.getLastAttackTime());
-
+                            // zombie walk
+                            if (!tile.getZombies().isEmpty()) {
+                                if (tile.getPlant() == null) {
+                                    ZombieWalk(i, tile.getZombies(), elapsedTime);
+                                }
+                            }
                         }
                     }
                 }
+
+                // check game over
+                for (int i = 0; i < 5; i++) {
+                    Tile tile = map.getTile(i, 0);
+                    if (tile.getZombies().size() != 0) {
+                        System.out.println("\u001B[31mYOU LOSE!\u001B[0m");
+                        System.out.println("Enter anything to go back to the main menu.");
+                        running = false;
+                        break;
+                    }
+                }
+                if (map.hitungZombie() == 0 && elapsedTime > 160) {
+                    running = false;
+                    System.out.println("\u001B[32mYOU WIN\u001B[0m");
+                    System.out.println("Enter anything to go back to the main menu.");
+                    running = false;
+                    break;
+                }
                 Thread.sleep(1000);
-                elapsedTime += 1;
-                ToolsUtil.clearScreen();
+                elapsedTime = (int) (time.getElapsedSeconds());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -222,7 +339,7 @@ public class Game implements Runnable {
                 zombies = map.getTile(row, col).getZombies();
 
                 for (Zombie zombie : zombies) {
-                    zombie.takeDamage(bullet.getDamage(), bullet.hasSlowEffect());
+                    zombie.takeDamage(bullet.getDamage(), bullet.hasSlowEffect(), elapsedTime);
                 }
 
                 if (zombies.size() > 0) {
@@ -232,18 +349,17 @@ public class Game implements Runnable {
 
                 break;
             case (-1):
-                for (int i = col; i <= Map.COLS; i++) {
+                for (int i = col; i < Map.COLS; i++) {
                     zombies = map.getTile(row, i).getZombies();
-
                     for (Zombie zombie : zombies) {
-                        zombie.takeDamage(bullet.getDamage(), bullet.hasSlowEffect());
+                        zombie.takeDamage(bullet.getDamage(), bullet.hasSlowEffect(), elapsedTime);
                     }
-
                     if (zombies.size() > 0) {
                         hit = true;
-                        map.getTile(row, col).removeZombie();
-                        break;
+                        map.getTile(row, i).removeZombie();
                     }
+                    if (hit == true && !bullet.isImmortal())
+                        break;
                 }
 
                 break;
@@ -251,13 +367,15 @@ public class Game implements Runnable {
         return hit;
     }
 
-    public void ZombieWalk(int row, List<Zombie> zombies) {
+    public void ZombieWalk(int row, List<Zombie> zombies, int currentTime) {
         Iterator<Zombie> iterator = zombies.iterator();
         while (iterator.hasNext()) {
             Zombie zombie = iterator.next();
-            if ((Game.elapsedTime - zombie.getWaktuZomb()) % 5 != 0 || (Game.elapsedTime == zombie.getWaktuZomb())) {
+
+            if ((elapsedTime - zombie.getWaktuZomb()) % zombie.getSpeed(currentTime) != 0 || elapsedTime == zombie.getWaktuZomb()) {
                 continue;
             }
+            zombie.setWaktuZomb(elapsedTime);
             for (int col = 0; col < 11; col++) {
                 Tile tile = map.getTile(row, col);
                 synchronized (tile) {
@@ -267,32 +385,97 @@ public class Game implements Runnable {
                     if (col > 0) {
                         Tile leftTile = map.getTile(row, col - 1);
                         if (leftTile.getPlant() != null
-                                && (zombie instanceof PoleVault || zombie instanceof DolphinRider)) {
-                            jump(row, col, zombie);
-                            ;
+                                && (zombie instanceof PoleVault || zombie instanceof DolphinRider
+                                        || zombie instanceof LadderZombie || zombies instanceof DiggerZombie)) {
+                            if (!zombie.getJump()) {
+                                Tile newTile = map.getTile(row, col - 2);
+                                iterator.remove();
+                                tile.removeZombie(zombie);
+                                if (!(zombie instanceof DiggerZombie)) leftTile.removePlant(); // digger does not destroy left tile
+                                newTile.removePlant(); // tile - 2
+                                newTile.addZombie(zombie);
+                                zombie.setJump(true);
+                            } else {
+                                newUpdate = true;
+                                leftTile.addZombie(zombie);
+                                iterator.remove();
+                                tile.removeZombie(zombie);
+                            }
                         } else {
+                            newUpdate = true;
                             leftTile.addZombie(zombie);
                             iterator.remove();
+                            tile.removeZombie(zombie);
                         }
+                        break;
                     }
-                    break;
                 }
             }
         }
     }
 
-    public static int getElapsedTime() {
+    public int getElapsedTime() {
         return elapsedTime;
     }
 
+    private boolean isFlag() {
+        return elapsedTime >= 20 && elapsedTime <= 30;
+    } 
+
     public void jump(int row, int col, Zombie zombie) {
-        if (zombie.getJump() == false) {
+        if (!zombie.getJump()) {
             Tile tile = map.getTile(row, col);
             Tile tilePlant = map.getTile(row, col - 1);
-            map.zombie(row, col - 2, zombie);
+            Tile newTile = map.getTile(row, col - 2);
+
             tile.removeZombie(zombie);
             tilePlant.removePlant();
+            newTile.addZombie(zombie);
+
             zombie.setJump(true);
+        }
+    }
+
+    public void attackZomb(int currentTime) {
+        for (int i = 0; i < Map.ROWS; i++) {
+            for (int j = 0; j < Map.COLS; j++) {
+                Tile posisi = map.getTile(i, j);
+                synchronized (posisi) {
+                    Plant plant = posisi.getPlant();
+                    if (plant != null && !posisi.getZombies().isEmpty()) {
+                        Iterator<Zombie> zombieIterator = posisi.getZombies().iterator();
+                        while (zombieIterator.hasNext()) {
+                            Zombie zombie = zombieIterator.next();
+                            if (zombie.isAttackTime(currentTime)) {
+                                plant.takeDamage(zombie.getAttackDamage());
+                                zombie.setLastAttackTime(currentTime);
+                                if (plant.getHealth() <= 0) {
+                                    posisi.removePlant();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void SunSunFlower(int currentTime) {
+        for (int i = 0; i < Map.ROWS; i++) {
+            for (int j = 0; j < Map.COLS; j++) {
+                Tile posisi = map.getTile(i, j);
+                synchronized (posisi) {
+                    Plant plant = posisi.getPlant();
+                    if (plant instanceof Sunflower) {
+                        Sunflower sunflower = (Sunflower) plant;
+                        if (sunflower.isAttackTime(currentTime)) {
+                            Sun.addSun(25);
+                            sunflower.setLastAttackTime(currentTime);
+                        }
+                    }
+                }
+            }
         }
     }
 }

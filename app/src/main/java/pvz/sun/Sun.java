@@ -1,7 +1,8 @@
 package pvz.sun;
 
 public class Sun {
-    private static final int SUN_VALUE = 500;
+    private static final int SUN_VALUE = 50; 
+    private static final int SUN_PRODUCE = 25;
     private static Sun instance;
     private int value;
     private long lastInvoke;
@@ -26,15 +27,14 @@ public class Sun {
         return getInstance().lastInvoke;
     }
 
-    public static void useSun() {
-        getInstance().value--;
+    public static void useSun(int nilai) {
+        getInstance().value -= nilai;
     }
 
     public static void produceSun(long invokeTime) {
         if (onInvokeTime(invokeTime)) {
-            getInstance().value += SUN_VALUE;
+            getInstance().value += SUN_PRODUCE;
             getInstance().lastInvoke = invokeTime;
-            System.out.println("Sun produced!");
         }
     }
 
@@ -43,9 +43,9 @@ public class Sun {
     }
 
     public static boolean onInvokeTime(long elapsedTime) {
-        if (elapsedTime - getLastInvoke() >= 5000 && elapsedTime - getLastInvoke() <= 9000) {
+        if (elapsedTime - getLastInvoke() >= 5 && elapsedTime - getLastInvoke() <= 9) {
             return Math.random() < 0.5 ? true : false;
-        } else if (elapsedTime - getLastInvoke() == 10000) {
+        } else if (elapsedTime - getLastInvoke() > 9) {
             return true;
         } else
             return false;

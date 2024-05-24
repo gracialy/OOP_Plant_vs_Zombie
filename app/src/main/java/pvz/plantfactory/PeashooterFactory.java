@@ -4,7 +4,7 @@ import pvz.plant.*;
 
 public class PeashooterFactory extends PlantFactory {
     public PeashooterFactory() {
-        super(10000, 100);
+        super(10, 100);
     }
 
     @Override
@@ -12,7 +12,7 @@ public class PeashooterFactory extends PlantFactory {
         if (canInvoke(invokeTime, sunValue)) {
             setLastInvokeTime(invokeTime);
             return new Peashooter(invokeTime);
-        }
-        else throw new IllegalStateException("Cannot create Peashooter");
+        } else
+            throw new IllegalStateException("Cannot create Peashooter");
     }
 }

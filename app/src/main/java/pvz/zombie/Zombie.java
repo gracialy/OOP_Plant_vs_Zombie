@@ -1,17 +1,19 @@
 package pvz.zombie;
 
-public abstract class Zombie {
+public class Zombie {
     private String name;
     private int health;
     private int attack_damage;
     private int attack_speed;
     private boolean is_aquatic;
-    private long speed = NORMAL_SPEED;
+    private int speed = NORMAL_SPEED;
     private int waktuZomb;
-    private boolean has_jump = false;
+    private boolean jump = false;
+    private int lastAttackTime;
+    private String initial;
+    private int lastSlowed = -5;
 
-    public static final int NORMAL_SPEED = 50000;
-    // private boolean is_dead;
+    public static final int NORMAL_SPEED = 10;
 
     public Zombie(String name, int health, int attack_damage, int attack_speed, boolean is_aquatic, int waktuZomb) {
         this.name = name;
@@ -20,6 +22,23 @@ public abstract class Zombie {
         this.attack_speed = attack_speed;
         this.is_aquatic = is_aquatic;
         this.waktuZomb = waktuZomb;
+        this.lastAttackTime = waktuZomb;
+    }
+
+    public int getLastSlowed() {
+        return lastSlowed;
+    }
+
+    public void setLastSlowed(int lastSlowed) {
+        this.lastSlowed = lastSlowed;
+    }
+
+    public String getInitial() {
+        return initial;
+    }
+
+    public void setInitial(String initial) {
+        this.initial = initial;
     }
 
     public String getName() {
@@ -30,6 +49,10 @@ public abstract class Zombie {
         return health;
     }
 
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
     public int getAttackDamage() {
         return attack_damage;
     }
@@ -38,25 +61,34 @@ public abstract class Zombie {
         return attack_speed;
     }
 
-    public long getSpeed() {
+    public int getSpeed(int currentTime) {
+        if (currentTime - lastSlowed > 3) {
+            resetSpeed();
+        }
         return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
     public boolean isAquatic() {
         return is_aquatic;
     }
 
-    public void takeDamage(int damage, boolean hasSlowEffect) {
+    public void takeDamage(int damage, boolean hasSlowEffect, int currentTime) {
         health -= damage;
-        if (hasSlowEffect)
-            reduceSpeed(2);
+        if (hasSlowEffect) {
+            slowSpeed();
+            setLastSlowed(currentTime);
+        }
     }
 
-    public void reduceSpeed(long factor) {
-        this.speed /= factor;
+    public void slowSpeed() {
+        this.speed = NORMAL_SPEED * 2;
     }
 
-    public void resetSpeed(long factor) {
+    public void resetSpeed() {
         this.speed = NORMAL_SPEED;
     }
 
@@ -74,11 +106,19 @@ public abstract class Zombie {
     }
 
     public boolean getJump() {
-        return has_jump;
+        return jump;
     }
 
-    public void setJump(boolean has_jump) {
-        this.has_jump = has_jump;
+    public void setJump(boolean jump) {
+        this.jump = jump;
+    }
+
+    public int getLastAttackTime() {
+        return lastAttackTime;
+    }
+
+    public void setLastAttackTime(int lastAttackTime) {
+        this.lastAttackTime = lastAttackTime;
     }
 
     public void printInfo() {
@@ -89,5 +129,7 @@ public abstract class Zombie {
         System.out.println("Is Aquatic: " + is_aquatic);
     }
 
-    public abstract void attack();
+    public boolean isAttackTime(long currentTime) {
+        return (currentTime - lastAttackTime >= attack_speed) || (lastAttackTime == waktuZomb);
+    }
 }

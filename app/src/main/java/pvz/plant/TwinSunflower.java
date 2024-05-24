@@ -3,19 +3,20 @@ package pvz.plant;
 import pvz.sun.Sun;
 
 public class TwinSunflower extends Plant {
-    private static final int SUN_AMOUNT = 100;
+    private final int SUN_AMOUNT = 100;
 
     public TwinSunflower(long invokeTime) {
         super("Twin Sunflower", 300, 0, 0, 0, invokeTime);
+        setInitial("TSP");
     }
 
-    // Menghasilkan Sun dan menambahkannya ke saldo Sun pemain
-    private void produceSun() {
+    @Override
+    public boolean isAttackTime(long currentTime) {
+        return (currentTime - getLastAttackTime() >= 3) || (currentTime == getPlantTime());
+    }
+
+    public void produceSun(long currentTime) {
         Sun.addSun(SUN_AMOUNT);
-        System.out.println("Sunflower produced 100 sun. Total Sun: " + Sun.getSunValue());
-    }
-
-    public void attack() {
-
+        setLastAttackTime(currentTime);
     }
 }

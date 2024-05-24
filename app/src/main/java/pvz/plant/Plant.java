@@ -1,6 +1,6 @@
 package pvz.plant;
 
-public abstract class Plant {
+public class Plant {
     private String name;
     private int health;
     private int attack_damage;
@@ -8,6 +8,7 @@ public abstract class Plant {
     private int range;
     private long plantTime;
     private long lastAttackTime;
+    private String initial;
 
     public Plant(String name, int health, int attackDamage, int attackSpeed, int range, long plantTime) {
         this.name = name;
@@ -20,6 +21,14 @@ public abstract class Plant {
         // this.isAlive = true;
     }
 
+    public String getInitial() {
+        return initial;
+    }
+
+    public void setInitial(String initial) {
+        this.initial = initial;
+    }
+
     public String getName() {
         return name;
     }
@@ -27,7 +36,6 @@ public abstract class Plant {
     public void setName(String name) {
         this.name = name;
     }
-
 
     public int getHealth() {
         return health;
@@ -86,7 +94,7 @@ public abstract class Plant {
     }
 
     public boolean isAttackTime(long currentTime) {
-        return (currentTime - lastAttackTime >= attack_speed) || (lastAttackTime == plantTime);
+        return (currentTime - lastAttackTime >= attack_speed) || (currentTime == plantTime);
     }
 
     public void printInfo() {
@@ -96,6 +104,4 @@ public abstract class Plant {
         System.out.println("Attack Speed: " + attack_speed);
         System.out.println("Range: " + range);
     }
-
-    public abstract void attack();
 }
