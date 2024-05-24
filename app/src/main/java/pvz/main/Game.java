@@ -110,8 +110,7 @@ public class Game extends Thread {
 
             double lowerBound = 0.0;
             double upperBound = 1.0;
-            ZombieFactory[] arraydarat = { new NewspaperFactory(),
-                    new NormalFactory() };
+            ZombieFactory[] arraydarat = { new NewspaperFactory(), new NormalFactory(), new BucketFactory(), new ConeheadFactory(), new DiggerFactory(), new LadderFactory(), new PoleVaultFactory()};
             ZombieFactory[] arrayair = { new DolphinFactory(), new DuckyTubeFactory() };
 
             if (newUpdate) {
